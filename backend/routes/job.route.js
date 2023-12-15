@@ -1,9 +1,12 @@
-import express from 'express'
-import {getJobsByCategory,createJob} from '../controller/job.controller.js'
-import upload from '../middlewares/imageuploader.js'
-const router = express.Router()
+import express from "express";
+import {
+  getActiveJobsByCategory,
+  createJob,
+} from "../controller/job.controller.js";
+import upload from "../middlewares/imageuploader.js";
+const router = express.Router();
 
-router.get('/:categoryId',getJobsByCategory)
-router.post('/post',upload.single('file'), createJob)
+router.get("/:categoryId", getActiveJobsByCategory);
+router.post("/post", upload.single("file"), createJob);
 
-export default router
+export default router;

@@ -4,8 +4,8 @@ const jobSchema = new mongoose.Schema(
   {
     type: { type: String, required: true },
     company: { type: String, required: true },
-    logo: { type: String, },
-    url: { type: String, },
+    logo: { type: String },
+    url: { type: String },
     position: { type: String, required: true },
     location: { type: String, required: true },
     description: { type: String, required: true },
@@ -26,6 +26,6 @@ const jobSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 export default mongoose.model("Job", jobSchema, "jobs");

@@ -2,14 +2,32 @@ import { useEffect, useState } from "react";
 import { Table, Container, Row, Col} from "react-bootstrap";
 import { jobsByCategories } from "../../../dummyData.js";
 import  {Link}  from "react-router-dom"
+import axios from 'axios'
+
+const apiURL = 'http://localhost:3000/category/all'
 const JobsList = () => {
   const [categoriesData, setCategoriesData] = useState([]);
-
+  const [activeJobs,setActiveJobs]=useState([])
+  
   useEffect(() => {
     // Simulating API fetching
-    setCategoriesData(jobsByCategories);
+    axios.get(apiURL).then((result)=>{setCategoriesData(result.data)
+    console.log(result.data)}).catch((error)=>{console.log(error)})
+
+    axios.get('http://localhost:3000/jobs/657ac43adcc04435c5585428').then((response)=>{console.log(response)}).catch((error)=>{console.log(error)})
+
+
+
+    axios.all(categoriesData.map((category)=>axios.get(`http://localhost:3000/job/${category._Id}`))).then(axios.spread((...responses)=>{
+      const activeJobsByCategory = responses.reduce((accumulator, response, index)=>{accumulator[categoriesData[index]._id] = response.data
+      return accumulator},{})
+      setActiveJobs(activeJobsByCategory)
+    })).catch((error)=>{console.log(error)})
+    console.log(activeJobs)
+    // setCategoriesData(jobsByCategories);
   }, []);
 
+  
   
 
   return (
@@ -17,12 +35,10 @@ const JobsList = () => {
       {categoriesData.map((category) => (
         <Row key={category.id} className="mt-3">
           <Col>
-            {/* <h3>{category.categoryName}</h3>
-             */}
             <Link to={`/jobs/${category.categoryId}`}>
-              <h3>{category.categoryName}</h3>
+              <h3>{category.name}</h3>
             </Link>
-            <Table striped bordered hover>
+            {/* <Table striped bordered hover>
               <thead>
                 <tr>
                   <th>Job Title</th>
@@ -39,7 +55,7 @@ const JobsList = () => {
                   </tr>
                 ))}
               </tbody>
-            </Table>
+            </Table> */}
           </Col>
         </Row>
       ))}
