@@ -1,8 +1,9 @@
 import Job from "../models/job.js";
 const currentDate = new Date();
 
-const getActiveJobsByCategory = async (req, res) => {
-  const categoryId = req.params.categoryId;
+const getActiveJobsByCategory = async (req, res, next) => {
+  try {
+    const categoryId = req.params.categoryId;
 
   const retrievedJobs = await Job.find({
     categoryId: categoryId,
@@ -14,7 +15,13 @@ const getActiveJobsByCategory = async (req, res) => {
       .status(404)
       .json("No Active Jobs Found for the specific categories");
   }
+
   res.status(200).json(retrievedJobs);
+  } catch (error) {
+    next(error)
+  }  
+  
+ 
 };
 
 const createJob = async (req, res) => {

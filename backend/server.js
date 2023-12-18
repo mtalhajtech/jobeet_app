@@ -14,7 +14,10 @@ app.use(morgan("dev"));
 app.use(express.json({ limit: "50mb" }));
 app.use("/job", jobRoutes);
 app.use("/category", categoryRoutes);
-
+app.use((err, req, res, next) => {
+    // Handle the error
+    return res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
+  });
 app.listen(port, (error) => {
   if (!error)
     console.log(

@@ -14,7 +14,7 @@
 //     // Add more job data as needed
 //   ];
 const jobsByCategories = [{
-        "categoryId": "category1",
+        "categoryId": "123",
         "categoryName": "Programming",
         "jobs": [
           {
@@ -69,7 +69,7 @@ const jobsByCategories = [{
         ]
       },
       {
-        "categoryId": "category2",
+        "categoryId": "124",
         "categoryName": "Design",
         "jobs": [
           {
@@ -108,7 +108,7 @@ const jobsByCategories = [{
         ]
       },
       {
-        "categoryId": "category3",
+        "categoryId": "125",
         "categoryName": "Marketing",
         "jobs": [
           {

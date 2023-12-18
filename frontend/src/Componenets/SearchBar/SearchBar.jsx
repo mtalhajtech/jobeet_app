@@ -4,10 +4,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handlePost = () => {
-    // Add your post logic here
-    alert('Post button clicked!');
-  };
+ 
 
   const handleSearch = () => {
     // Add your search logic here

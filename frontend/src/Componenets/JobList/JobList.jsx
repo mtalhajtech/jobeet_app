@@ -1,44 +1,61 @@
 import { useEffect, useState } from "react";
-import { Table, Container, Row, Col} from "react-bootstrap";
+import { Table, Container, Row, Col } from "react-bootstrap";
 import { jobsByCategories } from "../../../dummyData.js";
-import  {Link}  from "react-router-dom"
-import axios from 'axios'
+import { Link } from "react-router-dom";
+import axios from "axios";
 
-const apiURL = 'http://localhost:3000/category/all'
+const apiURL = "http://localhost:3000/category/all";
 const JobsList = () => {
-  const [categoriesData, setCategoriesData] = useState([]);
-  const [activeJobs,setActiveJobs]=useState([])
-  
+  // const [categoriesData, setCategoriesData] = useState([]);
+  // const [activeJobs, setActiveJobs] = useState([]);
+ let result
   useEffect(() => {
-    // Simulating API fetching
-    axios.get(apiURL).then((result)=>{setCategoriesData(result.data)
-    console.log(result.data)}).catch((error)=>{console.log(error)})
-
-    axios.get('http://localhost:3000/jobs/657ac43adcc04435c5585428').then((response)=>{console.log(response)}).catch((error)=>{console.log(error)})
-
-
-
-    axios.all(categoriesData.map((category)=>axios.get(`http://localhost:3000/job/${category._Id}`))).then(axios.spread((...responses)=>{
-      const activeJobsByCategory = responses.reduce((accumulator, response, index)=>{accumulator[categoriesData[index]._id] = response.data
-      return accumulator},{})
-      setActiveJobs(activeJobsByCategory)
-    })).catch((error)=>{console.log(error)})
-    console.log(activeJobs)
-    // setCategoriesData(jobsByCategories);
+    // // Simulating API 
+    // axios
+    //   .get(apiURL)
+    //   .then((result) => {
+    //     setCategoriesData(result.data);
+    //     console.log(result.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+     
+    //   axios
+    //   .all(
+        
+    //     axios.get(`http://localhost:3000/job/657ac43adcc04435c5585428`)
+    //     // categoriesData.map((category) =>
+        
+          
+        
+    //     // )
+    //   )
+    //   .then(
+    //     axios.spread((...responses) => {
+    //       console.log(responses)
+    //       result[responses?.data.id] = responses.data
+    //       // setActiveJobs(activeJobsByCategory);
+    //       console.log(result);
+    //     })
+    //   )
+    //   .catch((error) => {
+    //     console.log(error.message);
+    //   });
+   
+    // // setCategoriesData(jobsByCategories);
   }, []);
 
-  
-  
 
   return (
     <Container>
-      {categoriesData.map((category) => (
-        <Row key={category.id} className="mt-3">
+      {jobsByCategories.map((data) => (
+        <Row key={data?.categoryId} className="mt-3">
           <Col>
-            <Link to={`/jobs/${category.categoryId}`}>
-              <h3>{category.name}</h3>
+            <Link to={`/jobs/${data?.categoryId}`}>
+              <h3>{data.categoryName}</h3>
             </Link>
-            {/* <Table striped bordered hover>
+            <Table striped bordered hover>
               <thead>
                 <tr>
                   <th>Job Title</th>
@@ -47,7 +64,7 @@ const JobsList = () => {
                 </tr>
               </thead>
               <tbody>
-                {category?.jobs.map((job) => (
+                {data?.jobs.map((job) => (
                   <tr key={job.id}>
                     <td>{job.position}</td>
                     <td>{job.company}</td>
@@ -55,10 +72,11 @@ const JobsList = () => {
                   </tr>
                 ))}
               </tbody>
-            </Table> */}
+            </Table>
           </Col>
         </Row>
       ))}
+      
     </Container>
   );
 };
