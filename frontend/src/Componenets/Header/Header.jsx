@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 
 const Header = () => {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="bg-body-black textwhite py-3">
       <Container>
         <a href="/home" className="navbar-brand">
           Jobeet
