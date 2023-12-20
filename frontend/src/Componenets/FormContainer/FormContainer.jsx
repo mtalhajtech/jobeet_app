@@ -5,7 +5,7 @@ function FormContainer({children}) {
     return (
         <Container>
         <Row className='justify-content-md-left'>
-            <Col xs={12} md={6}>
+            <Col xs={12} md={6} lg={4}>
             {children}
             </Col>
         </Row>
