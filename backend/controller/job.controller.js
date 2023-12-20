@@ -1,4 +1,5 @@
 import Job from "../models/job.js";
+import jobService from "../services/jobService.js";
 const currentDate = new Date();
 
 const getActiveJobsByCategory = async (req, res, next) => {
@@ -25,52 +26,10 @@ const getActiveJobsByCategory = async (req, res, next) => {
 };
 
 const createJob = async (req, res) => {
-  const {
-    type,
-    company,
-    url,
-    position,
-    location,
-    description,
-    howToApply,
-    token,
-    isPublic,
-    isActive,
-  } = req.body;
-  if (
-    !type ||
-    !company ||
-    !url ||
-    !position ||
-    !location ||
-    !description ||
-    !howToApply ||
-    !token ||
-    !isPublic ||
-    !isActive
-  ) {
-    return res
-      .status(400)
-      .json("Please send complete Information for Job Creation");
-  }
-  const logoFileName = req.file.filename;
-  try {
-    const createdJob = await Job.create({
-      type,
-      company,
-      url,
-      position,
-      location,
-      description,
-      howToApply,
-      token,
-      isPublic,
-      isActive,
-      logo: logoFileName,
-    });
-    res.status(200).json(createdJob);
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+ const result = await jobService.createJob(req)
+ if(result.error){
+  return res.status(result.statusCode).json({message:result.error})
+ }
+ else res.status(result.statusCode).json(result.data)
 };
 export { getActiveJobsByCategory, createJob };
