@@ -1,17 +1,17 @@
 import React from "react";
 import { Row, Form, Col, Container, Button } from "react-bootstrap";
 import FormContainer from "../FormContainer/FormContainer";
-
+import {useNavigate} from "react-router-dom"
 import { useState, useEffect } from "react";
 import category from "../../../../backend/models/category";
-
+import { Alert } from "react-bootstrap";
 function PostJobForm() {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
-  // const handleImageUpload=(e)=>{
-  //     setLogo(e)
-  //     console.log(logo)
-  // }
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [apiError, setApiError]=useState({})
+
+const navigate = useNavigate()
   const setField = (field, value) => {
     setForm({ ...form, [field]: value });
     console.log(form);
@@ -19,40 +19,78 @@ function PostJobForm() {
       setErrors({ ...errors, [field]: null });
     }
   };
+ const handleShowSuccess = ()=>{
+    navigate('/')
+}
+
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return re.test(String(email).toLowerCase());
+  };
+  const validateURL = (url) =>{
+    const re =  /\.com$/
+    return re.test(String(url).toLowerCase());
+  }
   const validateForm = () => {
-    const { email, category, company, position, location, howToApply, type, description } =
-      form;
-    console.log(category);
+    const {
+      email,
+      category,
+      company,
+      position,
+      location,
+      howToApply,
+      type,
+      description,url
+    } = form;
+  
     let newError = {};
-    
-     x
-      
-    
-    if (!form.category || form.category === "")  newError.category = "Select any options From it";
-    if (!email || email === "") newError.email = "Write a Valid email Like ";
+    if (!category || category === "")
+      newError.category = "Select any options From it";
+    if (!email || !validateEmail(email))
+      newError.email = "Write a Valid email Like alpha@gmail.com ";
     if (!type || type === "") newError.type = "Select any type";
     if (!company || company === "") newError.company = "Add Company Name";
     if (!position || position === "") newError.position = "Add the position";
+    if(url && !validateURL(url)){ 
+        newError.position = "Add correct URL that ends with .com"}
     if (!location || location === "") newError.location = "Add the location";
-    if (!howToApply || howToApply === "")newError.howToApply = "Add How to Apply ";
-    if (!description  || description === "")newError.description = "Add Description about job";
-      
-
+    if (!howToApply || howToApply === "")
+      newError.howToApply = "Add How to Apply ";
+    if (!description || description === "")
+      newError.description = "Add Description about job";
+  
     return newError;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const errors = validateForm();
+    console.log(errors);
     if (Object.keys(errors).length > 0) {
-      
       setErrors(errors);
     } else {
-      console.log(form);
+        try {
+            const response = await axios.post('YOUR_API_ENDPOINT', form);
+            setShowSuccess(true)
+            console.log(response.data);
+            // Handle success (e.g., redirect, show success message)
+          } catch (error) {
+            setApiError(error.response.data.message || 'Error submitting form');
+            // Handle API error
+          }
+
     }
   };
 
   return (
     <>
+ {showSuccess && (
+        <Alert variant="success" onClick={handleShowSuccess} dismissible>
+            Job posted successfully. Click here to go to the dashboard.
+       
+         </Alert>
+      )}  
+      {apiError && <Alert variant="danger">{apiError}</Alert>}
       <Row className="mt-3 mb-3">
         <h3>Post a Job</h3>
       </Row>
@@ -61,13 +99,11 @@ function PostJobForm() {
           <Form.Group>
             <Form.Label>Category</Form.Label>
             <Form.Select
-             
               aria-label="Default select example"
               value={form.category}
               onChange={(e) => {
                 setField("category", e.target.value);
               }}
-              
               isInvalid={!!errors.category}
             >
               <option>Select Category</option>
@@ -129,9 +165,9 @@ function PostJobForm() {
                 }}
               />
             </div>
-            <Form.Control.Feedback type="invalid">
-              {errors.type}
-            </Form.Control.Feedback>
+            {errors.type && (
+              <div className="invalid-feedback d-block">{errors.type}</div>
+            )}
           </Form.Group>
           <Form.Group controlId="formFile" className="mb-3">
             <Form.Label>Logo</Form.Label>
@@ -149,6 +185,7 @@ function PostJobForm() {
             <Form.Control
               type="text"
               placeholder="URL of the Job"
+              value={form.url}
               onChange={(e) => setField("url", e.target.value)}
             />
           </Form.Group>
@@ -172,20 +209,21 @@ function PostJobForm() {
               onChange={(e) => setField("location", e.target.value)}
               isInvalid={!!errors.location}
             />
-            <Form.Control.Feedback type="invalid">{errors.location}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.location}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group>
             <Form.Check
               inline
-              label="public"
+              label="Public"
               name="group1"
               value="true"
               type={"checkbox"}
-              feedbackType="invalid"
               id={"inline-radio-1"}
               onChange={(e) => {
-                setField("public", value);
+                setField("public", e.target.value);
               }}
             />
             <Form.Control.Feedback>{errors.public}</Form.Control.Feedback>
@@ -194,17 +232,20 @@ function PostJobForm() {
             <Form.Label>Description</Form.Label>
             <Form.Control
               type="text"
+              as="textarea"
               placeholder="Add Description to Your Post"
-              onChange={(e) => setField("description", value)}
+              onChange={(e) => setField("description", e.target.value)}
               isInvalid={!!errors.description}
             />
-            <Form.Control.Feedback type="invalid">{errors.description}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.description}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="md-3" controlId="formGridHowToApply">
             <Form.Label>How To Apply</Form.Label>
             <Form.Control
               type="text"
-              as="testarea"
+              as="textarea"
               placeholder="How to Apply"
               value={form.howToApply}
               onChange={(e) => {
@@ -222,13 +263,16 @@ function PostJobForm() {
               type="email"
               placeholder="Enter your email"
               value={form.email}
+             
+              
               onChange={(e) => {
                 setField("email", e.target.value);
-             
               }}
-             
+              isInvalid={!!errors.email}
             />
-           
+            <Form.Control.Feedback type="invalid">
+              {errors.email}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group>
             <Button

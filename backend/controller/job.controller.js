@@ -1,5 +1,5 @@
 import Job from "../models/job.js";
-import jobService from "../services/jobService.js";
+import { createJobService } from "../services/jobService.js";
 const currentDate = new Date();
 
 const getActiveJobsByCategory = async (req, res, next) => {
@@ -26,9 +26,10 @@ const getActiveJobsByCategory = async (req, res, next) => {
 };
 
 const createJob = async (req, res) => {
- const result = await jobService.createJob(req)
+ const jobData = req.body    
+ const result = await createJobService.createJob(jobData)
  if(result.error){
-  return res.status(result.statusCode).json({message:result.error})
+  return res.status(ulrest.statusCode).json({message:result.error})
  }
  else res.status(result.statusCode).json(result.data)
 };

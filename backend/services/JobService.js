@@ -1,44 +1,45 @@
-import JobRepositroy from "../repositories/JobRepositoy";
-const createJob = async()=>{
+import { createJob } from '../repositories/JobRepository.js';
+import { v4 as uuidv4 } from 'uuid';
+
+const createJobService = async()=>{
+  let response ={}
     const {
         type,
         company,
-        url,
         position,
         location,
         description,
         howToApply,
-        token,
         isPublic,
         isActive
-      } = jobData;
+      } = jobData
       if (
         !type ||
         !company ||
-        !url ||
         !position ||
         !location ||
         !description ||
         !howToApply ||
-        !token ||
+        
         !isPublic ||
         !isActive
       ) {
         return { error: true, statusCode: 400, message: "Please send complete information for job creation" };
       }
       const logoFileName = req.file.filename;
+      const currentDate = new Date();
+      const expireAt = currentDate.setDate(currentDate.getDate() + 30)
+      const jobtoken = uuidv4()
+      const jobDetails = {...jobData,jobtoken,expireAt}
+     
       try {
-        const createdJob = await JobRepositroy.createJob(jobData);
-        return { error: false, statusCode: 200, data: createdJob };
+        const createdJob = await createJob(jobDetails);
+         response['token'] = createdJob.token
+         response['url']=`${process.env.FRONTEND_BASE_URL}/edit-job/${createdJob._id}`
+        return { error: false, statusCode: 200, data: response };
       } catch (error) {
         return { error: true, statusCode: 500, message: 'Error creating job in service: ' + error.message };
       }
     }
-      try {
-        const createdJob = await JobRepositroy.createJob(jobData)
-
-        res.status(200).json({error:false,statusCode: 200,data:createdJob});
-      } catch (error) {
-        res.status(500).json({ error: true, statusCode: 500, message: 'Error creating job in service: ' + error.message });
-      }
-export default  {createJob}
+   
+export  {createJobService}

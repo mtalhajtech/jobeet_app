@@ -18,7 +18,7 @@ const jobSchema = new mongoose.Schema(
       required: [true, "Please enter your email"],
       unique: [true, "Email address already taken"],
     },
-    expiresAt: { type: Date },
+    expiresAt: { type: Date, required: true },
     categoryId: {
       type: mongoose.Types.ObjectId,
       required: true,
