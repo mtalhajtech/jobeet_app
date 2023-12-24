@@ -3,21 +3,26 @@ import { Row, Form, Col, Container, Button } from "react-bootstrap";
 import FormContainer from "../FormContainer/FormContainer";
 import {useNavigate} from "react-router-dom"
 import { useState, useEffect } from "react";
-import category from "../../../../backend/models/category";
 import { Alert } from "react-bootstrap";
+import axios from 'axios'
 function PostJobForm() {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
-  const [apiError, setApiError]=useState({})
-
+  const [apiError, setApiError] = useState({})
+  
 const navigate = useNavigate()
+
   const setField = (field, value) => {
+    
     setForm({ ...form, [field]: value });
+    
     console.log(form);
+
     if (!!errors[field]) {
       setErrors({ ...errors, [field]: null });
     }
+
   };
  const handleShowSuccess = ()=>{
     navigate('/')
@@ -69,31 +74,40 @@ const navigate = useNavigate()
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
     } else {
+      const formData = new FormData();
+      Object.keys(form).forEach(key => {
+        formData.append(key, form[key]);
+      });
         try {
-            const response = await axios.post('YOUR_API_ENDPOINT', form);
+            const response = await axios.post('http://localhost:3000/job/post', formData,  {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            });
             setShowSuccess(true)
             console.log(response.data);
-            // Handle success (e.g., redirect, show success message)
+           //handel success
           } catch (error) {
-            setApiError(error.response.data.message || 'Error submitting form');
-            // Handle API error
+            setApiError(error.response?.data?.message || 'Error submitting form');
+            //if there is an error
           }
 
     }
   };
-
+          
   return (
     <>
- {showSuccess && (
+ 
+    
+      <Row className="mt-3 mb-3">
+        <h3>Post a Job</h3>
+      </Row>
+      { showSuccess && (
         <Alert variant="success" onClick={handleShowSuccess} dismissible>
             Job posted successfully. Click here to go to the dashboard.
        
          </Alert>
-      )}  
-      {apiError && <Alert variant="danger">{apiError}</Alert>}
-      <Row className="mt-3 mb-3">
-        <h3>Post a Job</h3>
-      </Row>
+     )}  
       <FormContainer>
         <Form>
           <Form.Group>

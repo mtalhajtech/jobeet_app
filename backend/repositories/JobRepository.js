@@ -15,8 +15,8 @@ const createJob = async (jobDetails) => {
     expiresAt,
     categoryId
   } = jobDetails;
-   
- return Job.create({
+
+  return Job.create({
     type,
     company,
     url,
@@ -32,4 +32,16 @@ const createJob = async (jobDetails) => {
     expiresAt
   });
 };
-export  { createJob  };
+
+
+const getJob = async (categoryId, currentDate) => {
+  return Job.find({
+    categoryId: categoryId,
+    isActive: true,
+    expiresAt: { $gt: currentDate },
+  });
+   
+}
+
+
+export { createJob, getJob };

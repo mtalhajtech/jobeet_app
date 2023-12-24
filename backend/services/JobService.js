@@ -1,7 +1,7 @@
-import { createJob } from '../repositories/JobRepository.js';
+import { createJob,getJob } from '../repositories/JobRepository.js';
 import { v4 as uuidv4 } from 'uuid';
 
-const createJobService = async()=>{
+const createJobService = async(jobData)=>{
   let response ={}
     const {
         type,
@@ -41,5 +41,20 @@ const createJobService = async()=>{
         return { error: true, statusCode: 500, message: 'Error creating job in service: ' + error.message };
       }
     }
-   
-export  {createJobService}
+    const getJobService = async(req)=>{
+      const currentDate = Date.now().toLocaleString
+      const categoryId = req.params.categoryId;
+      try {
+           const jobs = await getJob(categoryId,currentDate)
+          if (jobs.length === 0) {
+            return {error:true,statusCode:404,message:" Error Getting Job "+ error.message}
+          }
+          
+              res.status(200).json({error:false,statusCode: 200,data:jobs});
+          
+         
+          } catch (error) {
+              return {error:true,statusCode:500,message:" Error Getting Job "+ error.message}
+          }
+}
+export  {createJobService, getJobService}
