@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const createJobService = async(jobData)=>{
   let response ={}
+  console.log(jobData)
     const {
         type,
         company,
@@ -11,8 +12,11 @@ const createJobService = async(jobData)=>{
         description,
         howToApply,
         isPublic,
-        isActive
+        category,
+        email
+        
       } = jobData
+
       if (
         !type ||
         !company ||
@@ -20,18 +24,21 @@ const createJobService = async(jobData)=>{
         !location ||
         !description ||
         !howToApply ||
-        
         !isPublic ||
-        !isActive
+        !category ||
+        !email
+        
       ) {
+       
         return { error: true, statusCode: 400, message: "Please send complete information for job creation" };
       }
-      const logoFileName = req.file.filename;
+      
       const currentDate = new Date();
       const expireAt = currentDate.setDate(currentDate.getDate() + 30)
       const jobtoken = uuidv4()
       const jobDetails = {...jobData,jobtoken,expireAt}
-     
+      
+      console.log(jobDetails)
       try {
         const createdJob = await createJob(jobDetails);
          response['token'] = createdJob.token

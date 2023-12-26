@@ -57,7 +57,7 @@ const navigate = useNavigate()
     if (!company || company === "") newError.company = "Add Company Name";
     if (!position || position === "") newError.position = "Add the position";
     if(url && !validateURL(url)){ 
-        newError.position = "Add correct URL that ends with .com"}
+        newError.url = "Add correct URL that ends with .com"}
     if (!location || location === "") newError.location = "Add the location";
     if (!howToApply || howToApply === "")
       newError.howToApply = "Add How to Apply ";
@@ -76,6 +76,10 @@ const navigate = useNavigate()
     } else {
       const formData = new FormData();
       Object.keys(form).forEach(key => {
+        if(key=='logo')
+        {
+          formData.append(key, form[key][0]);
+        }
         formData.append(key, form[key]);
       });
         try {
@@ -88,6 +92,7 @@ const navigate = useNavigate()
             console.log(response.data);
            //handel success
           } catch (error) {
+            console.log(error.message)
             setApiError(error.response?.data?.message || 'Error submitting form');
             //if there is an error
           }
@@ -187,6 +192,7 @@ const navigate = useNavigate()
             <Form.Label>Logo</Form.Label>
             <Form.Control
               type="file"
+              name="logo"
               onChange={(e) => {
                 setField("logo", e.target.files);
               }}
@@ -201,7 +207,11 @@ const navigate = useNavigate()
               placeholder="URL of the Job"
               value={form.url}
               onChange={(e) => setField("url", e.target.value)}
+              isInvalid={errors.url}
             />
+             <Form.Control.Feedback type="invalid">
+              {errors.url}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>Position</Form.Label>
@@ -209,7 +219,7 @@ const navigate = useNavigate()
               type="text"
               placeholder="Position for which you are applying"
               onChange={(e) => setField("position", e.target.value)}
-              isInvalid={errors.position}
+              isInvalid={!!errors.position}
             />
             <Form.Control.Feedback type="invalid">
               {errors.position}
@@ -237,7 +247,7 @@ const navigate = useNavigate()
               type={"checkbox"}
               id={"inline-radio-1"}
               onChange={(e) => {
-                setField("public", e.target.value);
+                setField("isPublic", e.target.value);
               }}
             />
             <Form.Control.Feedback>{errors.public}</Form.Control.Feedback>

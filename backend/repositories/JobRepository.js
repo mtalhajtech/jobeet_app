@@ -10,8 +10,7 @@ const createJob = async (jobDetails) => {
     howToApply,
     token,
     isPublic,
-    isActive,
-    logoFileName,
+    logo,
     expiresAt,
     categoryId
   } = jobDetails;
@@ -26,9 +25,8 @@ const createJob = async (jobDetails) => {
     howToApply,
     token,
     isPublic,
-    isActive,
     categoryId,
-    logo: logoFileName,
+    logo,
     expiresAt
   });
 };

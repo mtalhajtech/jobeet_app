@@ -12,7 +12,7 @@ const jobSchema = new mongoose.Schema(
     howToApply: { type: String, required: true },
     token: { type: String, required: true },
     Public: { type: Boolean, require: true },
-    isActive: { type: Boolean, required: true },
+    isActive: { type: Boolean, default: true },
     email: {
       type: String,
       required: [true, "Please enter your email"],
