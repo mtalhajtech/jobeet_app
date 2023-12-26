@@ -1,4 +1,4 @@
-import { createJob,getJob } from '../repositories/JobRepository.js';
+import { createJob,getJob,getActiveJobByCategory } from '../repositories/JobRepository.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const createJobService = async(jobData)=>{
@@ -64,21 +64,24 @@ const createJobService = async(jobData)=>{
           } catch (error) {
               return {error:true,statusCode:500,message:" Error Getting Job "+ error.message}
           }
-      const getActiveJobByCategoryService = async()=>{
-        const currentDate = Date.now().toLocaleString  
-        try {
-           
-          const jobs = await getActiveJobByCategory(categoryId,currentDate)
-         if (jobs.length === 0) {
-           return {error:true,statusCode:404,message:" Error Getting Job "+ error.message}
-         }
-         
-             res.status(200).json({error:false,statusCode: 200,data:jobs});
-         
-        
-         } catch (error) {
-             return {error:true,statusCode:500,message:" Error Getting Job "+ error.message}
-         } 
-      }      
+    
 }
-export  {createJobService, getJobService}
+const getActiveJobByCategoryService = async(res)=>{
+    const currentDate = new Date()
+  try {
+     
+    const jobsByCategory = await getActiveJobByCategory(currentDate)
+    
+   if (jobsByCategory.length === 0) {
+     return {error:true,statusCode:404,message:" Error : "+ error.message}
+   }
+   
+        // res.status(200).json({error:false,statusCode: 200,data:jobsByCategory})
+        return  {error:false,statusCode: 200, data:jobsByCategory};
+   
+  
+   } catch (error) {
+       return {error:true,statusCode:500,message:" Error : "+ error.message}
+   } 
+}      
+export  {createJobService, getJobService, getActiveJobByCategoryService}

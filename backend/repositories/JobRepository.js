@@ -1,3 +1,4 @@
+import category from "../models/category.js";
 import Job from "../models/job.js";
 const createJob = async (jobDetails) => {
   const {
@@ -8,14 +9,14 @@ const createJob = async (jobDetails) => {
     location,
     description,
     howToApply,
-  jobtoken:token,
+    jobtoken: token,
     isPublic,
     logo,
     expiresAt,
     email,
-    categoryId
+    categoryId,
   } = jobDetails;
- console.log(token)
+  console.log(token);
   return Job.create({
     type,
     company,
@@ -29,10 +30,9 @@ const createJob = async (jobDetails) => {
     isPublic,
     categoryId,
     logo,
-    expiresAt
+    expiresAt,
   });
 };
-
 
 const getJob = async (categoryId, currentDate) => {
   return Job.find({
@@ -40,10 +40,33 @@ const getJob = async (categoryId, currentDate) => {
     isActive: true,
     expiresAt: { $gt: currentDate },
   });
-   const getActiveJobByCategory = async() =>{
-    
-   }
 }
+  const getActiveJobByCategory = async (currentDate) => {
+    console.log(currentDate)
+    return category.aggregate([
+      {
+        $lookup: {
+          from: "jobs",
+          localField: "_id",
+          foreignField: "categoryId",
+          as: "jobs",
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          description: 1,
+          jobs: {
+            $filter: {
+              input: "$jobs",
+              as: "job",
+              cond: { $lt: [ currentDate , "$$job.expiresAt"] },
+            },
+          },
+        },
+      },
+    ]);
+  };
 
 
-export { createJob, getJob };
+export { createJob, getJob, getActiveJobByCategory };
