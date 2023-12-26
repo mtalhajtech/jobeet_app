@@ -4,12 +4,14 @@ import FormContainer from "../FormContainer/FormContainer";
 import {useNavigate} from "react-router-dom"
 import { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
+import { categories } from "../../../dummyData";
 import axios from 'axios'
 function PostJobForm() {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
-  const [apiError, setApiError] = useState({})
+  const [apiError, setApiError] = useState({error:false,
+message:''})
   
 const navigate = useNavigate()
 
@@ -39,7 +41,7 @@ const navigate = useNavigate()
   const validateForm = () => {
     const {
       email,
-      category,
+      categoryId,
       company,
       position,
       location,
@@ -49,7 +51,7 @@ const navigate = useNavigate()
     } = form;
   
     let newError = {};
-    if (!category || category === "")
+    if (!categoryId || categoryId === "")
       newError.category = "Select any options From it";
     if (!email || !validateEmail(email))
       newError.email = "Write a Valid email Like alpha@gmail.com ";
@@ -66,7 +68,7 @@ const navigate = useNavigate()
   
     return newError;
   };
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const errors = validateForm();
@@ -92,8 +94,9 @@ const navigate = useNavigate()
             console.log(response.data);
            //handel success
           } catch (error) {
-            console.log(error.message)
-            setApiError(error.response?.data?.message || 'Error submitting form');
+            
+            setApiError({error:true,
+            message:error});
             //if there is an error
           }
 
@@ -112,7 +115,9 @@ const navigate = useNavigate()
             Job posted successfully. Click here to go to the dashboard.
        
          </Alert>
-     )}  
+     ) || apiError.error && (<Alert variant="danger"  dismissible >
+      Error in posting the job
+</Alert>) }  
       <FormContainer>
         <Form>
           <Form.Group>
@@ -121,14 +126,13 @@ const navigate = useNavigate()
               aria-label="Default select example"
               value={form.category}
               onChange={(e) => {
-                setField("category", e.target.value);
+                setField("categoryId", e.target.value);
               }}
+              
               isInvalid={!!errors.category}
             >
               <option>Select Category</option>
-              <option value="technology">Technology</option>
-              <option value="business">Business</option>
-              <option value="admin">Admin</option>
+              {categories.map((element)=>( <option key={element.id} value={element.id}>{element.name}</option>))}
             </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors.category}

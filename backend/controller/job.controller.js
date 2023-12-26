@@ -19,8 +19,9 @@ const createJob = async (req, res) => {
      jobData.logo = req.file.filename;
      
  const result = await createJobService(jobData)
-
+ 
  if(result.error){
+    
   return res.status(result.statusCode).json({message:result.message})
  }
  else return res.status(result.statusCode).json(result.data)

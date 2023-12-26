@@ -20,7 +20,7 @@ const jobSchema = new mongoose.Schema(
     },
     expiresAt: { type: Date, required: true },
     categoryId: {
-      type: mongoose.Types.ObjectId,
+      type: String,
       required: true,
     },
   },

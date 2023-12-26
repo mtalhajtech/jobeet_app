@@ -8,17 +8,19 @@ const createJob = async (jobDetails) => {
     location,
     description,
     howToApply,
-    token,
+  jobtoken:token,
     isPublic,
     logo,
     expiresAt,
+    email,
     categoryId
   } = jobDetails;
-
+ console.log(token)
   return Job.create({
     type,
     company,
     url,
+    email,
     position,
     location,
     description,

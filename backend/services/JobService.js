@@ -12,7 +12,7 @@ const createJobService = async(jobData)=>{
         description,
         howToApply,
         isPublic,
-        category,
+        categoryId,
         email
         
       } = jobData
@@ -25,7 +25,7 @@ const createJobService = async(jobData)=>{
         !description ||
         !howToApply ||
         !isPublic ||
-        !category ||
+        !categoryId ||
         !email
         
       ) {
@@ -34,9 +34,9 @@ const createJobService = async(jobData)=>{
       }
       
       const currentDate = new Date();
-      const expireAt = currentDate.setDate(currentDate.getDate() + 30)
+      const expiresAt = currentDate.setDate(currentDate.getDate() + 30)
       const jobtoken = uuidv4()
-      const jobDetails = {...jobData,jobtoken,expireAt}
+      const jobDetails = {...jobData,jobtoken,expiresAt}
       
       console.log(jobDetails)
       try {
