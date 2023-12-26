@@ -149,10 +149,8 @@ const jobsByCategories = [{
       // Add more categories as needed
     ]
     const categories = [
-      { id: 1, name: "Technology" },
-      { id: 2, name: "Business" },
-      { id: 3, name: "Education" },
-      { id: 4, name: "Healthcare" },
-      { id: 5, name: "Entertainment" }
+      { id: "657ac43adcc04435c5585428", name: "Tech" },
+      { id: "657ac6b5a0a13c00338b341a", name: "Medical" },
+     
     ];
   export {jobsByCategories , categories};

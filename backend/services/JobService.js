@@ -52,6 +52,7 @@ const createJobService = async(jobData)=>{
       const currentDate = Date.now().toLocaleString
       const categoryId = req.params.categoryId;
       try {
+           
            const jobs = await getJob(categoryId,currentDate)
           if (jobs.length === 0) {
             return {error:true,statusCode:404,message:" Error Getting Job "+ error.message}
@@ -63,5 +64,21 @@ const createJobService = async(jobData)=>{
           } catch (error) {
               return {error:true,statusCode:500,message:" Error Getting Job "+ error.message}
           }
+      const getActiveJobByCategoryService = async()=>{
+        const currentDate = Date.now().toLocaleString  
+        try {
+           
+          const jobs = await getActiveJobByCategory(categoryId,currentDate)
+         if (jobs.length === 0) {
+           return {error:true,statusCode:404,message:" Error Getting Job "+ error.message}
+         }
+         
+             res.status(200).json({error:false,statusCode: 200,data:jobs});
+         
+        
+         } catch (error) {
+             return {error:true,statusCode:500,message:" Error Getting Job "+ error.message}
+         } 
+      }      
 }
 export  {createJobService, getJobService}

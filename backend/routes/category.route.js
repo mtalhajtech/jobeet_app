@@ -2,7 +2,7 @@ import express from "express";
 import {
   getCategories,
   createCategory,
-} from "../controller/categorie.controller.js";
+} from "../controller/category.controller.js";
 const router = express.Router();
 
 router.get("/all", getCategories);

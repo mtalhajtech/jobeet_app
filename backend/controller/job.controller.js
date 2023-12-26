@@ -11,7 +11,13 @@ const getJob = async (req, res,) => {
    else {res.status(result.statusCode).json(result.data)} 
   }
 
-
+const getActiveJobsByCategory = async()=>{
+       const result = await getActiveJobByCategoryService ()
+       if(result.error){
+        return res.status(result.statusCode).json({message:result.error})
+       }
+       else {res.status(result.statusCode).json(result.data)} 
+}
 
 const createJob = async (req, res) => {
 
@@ -21,7 +27,7 @@ const createJob = async (req, res) => {
  const result = await createJobService(jobData)
  
  if(result.error){
-    
+   console.log(result.message) 
   return res.status(result.statusCode).json({message:result.message})
  }
  else return res.status(result.statusCode).json(result.data)

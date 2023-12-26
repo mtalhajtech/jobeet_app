@@ -40,7 +40,9 @@ const getJob = async (categoryId, currentDate) => {
     isActive: true,
     expiresAt: { $gt: currentDate },
   });
-   
+   const getActiveJobByCategory = async() =>{
+    
+   }
 }
 
 

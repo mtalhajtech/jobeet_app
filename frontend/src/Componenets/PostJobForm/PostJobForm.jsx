@@ -94,9 +94,9 @@ const navigate = useNavigate()
             console.log(response.data);
            //handel success
           } catch (error) {
-            
+        
             setApiError({error:true,
-            message:error});
+            message:error.response?.message});
             //if there is an error
           }
 
@@ -132,7 +132,7 @@ const navigate = useNavigate()
               isInvalid={!!errors.category}
             >
               <option>Select Category</option>
-              {categories.map((element)=>( <option key={element.id} value={element.id}>{element.name}</option>))}
+              {categories.map((element,index)=>( <option key={index} value={element.id}>{element.name}</option>))}
             </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors.category}
