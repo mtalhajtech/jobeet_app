@@ -23,7 +23,7 @@ const getActiveJobsByCategory = async(req,res)=>{
 const createJob = async (req, res) => {
 
  let jobData =  req.body
-     jobData.logo = req.file.filename;
+     jobData.logo = req.file?.filename;
      
  const result = await createJobService(jobData)
  

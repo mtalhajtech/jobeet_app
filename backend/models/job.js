@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const jobSchema = new mongoose.Schema(
   {
@@ -20,8 +20,9 @@ const jobSchema = new mongoose.Schema(
     },
     expiresAt: { type: Date, required: true },
     categoryId: {
-      type: String,
+      type: mongoose.Types.ObjectId,
       required: true,
+      
     },
   },
   {
