@@ -12,8 +12,6 @@ function PostJobForm() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [apiError, setApiError] = useState({ error: false, message: "" });
 
-
-
   const setField = (field, value) => {
     setForm({ ...form, [field]: value });
 
@@ -24,8 +22,8 @@ function PostJobForm() {
     }
   };
   const handleShowSuccess = (event) => {
-   event.preventDefault()
-   console.log('success hit')
+    event.preventDefault();
+    console.log("success hit");
   };
 
   const validateForm = () => {
@@ -42,7 +40,6 @@ function PostJobForm() {
     event.preventDefault();
     console.log("handleSubmitTriggered");
     const errors = validateForm();
-    console.log(errors);
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
     } else {
@@ -64,7 +61,6 @@ function PostJobForm() {
           }
         );
         setShowSuccess(true);
-          
 
         console.log(response.data);
         //handel success

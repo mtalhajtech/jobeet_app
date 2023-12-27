@@ -64,9 +64,15 @@ const getJob = async (categoryId, currentDate) => {
             },
           },
         },
+
       },
+      { $sort: { createdAt: 1, } },
+      {$limit:10},
     ]);
   };
+  const getLatestJobs = ()=>{
+    const currentDate = new Date();
+      return Job.find({$exp:{$lt:[currentDate,'$expiresAt']}}).sort({createdAt:1}).limit(10).exec()
+  }
 
-
-export { createJob, getJob, getActiveJobByCategory };
+export { createJob, getJob, getActiveJobByCategory,getLatestJobs };
