@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Container, Row, Col } from "react-bootstrap";
-import { jobsByCategories } from "../../../dummyData.js";
+import { categories, jobsByCategories } from "../../../dummyData.js";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -10,43 +10,45 @@ const JobsList = () => {
   // const [activeJobs, setActiveJobs] = useState([]);
  let result
   useEffect(() => {
-    // // Simulating API 
-    // axios
-    //   .get(apiURL)
-    //   .then((result) => {
-    //     setCategoriesData(result.data);
-    //     console.log(result.data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    // Simulating API 
+    axios
+      .get(apiURL)
+      .then((result) => {
+        setCategoriesData(result.data);
+        console.log(result.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
      
-    //   axios
-    //   .all(
+      axios
+      .all(
         
-    //     axios.get(`http://localhost:3000/job/657ac43adcc04435c5585428`)
-    //     // categoriesData.map((category) =>
+        axios.get(`http://localhost:3000/job?category=657ac43adcc04435c5585428`)
+        // categoriesData.map((category) =>
         
           
         
-    //     // )
-    //   )
-    //   .then(
-    //     axios.spread((...responses) => {
-    //       console.log(responses)
-    //       result[responses?.data.id] = responses.data
-    //       // setActiveJobs(activeJobsByCategory);
-    //       console.log(result);
-    //     })
-    //   )
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //   });
+        // )
+      )
+      .then(
+        axios.spread((...responses) => {
+          console.log(responses)
+          result[responses?.data.id] = responses.data
+          // setActiveJobs(activeJobsByCategory);
+          console.log(result);
+        })
+      )
+      .catch((error) => {
+        console.log(error.message);
+      });
    
-    // // setCategoriesData(jobsByCategories);
+    // setCategoriesData(jobsByCategories);
   }, []);
 
+  
 
+ 
   return (
     <Container>
       {jobsByCategories.map((data) => (

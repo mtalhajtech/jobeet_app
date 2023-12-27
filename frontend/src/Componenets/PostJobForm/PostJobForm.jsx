@@ -51,26 +51,21 @@ const navigate = useNavigate()
     } = form;
   
     let newError = {};
-    if (!categoryId || categoryId === "")
-      newError.category = "Select any options From it";
-    if (!email || !validateEmail(email))
-      newError.email = "Write a Valid email Like alpha@gmail.com ";
+   
+     
+    
     if (!type || type === "") newError.type = "Select any type";
-    if (!company || company === "") newError.company = "Add Company Name";
-    if (!position || position === "") newError.position = "Add the position";
+   
     if(url && !validateURL(url)){ 
         newError.url = "Add correct URL that ends with .com"}
-    if (!location || location === "") newError.location = "Add the location";
-    if (!howToApply || howToApply === "")
-      newError.howToApply = "Add How to Apply ";
-    if (!description || description === "")
-      newError.description = "Add Description about job";
+    
   
     return newError;
   };
   
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("handleSubmitTriggered")
     const errors = validateForm();
     console.log(errors);
     if (Object.keys(errors).length > 0) {
@@ -118,13 +113,14 @@ const navigate = useNavigate()
      ) || apiError.error && (<Alert variant="danger"  dismissible >
       Error in posting the job
 </Alert>) }  
-      <FormContainer>
-        <Form>
+      <FormContainer >
+        <Form onSubmit={handleSubmit}>
           <Form.Group>
             <Form.Label>Category</Form.Label>
             <Form.Select
-              aria-label="Default select example"
+               
               value={form.category}
+              required
               onChange={(e) => {
                 setField("categoryId", e.target.value);
               }}
@@ -142,13 +138,12 @@ const navigate = useNavigate()
             <Form.Label>Company</Form.Label>
             <Form.Control
               type="text"
+              required
               placeholder="Name of the Company"
               onChange={(e) => setField("company", e.target.value)}
-              isInvalid={errors.company}
+             
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.company}
-            </Form.Control.Feedback>
+           
           </Form.Group>
 
           <Form.Group>
@@ -160,6 +155,7 @@ const navigate = useNavigate()
                 value={"Full Time"}
                 name="group1"
                 type={"radio"}
+                required
                 id={`inline-radio-1`}
                 onChange={(e) => {
                   setField("type", e.target.value);
@@ -197,49 +193,46 @@ const navigate = useNavigate()
             <Form.Control
               type="file"
               name="logo"
+              accept="image/*"
               onChange={(e) => {
                 setField("logo", e.target.files);
               }}
-              isInvalid={!!errors.logo}
+            
             />
-            <Form.Control.Feedback>{errors.logo}</Form.Control.Feedback>
+            
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>URL</Form.Label>
             <Form.Control
-              type="text"
+              type="url"
               placeholder="URL of the Job"
               value={form.url}
               onChange={(e) => setField("url", e.target.value)}
-              isInvalid={errors.url}
+            
             />
-             <Form.Control.Feedback type="invalid">
-              {errors.url}
-            </Form.Control.Feedback>
+            
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>Position</Form.Label>
             <Form.Control
+              required
               type="text"
               placeholder="Position for which you are applying"
               onChange={(e) => setField("position", e.target.value)}
-              isInvalid={!!errors.position}
+             
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.position}
-            </Form.Control.Feedback>
+           
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
             <Form.Label>Location</Form.Label>
             <Form.Control
               type="text"
+              required
               placeholder="Location"
               onChange={(e) => setField("location", e.target.value)}
-              isInvalid={!!errors.location}
+              
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.location}
-            </Form.Control.Feedback>
+           
           </Form.Group>
 
           <Form.Group>
@@ -250,40 +243,37 @@ const navigate = useNavigate()
               value="true"
               type={"checkbox"}
               id={"inline-radio-1"}
+              
               onChange={(e) => {
                 setField("isPublic", e.target.value);
               }}
             />
-            <Form.Control.Feedback>{errors.public}</Form.Control.Feedback>
+            
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
             <Form.Label>Description</Form.Label>
             <Form.Control
               type="text"
+              required
               as="textarea"
               placeholder="Add Description to Your Post"
               onChange={(e) => setField("description", e.target.value)}
-              isInvalid={!!errors.description}
+             
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.description}
-            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="md-3" controlId="formGridHowToApply">
             <Form.Label>How To Apply</Form.Label>
             <Form.Control
               type="text"
               as="textarea"
+              required
               placeholder="How to Apply"
               value={form.howToApply}
               onChange={(e) => {
                 setField("howToApply", e.target.value);
               }}
-              isInvalid={!!errors.howToApply}
+             
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.howToApply}
-            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="md-3" controlId="formGridEmail">
             <Form.Label>Email</Form.Label>
@@ -291,21 +281,18 @@ const navigate = useNavigate()
               type="email"
               placeholder="Enter your email"
               value={form.email}
-             
-              
+              required
               onChange={(e) => {
                 setField("email", e.target.value);
               }}
-              isInvalid={!!errors.email}
+              
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.email}
-            </Form.Control.Feedback>
+           
           </Form.Group>
           <Form.Group>
             <Button
               type="submit"
-              onClick={handleSubmit}
+              
               className="my-2"
               variant="dark"
             >

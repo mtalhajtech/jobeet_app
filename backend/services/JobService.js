@@ -31,6 +31,8 @@ const createJobService = async(jobData)=>{
       ) {
        
         return { error: true, statusCode: 400, message: "Please send complete information for job creation" };
+        
+        
       }
       
       const currentDate = new Date();
@@ -41,6 +43,7 @@ const createJobService = async(jobData)=>{
       console.log(jobDetails)
       try {
         const createdJob = await createJob(jobDetails);
+        response.token = createdJob.token
          response['token'] = createdJob.token
          response['url']=`${process.env.FRONTEND_BASE_URL}/edit-job/${createdJob._id}`
         return { error: false, statusCode: 200, data: response };
