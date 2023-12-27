@@ -10,20 +10,21 @@ function useJobDataFetch() {
   
   const getJobList = async () => {
     try {
-        const [jobdata, categoryData] = await Promise.all(
-            getActiveJobListByCategory(),
-            getAllCategories()
+        debugger;
+        const [jobdata, categoryData] = await Promise.all([getLatestJobs(),
+            getAllCategories()]
+            
           );
       
           setLatestJobs(jobdata);
           setCategories(categoryData);
     } catch (error) {
         setIsError(true)
-        console.log(error)
+       
     }
    
   };
-  return {};
+  return {latestJobs,categories,isError,getJobList};
 }
 
 export default useJobDataFetch;

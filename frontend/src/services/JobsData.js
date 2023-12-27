@@ -13,13 +13,14 @@ const getLatestJobs = async () =>{
     const apiurl = `${constants.FRONTEND_BASE_URL}job/latest-active-jobs`;
     const request = await axios.get(apiurl)
     const result = request.data
+    return result
 
 }
 const getAllCategories = async () =>{
-    const apiurl = `${constants.FRONTEND_BASE_URL}categories/all`;
+    const apiurl = `${constants.FRONTEND_BASE_URL}category/all`;
     const request = await axios.get(apiurl)
     const result = request.data
-
+    return result
 }
 export  { getActiveJobListByCategory,getLatestJobs,getAllCategories };
 
