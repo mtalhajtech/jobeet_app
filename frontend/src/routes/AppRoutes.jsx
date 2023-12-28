@@ -1,6 +1,7 @@
 import {Routes,Route} from "react-router-dom"
 import DashboradPage from "../Pages/DashboradPage"
 import PostJob from "../Pages/PostJob";
+import JobDetailPage from "../Pages/JobDetailPage";
 
 
 const AppRoutes = () => {
@@ -13,6 +14,9 @@ const AppRoutes = () => {
                 <Route exact path='/postjob' element={<PostJob/>} >
                      
                 </Route>
+                <Route exact path='/job/show/:jobId' element={<JobDetailPage/>} >
+                     
+                     </Route>
             </Routes>
       
     );

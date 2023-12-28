@@ -34,9 +34,9 @@ const createJob = async (jobDetails) => {
   });
 };
 
-const getJob = async (categoryId, currentDate) => {
+const getJob = async (jobId, currentDate) => {
   return Job.find({
-    categoryId: categoryId,
+    _id:jobId,
     isActive: true,
     expiresAt: { $gt: currentDate },
   });

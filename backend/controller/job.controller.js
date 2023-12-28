@@ -12,6 +12,7 @@ const getJob = async (req, res,) => {
   }
 
 const getActiveJobsByCategory = async(req,res)=>{
+  
        const result = await getActiveJobByCategoryService()
        console.log(result)
        if(result.error){

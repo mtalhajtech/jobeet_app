@@ -100,7 +100,7 @@
 //   const currentDate = new Date();
 //   const expiryDate = currentDate.setDate(currentDate.getDate() + 30);
 
-//   for (let i = 0; i < 20; i++) {
+//   for (let i = 0; i < 40; i++) {
 //     const company = generateRandomElement(companies);
 //     const jobData = {
 //       type: generateRandomElement(jobTypes),
@@ -122,70 +122,6 @@
 //   }
 
 //   console.log('Medical Jobs created successfully');
-// }
-
-// generateAndSaveJobs()
-//   .then(() => mongoose.disconnect())
-//   .catch(err => console.error(err));
-// import mongoose from 'mongoose';
-// import job from '../models/job.js'; // Replace with the path to your Mongoose job model
-
-// mongoose.connect('mongodb://localhost:27017/jobeet', { useNewUrlParser: true, useUnifiedTopology: true });
-// const ObjectId = mongoose.Types.ObjectId;
-
-// function generateRandomElement(array) {
-//   return array[Math.floor(Math.random() * array.length)];
-// }
-
-// function generateEmail(company) {
-//   const emailDomains = ['@business.com', '@corporate.com', '@enterprise.com'];
-//   const emailDomain = generateRandomElement(emailDomains);
-//   return `careers@${company.toLowerCase().replace(/\s+/g, '')}${emailDomain}`;
-// }
-
-// async function createJobRecord(jobData) {
-//   const Job = new job(jobData);
-//   await Job.save();
-// }
-
-// async function generateAndSaveJobs() {
-//   const jobTypes = ['Full Time', 'Part Time', 'Contract'];
-//   const companies = ['GlobalBiz Solutions', 'EconoFinance', 'MarketTrendz', 'CorporatePulse', 'Strategic Ventures'];
-//   const positions = ['Business Analyst', 'Marketing Manager', 'Sales Representative', 'Financial Advisor', 'HR Manager'];
-//   const locations = ['New York, NY', 'San Francisco, CA', 'London, UK', 'Berlin, Germany', 'Toronto, Canada'];
-//   const descriptions = [
-//     'Analyzing business trends and advising on strategy.',
-//     'Leading and executing marketing initiatives.',
-//     'Driving sales and managing client relationships.',
-//     'Providing financial planning and investment advice.',
-//     'Managing HR operations and talent acquisition.'
-//   ];
-
-//   const currentDate = new Date();
-//   const expiryDate = currentDate.setDate(currentDate.getDate() + 30);
-
-//   for (let i = 0; i < 20; i++) {
-//     const company = generateRandomElement(companies);
-//     const jobData = {
-//       type: generateRandomElement(jobTypes),
-//       company: company,
-//       url: `https://www.${company.toLowerCase().replace(/\s+/g, '')}.com`,
-//       position: generateRandomElement(positions),
-//       location: generateRandomElement(locations),
-//       description: generateRandomElement(descriptions),
-//       howToApply: `Email your resume to contact@${company.toLowerCase().replace(/\s+/g, '')}.com`,
-//       token: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-//       isPublic: Math.random() < 0.5,
-//       isActive: true,
-//       expiresAt: expiryDate,
-//       categoryId: new ObjectId("658ba864a0a13c00338b344f"), // Replace with actual ObjectId
-//       email: generateEmail(company)
-//     };
-//     console.log(jobData);
-//     await createJobRecord(jobData);
-//   }
-
-//   console.log('Business Jobs created successfully');
 // }
 
 // generateAndSaveJobs()

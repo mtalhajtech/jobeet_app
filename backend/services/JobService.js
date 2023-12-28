@@ -62,9 +62,9 @@ const createJobService = async (jobData) => {
 };
 const getJobService = async (req) => {
   const currentDate = Date.now().toLocaleString;
-  const categoryId = req.params.categoryId;
+  const JobId = req.params.jobId;
   try {
-    const jobs = await getJob(categoryId, currentDate);
+    const jobs = await getJob(JobId, currentDate);
     if (jobs.length === 0) {
       return {
         error: true,

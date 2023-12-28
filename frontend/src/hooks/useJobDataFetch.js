@@ -10,7 +10,7 @@ function useJobDataFetch() {
   
   const getJobList = async () => {
     try {
-        debugger;
+       
         const [jobdata, categoryData] = await Promise.all([getLatestJobs(),
             getAllCategories()]
             

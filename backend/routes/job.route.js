@@ -7,7 +7,7 @@ import {
 import upload from "../middlewares/imageuploader.js";
 const router = express.Router();
 
-router.get("/active-by-category",getActiveJobsByCategory)
+router.get("/category/:categoryid",getActiveJobsByCategory)
 router.get('/latest-active-jobs',getLatestJobs)
 router.get("/:categoryId", getJob);
 router.post("/post", upload.single("logo"), createJob);
