@@ -109,7 +109,7 @@ const getPaginatedJobByCategoryService = async (page, categoryId, limit) => {
       };
     }
 
-     data.jobsByCategory = jobsByCategory
+     data.jobs = jobsByCategory
      data.totaljobs = totaljobs
     
     return { error: false, statusCode: 200, data: data };
