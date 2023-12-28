@@ -41,38 +41,13 @@ const getJob = async (jobId, currentDate) => {
     expiresAt: { $gt: currentDate },
   });
 }
-  const getActiveJobByCategory = async (currentDate) => {
-    console.log(currentDate)
-    return category.aggregate([
-      {
-        $lookup: {
-          from: "jobs",
-          localField: "_id",
-          foreignField: "categoryId",
-          as: "jobs",
-        },
-      },
-      {
-        $project: {
-          name: 1,
-          description: 1,
-          jobs: {
-            $filter: {
-              input: "$jobs",
-              as: "job",
-              cond: { $lt: [ currentDate , "$$job.expiresAt"] },
-            },
-          },
-        },
-
-      },
-      { $sort: { createdAt: 1, } },
-      {$limit:10},
-    ]);
-  };
+  // const getActiveJobByCategory = async (page,categoryId,limit,currentDate) => {
+   
+    
+  // };
   const getLatestJobs = ()=>{
     const currentDate = new Date();
       return Job.find({$exp:{$lt:[currentDate,'$expiresAt']}}).sort({createdAt:-1}).limit(10).exec()
   }
 
-export { createJob, getJob, getActiveJobByCategory,getLatestJobs };
+export { createJob, getJob, getLatestJobs };

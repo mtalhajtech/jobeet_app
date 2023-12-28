@@ -1,5 +1,5 @@
 import Job from "../models/job.js";
-import { createJobService,getJobService,getActiveJobByCategoryService,getLatestJobsService } from "../services/jobService.js";
+import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService } from "../services/jobService.js";
 const currentDate = new Date();
 
 const getJob = async (req, res,) => {
@@ -11,9 +11,11 @@ const getJob = async (req, res,) => {
    else {res.status(result.statusCode).json(result.data)} 
   }
 
-const getActiveJobsByCategory = async(req,res)=>{
-  
-       const result = await getActiveJobByCategoryService()
+const getPaginatedJobsByCategory = async(req,res)=>{
+       const categoryId = req.params.categoryId
+       const page = parseInt(req.query.page)|| 1
+       const limit = parseInt(req.query.limit)|| 10 
+       const result = await getPaginatedJobByCategoryService(page,categoryId,limit)
        console.log(result)
        if(result.error){
         return res.status(result.statusCode).json({message:result.error})
@@ -41,4 +43,4 @@ const createJob = async (req, res) => {
  }
  else return res.status(result.statusCode).json(result.data)
 };
-export { getJob, createJob, getActiveJobsByCategory,getLatestJobs };
+export { getJob, createJob, getPaginatedJobsByCategory,getLatestJobs };

@@ -1,11 +1,10 @@
 import {
   createJob,
   getJob,
-  getActiveJobByCategory,
   getLatestJobs,
 } from "../repositories/JobRepository.js";
 import { v4 as uuidv4 } from "uuid";
-
+import Job from "../models/job.js";
 const createJobService = async (jobData) => {
   let response = {};
   console.log(jobData);
@@ -68,7 +67,7 @@ const getJobService = async (req) => {
     if (jobs.length === 0) {
       return {
         error: true,
-        statusCode: 404,
+        statusCode: 401,
         message: " Error Getting Job " + error.message,
       };
     }
@@ -82,24 +81,38 @@ const getJobService = async (req) => {
     };
   }
 };
-const getActiveJobByCategoryService = async (res) => {
+const getPaginatedJobByCategoryService = async (page, categoryId, limit) => {
+  let data = {}
   const currentDate = new Date();
   try {
-    //  const {page} = req.query
-    //  const {categoryId} =  req.params
-    const jobsByCategory = await getActiveJobByCategory(currentDate);
+    const skip = (page - 1) * limit;
+    const jobsByCategory = await Job.find({
+      categoryId: categoryId,
+      expiresAt: { $gt: currentDate },
+      isActive: true,
+    }).skip(skip)
+      .limit(limit)
+      .exec();
+      
+    const totaljobs = await Job.countDocuments({
+      categoryId: categoryId,
+      expiresAt: { $gt: currentDate },
+      isActive: true,
+    });
 
-    if (jobsByCategory.length === 0)
-    {
+    if (jobsByCategory.length === 0) {
       return {
-        error: true,
-        statusCode: 404,
-        message: " Error : " + error.message,
+        error: false,
+        statusCode: 200,
+        message: "Jobs for this category not found",
+        data: null,
       };
     }
 
-    // res.status(200).json({error:false,statusCode: 200,data:jobsByCategory})
-    return { error: false, statusCode: 200, data: jobsByCategory };
+     data.jobsByCategory = jobsByCategory
+     data.totaljobs = totaljobs
+    
+    return { error: false, statusCode: 200, data: data };
   } catch (error) {
     return {
       error: true,
@@ -134,6 +147,6 @@ const getLatestJobsService = async (res) => {
 export {
   createJobService,
   getJobService,
-  getActiveJobByCategoryService,
+  getPaginatedJobByCategoryService,
   getLatestJobsService,
 };
