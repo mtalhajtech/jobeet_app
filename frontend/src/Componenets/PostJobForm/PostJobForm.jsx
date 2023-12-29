@@ -61,7 +61,8 @@ function PostJobForm() {
           }
         );
         setShowSuccess(true);
-
+        setForm({})
+        event.target.reset()  
         console.log(response.data);
         //handel success
       } catch (error) {
@@ -73,12 +74,15 @@ function PostJobForm() {
 
   return (
     <>
+      <div className="">
+
+      </div>
       <Row className="mt-3 mb-3">
         <h3>Post a Job</h3>
       </Row>
       {(showSuccess && (
         <Alert variant="success" onClick={handleShowSuccess} dismissible>
-          Job posted successfully. Click here to go to the dashboard.
+          Job posted successfully.Keep this Token for editing the Job ${}
         </Alert>
       )) ||
         (apiError.error && (

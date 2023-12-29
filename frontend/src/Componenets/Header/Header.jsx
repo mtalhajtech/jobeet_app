@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <Navbar expand="lg" className="bg-body-black textwhite py-3">
       <Container>
-        <a href="/home" className="navbar-brand">
+        <a href="/" className="navbar-brand">
           Jobeet
         </a>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

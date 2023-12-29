@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { getPaginatedJobsByCategory } from '../services/JobsData';
 import JobTable from '../Componenets/JobTable/jobTable';
 import { Container } from 'react-bootstrap';
+import Header from '../Componenets/Header/Header';
 function JobListByCategory() {
    const location = useLocation()
    const category = location.state.category
@@ -42,7 +43,8 @@ function JobListByCategory() {
   
     return ( 
      <>
-     <Container>
+ <Container>
+    <Header/>
      <h1>{category.name} Jobs</h1>   
      <JobTable jobs={jobs}></JobTable>
 
