@@ -17,7 +17,7 @@ const getAllCategories = async () =>{
     return result
 }
 const getPaginatedJobsByCategory = async (page,limit,categoryId) =>{
-  const apiUrl = `${constants.FRONTEND_BASE_URL}job/category/:${categoryId}?page=${page}&limit=${limit}`
+  const apiUrl = `${constants.FRONTEND_BASE_URL}job/category/${categoryId}?page=${page}&limit=${limit}`
   const request = await axios.get(apiUrl)
   const result = request.data
   return result
