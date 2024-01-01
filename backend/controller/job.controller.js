@@ -1,6 +1,8 @@
 import Job from "../models/job.js";
-import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService } from "../services/jobService.js";
+import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService,editJobService,deleteJobService } from "../services/jobService.js";
 const currentDate = new Date();
+
+
 
 const getJob = async (req, res,) => {
 
@@ -10,6 +12,8 @@ const getJob = async (req, res,) => {
    }
    else {res.status(result.statusCode).json(result.data)} 
   }
+
+
 
 const getPaginatedJobsByCategory = async(req,res)=>{
        const categoryId = req.params.categoryId
@@ -22,6 +26,9 @@ const getPaginatedJobsByCategory = async(req,res)=>{
        }
        else {res.status(result.statusCode).json(result.data)} 
 }
+
+
+
 const getLatestJobs = async(req,res)=>{
   const result = await getLatestJobsService()
   console.log(result)
@@ -30,6 +37,9 @@ const getLatestJobs = async(req,res)=>{
   }
   else {res.status(result.statusCode).json(result.data)} 
 }
+
+
+
 const createJob = async (req, res) => {
 
  let jobData =  req.body
@@ -43,4 +53,27 @@ const createJob = async (req, res) => {
  }
  else return res.status(result.statusCode).json(result.data)
 };
-export { getJob, createJob, getPaginatedJobsByCategory,getLatestJobs };
+
+
+const editJob = async (req,res)=>{
+    const jobId = req.params.jobId
+    let jobData 
+    jobData = req.body
+    jobData.logo = req.file?.filename
+    const result = await editJobService(jobData,jobId)
+    if(result.error){
+      return res.status(result.statusCode).json({message:result.message})
+    }
+    else return res.status(result.statusCode).json({message:result.message})
+}
+
+const deleteJob = async (req,res )=>{
+   const jobId = req.params.jobId
+   const result = deleteJob(jobId)
+   if(result.error){
+    return res.status(result.statusCode).json({message:result.message})
+   }
+   else return res.status(result.statusCode).json({message:result.message})
+}
+
+export { getJob, createJob, getPaginatedJobsByCategory,getLatestJobs,editJob,};

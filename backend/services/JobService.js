@@ -1,10 +1,12 @@
 import {
   createJob,
   getJob,
-  getLatestJobs,
+  getLatestJobs,editJob,deleteJob
 } from "../repositories/JobRepository.js";
 import { v4 as uuidv4 } from "uuid";
 import Job from "../models/job.js";
+
+
 const createJobService = async (jobData) => {
   let response = {};
   console.log(jobData);
@@ -37,7 +39,7 @@ const createJobService = async (jobData) => {
       message: "Please send complete information for job creation",
     };
   }
-
+  
   const currentDate = new Date();
   const expiresAt = currentDate.setDate(currentDate.getDate() + 30);
   const jobtoken = uuidv4();
@@ -47,8 +49,7 @@ const createJobService = async (jobData) => {
   try {
     const createdJob = await createJob(jobDetails);
     response.token = createdJob.token;
-    response["token"] = createdJob.token;
-    response["url"] =
+    response.url =
       `${process.env.FRONTEND_BASE_URL}/edit-job/${createdJob._id}`;
     return { error: false, statusCode: 200, data: response };
   } catch (error) {
@@ -59,6 +60,39 @@ const createJobService = async (jobData) => {
     };
   }
 };
+
+
+const editJobService = async (jobData,jobId)=>{
+  
+  try {
+    const editedJob = await editJob(jobData,jobId);
+    return { error: false, statusCode: 200, data: editedJob,message: "Job is Updated Successfully" };
+
+  } catch (error) {
+    return {
+      error: true,
+      statusCode: 500,
+      message: "Error in Updating Job: " + error.message,
+    };
+  }
+
+
+}
+
+const deleteJobService = async (jobId)=>{
+  try {
+    const deletedJob = await deleteJob(jobId)
+    return { error: false, statusCode: 500, data: deletedJob,message: "Job is deleted Successfully" }
+  } catch (error) {
+    return{
+      error: true,
+      statusCode: 500,
+      message: "Error in Deleting Job: " + error.message,
+    };
+  }
+}
+
+
 const getJobService = async (req) => {
   const currentDate = Date.now().toLocaleString;
   const JobId = req.params.jobId;
@@ -81,6 +115,9 @@ const getJobService = async (req) => {
     };
   }
 };
+
+
+
 const getPaginatedJobByCategoryService = async (page, categoryId, limit) => {
   let data = {}
   const currentDate = new Date();
@@ -121,6 +158,9 @@ const getPaginatedJobByCategoryService = async (page, categoryId, limit) => {
     };
   }
 };
+
+
+
 const getLatestJobsService = async (res) => {
   try {
     const latestJobs = await getLatestJobs();
@@ -149,4 +189,6 @@ export {
   getJobService,
   getPaginatedJobByCategoryService,
   getLatestJobsService,
+  editJobService,
+  deleteJobService
 };

@@ -45,6 +45,11 @@ const JobDetailPage = () => {
               <p>{job.howToApply}</p>
             </section>
           </Row>
+          <Row>
+          <Button Onclick={()=>{handleEdit}}>
+            Edit Job
+          </Button>
+          </Row>
         </Row>
       </Container>
     </>

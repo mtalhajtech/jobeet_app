@@ -11,7 +11,7 @@ function PostJobForm() {
   const [errors, setErrors] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [apiError, setApiError] = useState({ error: false, message: "" });
-
+  // const [apiResponse,setResponse ]
   const setField = (field, value) => {
     setForm({ ...form, [field]: value });
 
@@ -82,7 +82,7 @@ function PostJobForm() {
       </Row>
       {(showSuccess && (
         <Alert variant="success" onClick={handleShowSuccess} dismissible>
-          Job posted successfully.Keep this Token for editing the Job ${}
+          Job posted successfully.Keep this Token for editing the Job.
         </Alert>
       )) ||
         (apiError.error && (

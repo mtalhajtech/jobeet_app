@@ -16,7 +16,8 @@ const createJob = async (jobDetails) => {
     email,
     categoryId,
   } = jobDetails;
-  console.log(token);
+  
+
   return Job.create({
     type,
     company,
@@ -34,6 +35,43 @@ const createJob = async (jobDetails) => {
   });
 };
 
+const editJob = async (jobDetails,jobId) => {
+  const {
+    type,
+    company,
+    url,
+    position,
+    location,
+    description,
+    howToApply,
+    isPublic,
+    logo,
+    email,
+    categoryId,
+  } = jobDetails;
+
+
+  console.log(token);
+  return Job.updateOne({_id:jobId},{
+    type,
+    company,
+    url,
+    email,
+    position,
+    location,
+    description,
+    howToApply,
+    isPublic,
+    categoryId,
+    logo,
+  });
+};
+
+const deleteJob = async(jobId)=>{
+  return Job.deleteOne({_id:jobId})
+  
+}
+
 const getJob = async (jobId, currentDate) => {
   return Job.find({
     _id:jobId,
@@ -50,4 +88,4 @@ const getJob = async (jobId, currentDate) => {
       return Job.find({$exp:{$lt:[currentDate,'$expiresAt']}}).sort({createdAt:-1}).limit(10).exec()
   }
 
-export { createJob, getJob, getLatestJobs };
+export { createJob, getJob, getLatestJobs, editJob, deleteJob };
