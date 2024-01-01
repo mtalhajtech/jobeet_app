@@ -1,5 +1,5 @@
 import Job from "../models/job.js";
-import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService,editJobService,deleteJobService } from "../services/jobService.js";
+import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService,editJobService,deleteJobService,authorizeTokenService } from "../services/jobService.js";
 const currentDate = new Date();
 
 
@@ -69,11 +69,20 @@ const editJob = async (req,res)=>{
 
 const deleteJob = async (req,res )=>{
    const jobId = req.params.jobId
-   const result = deleteJob(jobId)
+   const result = deleteJobService(jobId)
    if(result.error){
     return res.status(result.statusCode).json({message:result.message})
    }
    else return res.status(result.statusCode).json({message:result.message})
 }
-
-export { getJob, createJob, getPaginatedJobsByCategory,getLatestJobs,editJob,};
+const authorizeToken = async (req,res)=>{
+  const {token, jobId} = req.body
+  const result = await authorizeTokenService(token,jobId)
+  
+  if(result.error){
+   
+   return res.status(result.statusCode).json({message:result.message})
+  }
+  else return res.status(result.statusCode).json({message:result.message})
+}
+export { getJob, createJob, getPaginatedJobsByCategory,getLatestJobs,editJob,authorizeToken,deleteJob};

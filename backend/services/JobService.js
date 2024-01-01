@@ -106,7 +106,7 @@ const getJobService = async (req) => {
       };
     }
 
-    res.status(200).json({ error: false, statusCode: 200, data: jobs });
+   return  { error: false, statusCode: 200, data: jobs };
   } catch (error) {
     return {
       error: true,
@@ -116,7 +116,35 @@ const getJobService = async (req) => {
   }
 };
 
+const authorizeTokenService = async (token,jobId)=>{
+   console.log(token)
+  try {
+  
+    const jobToken = await Job.find({ _id: jobId }, {token:1})
+    if(jobToken[0].token===token){
+     
+      return {
+        error: false,
+        statusCode: 200,
+        message:"User is Authorized successfully to Edit Job",
+      };
+    }
+    else {
+      return {
+        error: true,
+        statusCode: 401,
+        message:"User is UnAuthorized to Edit the Job",
+      };
+    }     
 
+  } catch (error) {
+    return {
+      error: true,
+      statusCode: 500,
+      message:"Internal Server Error",
+    };
+  }
+}
 
 const getPaginatedJobByCategoryService = async (page, categoryId, limit) => {
   let data = {}
@@ -190,5 +218,6 @@ export {
   getPaginatedJobByCategoryService,
   getLatestJobsService,
   editJobService,
-  deleteJobService
+  deleteJobService,
+  authorizeTokenService
 };

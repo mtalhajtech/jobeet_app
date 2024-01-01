@@ -83,6 +83,8 @@ const getJob = async (jobId, currentDate) => {
    
     
   // };
+  
+
   const getLatestJobs = ()=>{
     const currentDate = new Date();
       return Job.find({$exp:{$lt:[currentDate,'$expiresAt']}}).sort({createdAt:-1}).limit(10).exec()

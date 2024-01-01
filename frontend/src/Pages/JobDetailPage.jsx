@@ -1,13 +1,20 @@
 import React from "react";
 import SearchBar from "../Componenets/SearchBar/SearchBar";
 import { useLocation } from "react-router-dom";
-import { Row, Col, Image } from "react-bootstrap";
+import { Row, Col,Button} from "react-bootstrap";
 import Header from "../Componenets/Header/Header";
 import { Container } from "react-bootstrap";
 const JobDetailPage = () => {
   const location = useLocation();
   const job = location.state.job;
   console.log(job);
+   
+    
+  const handleEdit=()=>{
+    
+  }
+
+
   return (
     <>
       <Header />
@@ -46,7 +53,7 @@ const JobDetailPage = () => {
             </section>
           </Row>
           <Row>
-          <Button Onclick={()=>{handleEdit}}>
+          <Button Onclick={()=>{handleEdit}} style={{width:"fit-content"}}>
             Edit Job
           </Button>
           </Row>
