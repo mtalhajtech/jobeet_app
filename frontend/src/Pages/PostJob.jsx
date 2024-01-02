@@ -5,7 +5,7 @@ import Footer from '../Componenets/Footer/Footer';
 function PostJob(props) {
     return (
         <div>
-             <Header/>
+          <Header/>
           <PostJobForm/>
           <Footer/>
         </div>

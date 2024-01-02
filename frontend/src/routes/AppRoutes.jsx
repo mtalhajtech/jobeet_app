@@ -3,7 +3,7 @@ import DashboradPage from "../Pages/DashboradPage"
 import PostJob from "../Pages/PostJob";
 import JobDetailPage from "../Pages/JobDetailPage";
 import JobListByCategory from "../Pages/JobListByCategory";
-
+import EditJobPage from "../Pages/EditJobPage";
 const AppRoutes = () => {
     return (
        
@@ -19,7 +19,10 @@ const AppRoutes = () => {
                      </Route>
                 <Route exact path='/job/category/:categoryId' element={<JobListByCategory/>} >
                      
-                 </Route>     
+                 </Route> 
+                 <Route exact path='/job/edit/:jobId' element={<EditJobPage/>} >
+                     
+                 </Route>        
             </Routes>
       
     );

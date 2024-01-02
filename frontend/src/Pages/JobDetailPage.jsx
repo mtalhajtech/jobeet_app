@@ -4,17 +4,11 @@ import { useLocation } from "react-router-dom";
 import { Row, Col,Button} from "react-bootstrap";
 import Header from "../Componenets/Header/Header";
 import { Container } from "react-bootstrap";
+import {Link} from 'react-router-dom'
 const JobDetailPage = () => {
   const location = useLocation();
   const job = location.state.job;
-  console.log(job);
-   
-    
-  const handleEdit=()=>{
-    
-  }
-
-
+  
   return (
     <>
       <Header />
@@ -53,9 +47,12 @@ const JobDetailPage = () => {
             </section>
           </Row>
           <Row>
-          <Button Onclick={()=>{handleEdit}} style={{width:"fit-content"}}>
+            <Link to={`/job/edit/${job._id}`}>
+            <Button  style={{width:"fit-content"}}>
             Edit Job
-          </Button>
+            </Button>
+            </Link>
+         
           </Row>
         </Row>
       </Container>

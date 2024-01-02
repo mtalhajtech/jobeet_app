@@ -94,20 +94,23 @@ const deleteJobService = async (jobId)=>{
 
 
 const getJobService = async (req) => {
-  const currentDate = Date.now().toLocaleString;
+  const currentDate = new Date()
   const JobId = req.params.jobId;
+ 
   try {
     const jobs = await getJob(JobId, currentDate);
+    console.log(jobs)
     if (jobs.length === 0) {
       return {
-        error: true,
-        statusCode: 401,
-        message: " Error Getting Job " + error.message,
+        error: false,
+        statusCode: 200,
+        message: "No Job Found",data:[]
       };
     }
 
    return  { error: false, statusCode: 200, data: jobs };
   } catch (error) {
+    console.log(error.message)
     return {
       error: true,
       statusCode: 500,

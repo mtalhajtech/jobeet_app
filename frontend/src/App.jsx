@@ -4,6 +4,8 @@ import viteLogo from '/vite.svg'
 // import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import AppRoutes from './routes/AppRoutes'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   
@@ -11,7 +13,7 @@ function App() {
     <>
       
      <AppRoutes/>
-   
+     <ToastContainer/>
     
     </>
   )

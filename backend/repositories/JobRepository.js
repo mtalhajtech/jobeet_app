@@ -51,7 +51,7 @@ const editJob = async (jobDetails,jobId) => {
   } = jobDetails;
 
 
-  console.log(token);
+ 
   return Job.updateOne({_id:jobId},{
     type,
     company,
@@ -77,7 +77,7 @@ const getJob = async (jobId, currentDate) => {
     _id:jobId,
     isActive: true,
     expiresAt: { $gt: currentDate },
-  });
+  }).exec();
 }
   // const getActiveJobByCategory = async (page,categoryId,limit,currentDate) => {
    

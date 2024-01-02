@@ -43,7 +43,7 @@ function JobListByCategory() {
   
     return ( 
      <>
- <Container>
+   <Container>
     <Header/>
      <h1>{category.name} Jobs</h1>   
      <JobTable jobs={jobs}></JobTable>
