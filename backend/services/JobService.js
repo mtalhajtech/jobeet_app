@@ -82,7 +82,7 @@ const editJobService = async (jobData,jobId)=>{
 const deleteJobService = async (jobId)=>{
   try {
     const deletedJob = await deleteJob(jobId)
-    return { error: false, statusCode: 500, data: deletedJob,message: "Job is deleted Successfully" }
+    return { error: false, statusCode: 200, data: deletedJob,message: "Job is deleted Successfully" }
   } catch (error) {
     return{
       error: true,
@@ -99,7 +99,7 @@ const getJobService = async (req) => {
  
   try {
     const jobs = await getJob(JobId, currentDate);
-    console.log(jobs)
+   
     if (jobs.length === 0) {
       return {
         error: false,

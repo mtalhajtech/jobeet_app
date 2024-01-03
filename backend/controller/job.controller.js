@@ -1,7 +1,7 @@
 import Job from "../models/job.js";
 import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService,editJobService,deleteJobService,authorizeTokenService } from "../services/jobService.js";
 const currentDate = new Date();
-
+import getBaseUrl from "../helpers/baseUrl.js";
 
 
 const getJob = async (req, res,) => {
@@ -42,8 +42,9 @@ const getLatestJobs = async(req,res)=>{
 
 const createJob = async (req, res) => {
 
- let jobData =  req.body
-     jobData.logo = req.file?.filename;
+    let jobData =  req.body
+    const filePath =getBaseUrl(req)+req.file?.path 
+     jobData.logo = filePath.replace(/\\/g, '/');
      
  const result = await createJobService(jobData)
  
@@ -56,11 +57,14 @@ const createJob = async (req, res) => {
 
 
 const editJob = async (req,res)=>{
-    const jobId = req.params.jobId
     let jobData 
+    const jobId = req.params.jobId
+   
     jobData = req.body
-    jobData.logo = req.file?.filename
+    const filePath =getBaseUrl(req)+req.file?.path 
+    jobData.logo = filePath.replace(/\\/g, '/');
     const result = await editJobService(jobData,jobId)
+    console.log('in edit job')
     if(result.error){
       return res.status(result.statusCode).json({message:result.message})
     }
@@ -69,7 +73,7 @@ const editJob = async (req,res)=>{
 
 const deleteJob = async (req,res )=>{
    const jobId = req.params.jobId
-   const result = deleteJobService(jobId)
+   const result = await deleteJobService(jobId)
    if(result.error){
     return res.status(result.statusCode).json({message:result.message})
    }

@@ -12,6 +12,8 @@ connectDb();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json({ limit: "50mb" }));
+app.use('/media', express.static('media'));
+
 app.use("/job", jobRoutes);
 app.use("/category", categoryRoutes);
 

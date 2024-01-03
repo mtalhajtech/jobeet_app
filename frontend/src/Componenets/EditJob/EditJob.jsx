@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Form, Col, Container, Button } from "react-bootstrap";
+import { Row, Form, Col, Container, Button, Image } from "react-bootstrap";
 import FormContainer from "../FormContainer/FormContainer";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -8,10 +8,8 @@ import { categories } from "../../../dummyData";
 import axios from "axios";
 import {toast} from 'react-toastify'
 function EditJobForm({jobId}) {
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({isPublic:false});
   const [errors, setErrors] = useState({});
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [apiError, setApiError] = useState({ error: false, message: "" });
   // const [apiResponse,setResponse ]
 
  
@@ -21,11 +19,8 @@ function EditJobForm({jobId}) {
       try {
         const response = await axios.get(`http://localhost:3000/job/${jobId}`)
          console.log(response.data)
-     
          setForm(response.data[0])
-         toast.success(`Data is fetched Successfully`, {
-            position: toast.POSITION.TOP_CENTER
-          })
+        
       } catch (error) {
         console.log(error)
       }
@@ -41,16 +36,9 @@ function EditJobForm({jobId}) {
     
   const setField = (field, value) => {
     setForm({ ...form, [field]: value });
-
-    console.log(form);
-
     if (!!errors[field]) {
       setErrors({ ...errors, [field]: null });
     }
-  };
-  const handleShowSuccess = (event) => {
-    event.preventDefault();
-    console.log("success hit");
   };
 
   const validateForm = () => {
@@ -87,14 +75,14 @@ function EditJobForm({jobId}) {
             },
           }
         );
-        toast
-      
-        setForm({})
+        
+        toast.success('Form Submitted Successfully',{position:toast.POSITION.TOP_LEFT})
         event.target.reset()  
-        console.log(response.data);
+        setForm({description:'',howToApply:''})
         //handel success
       } catch (error) {
-        setApiError({ error: true, message: error.response?.message });
+        toast.failed('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
+     
         //if there is an error
       }
     }
@@ -102,32 +90,20 @@ function EditJobForm({jobId}) {
 
   return (
     <>
-    
-      
-      {(showSuccess && (
-        <Alert variant="success" onClick={handleShowSuccess} dismissible>
-          Job posted successfully.Keep this Token for editing the Job.
-        </Alert>
-      )) ||
-        (apiError.error && (
-          <Alert variant="danger" dismissible>
-            Error in posting the job
-          </Alert>
-        ))}
       <FormContainer>
       <Row className="mt-3 mb-3 ">
         <h3>Edit Job</h3>
       </Row>
         <Form onSubmit={handleUpdate}>
           <Form.Group>
-            <Form.Label>Category</Form.Label>
+            <Form.Label>Category </Form.Label>
             <Form.Select
-              value={form.category}
+              value={form.categoryId}
               required
               onChange={(e) => {
                 setField("categoryId", e.target.value);
               }}
-           
+            
             >
               <option>Select Category</option>
               {categories.map((element, index) => (
@@ -161,6 +137,7 @@ function EditJobForm({jobId}) {
                 name="group1"
                 type={"radio"}
                 required
+                checked={form.type=='Full Time'}
                 id={`inline-radio-1`}
                 onChange={(e) => {
                   setField("type", e.target.value);
@@ -173,6 +150,7 @@ function EditJobForm({jobId}) {
                 name="group1"
                 type={"radio"}
                 id={`inline-radio-2`}
+                checked={form.type=='Part Time'}
                 onChange={(e) => {
                   setField("type", e.target.value);
                 }}
@@ -184,6 +162,7 @@ function EditJobForm({jobId}) {
                 name="group1"
                 type={"radio"}
                 id={`inline-radio-3`}
+                checked={form.type=='Freelance'}
                 onChange={(e) => {
                   setField("type", e.target.value);
                 }}
@@ -194,7 +173,7 @@ function EditJobForm({jobId}) {
             )}
           </Form.Group>
           <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Logo</Form.Label>
+            <Form.Label>Logo {form.logo}</Form.Label>
             <Form.Control
               type="file"
               name="logo"
@@ -203,6 +182,7 @@ function EditJobForm({jobId}) {
                 setField("logo", e.target.files);
               }}
             />
+            <Image src={form.logo} style={{width:'300px', height:'200px'}}></Image>
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>URL</Form.Label>
@@ -241,7 +221,7 @@ function EditJobForm({jobId}) {
               name="group1"
               value="true"
               type={"checkbox"}
-              id={"inline-radio-1"}
+              checked={form.isPublic===true}
               onChange={(e) => {
                 setField("isPublic", e.target.value);
               }}

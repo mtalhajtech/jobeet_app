@@ -1,6 +1,9 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import ShortUniqueId from 'short-unique-id';
+const uid = new ShortUniqueId();
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -13,9 +16,9 @@ const storage = multer.diskStorage({
     }
   },
   filename: function (req, file, cb) {
-
+    
     const ext = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length)
-    cb(null, Date.now() + ext);
+    cb(null, uid.rnd()+'_'+Date.now() + ext);
   },
 });
 
