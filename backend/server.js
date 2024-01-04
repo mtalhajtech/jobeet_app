@@ -3,6 +3,7 @@ import connectDb from "./utils/databaseConnecter.js";
 import "dotenv/config";
 import jobRoutes from "./routes/job.route.js";
 import categoryRoutes from "./routes/category.route.js";
+import authRoutes  from "./routes/auth.route.js"
 import morgan from "morgan";
 import cors from "cors";
 const app = express();
@@ -13,7 +14,7 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json({ limit: "50mb" }));
 app.use('/media', express.static('media'));
-
+app.use('/auth',authRoutes)
 app.use("/job", jobRoutes);
 app.use("/category", categoryRoutes);
 
