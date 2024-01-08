@@ -74,9 +74,7 @@ function PostJobForm() {
 
   return (
     <>
-      <div className="">
-
-      </div>
+     
       <Row className="mt-3 mb-3">
         <h3>Post a Job</h3>
       </Row>

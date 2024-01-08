@@ -77,7 +77,8 @@ function EditJobForm({jobId}) {
         );
         
         toast.success('Form Submitted Successfully',{position:toast.POSITION.TOP_LEFT})
-        event.target.reset()  
+        event.target.reset()
+          
         setForm({description:'',howToApply:''})
         //handel success
       } catch (error) {

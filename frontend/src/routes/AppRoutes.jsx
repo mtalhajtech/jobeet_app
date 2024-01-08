@@ -4,11 +4,19 @@ import PostJob from "../Pages/PostJob";
 import JobDetailPage from "../Pages/JobDetailPage";
 import JobListByCategory from "../Pages/JobListByCategory";
 import EditJobPage from "../Pages/EditJobPage";
+import SignIn from "../Componenets/SignIn/SignIn";
+import SignUpPage from "../Pages/SignUpPage";
 const AppRoutes = () => {
     return (
        
             <Routes>
-                <Route exact path='/' element={<DashboradPage/>} >
+                <Route exact path='/' element={<SignIn/>} >
+                     
+                </Route>
+                <Route exact path='/signUp' element={<SignUpPage/>}>
+
+                </Route>
+                <Route exact path='/dashboard' element={<DashboradPage/>} >
                      
                 </Route>
                 <Route exact path='/postjob' element={<PostJob/>} >
@@ -22,7 +30,8 @@ const AppRoutes = () => {
                  </Route> 
                  <Route exact path='/job/edit/:jobId' element={<EditJobPage/>} >
                      
-                 </Route>        
+                 </Route>
+
             </Routes>
       
     );
