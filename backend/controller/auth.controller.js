@@ -35,14 +35,15 @@ try {
 
 const login = async(req,res)=>{
   const {email,password} = req.body
-  
+  console.log(email)
    const user = await User.find({email:email})
-
+   
    if(user.length==0 || user==null){
     return res.status(403).json({message:'User account not found'})
    }
  
    const hashedPassword = user[0].password
+   
    const isPasswordValid = await bcrypt.compare(password,hashedPassword)
    if(!isPasswordValid){
         return res.status(401).json({message:'Invalid Credentials'})

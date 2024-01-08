@@ -27,8 +27,7 @@ const JobsList = () => {
             <Link to={`/job/category/${category?._id}`} state={{category}}>
               <h3>{category.name}</h3>
             </Link>
-            <JobTable jobs={filterjobs(category._id)}></JobTable> 
-           
+            <JobTable jobs={filterjobs(category._id)}></JobTable>           
           </Col>
         </Row>
       ))}

@@ -1,31 +1,39 @@
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import React from "react";
+import { useContext } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../AuthProvider/AuthProvider";
 function SignIn() {
-
-   const [form,SetForm]=useState({email:"",password:""})
+   const {auth,setAuth}  = useContext(AuthContext)
+   const [form,SetForm]=useState({})
    const {navigate} = useNavigate()
 
-   const handleSubmit= (e)=>{
-    e.preventdefault()
+   const handleSubmit= async (e)=>{
+    e.preventDefault()
     const formData = new FormData()
     Object.keys(form).forEach((key)=>{
         formData.append(key,form[key])
     })
+    
    try {
-   const response =  axios.post('http://localhost:3000/auth/login/',formData)
+   console.log(formData)
+   const response = await axios.post('http://localhost:3000/auth/login',formData,{
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  })
    navigate('/dashboard')
+   
    } catch (error) {
-    toast.failure(error,{position:toast.POSITION.TOP_LEFT})
+    console.log(error)
    }
     
    }
    const setField = (field,value)=>{
-    SetForm({...rest,[field]:value})
-
+    SetForm({...form,[field]:value})
+    console.log(form)
 
    }
   return (
@@ -41,15 +49,17 @@ function SignIn() {
                 placeholder="Enter Your email"
                 required
                  onChange={(e)=>setField('email',e.target.value)}
+                 value={form.email}
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="text"
+                type="password"
                 placeholder="Enter password "
                 required
                 onChange={(e)=>setField('password',e.target.value)}
+                value={form.password}
               />
             </Form.Group>
             <Form.Group>
@@ -58,7 +68,7 @@ function SignIn() {
               </Button>
             </Form.Group>
             <div>
-              No Account Already Create One by Clicking Here
+              No Account Already, Create One by Clicking Here
               <span style={{marginleft:'5px'}}>
                 <Link to={"/signUp"}>Register</Link>
               </span>
