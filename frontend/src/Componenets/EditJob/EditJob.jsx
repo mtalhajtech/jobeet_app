@@ -49,6 +49,7 @@ function EditJobForm({jobId}) {
     if (!type || type === "") newError.type = "Select any type";
 
     return newError;
+
   };
 
   const handleUpdate = async (event) => {
@@ -78,11 +79,11 @@ function EditJobForm({jobId}) {
         
         toast.success('Form Submitted Successfully',{position:toast.POSITION.TOP_LEFT})
         event.target.reset()
-          
+
         setForm({description:'',howToApply:''})
         //handel success
       } catch (error) {
-        toast.failed('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
+        toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
      
         //if there is an error
       }

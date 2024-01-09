@@ -1,11 +1,16 @@
 import React from 'react';
 import SignIn from '../Componenets/SignIn/SignIn';
-import {Container} from 'react-bootstrap'
+import Header from '../Componenets/Header/Header';
+import Footer from '../Componenets/Footer/Footer';
 function SignInPage() {
     return (
-        <Container >
+        <>
+          <Header/>
             <SignIn/>
-        </Container>
+            <Footer/>
+        </>
+           
+      
     );
 }
 

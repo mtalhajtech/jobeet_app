@@ -8,14 +8,15 @@ const expiryTime =process.env.TOKEN_LIFE
 const register = async (req,res)=>{
       
      const {userName,firstName,lastName,password,email} = req.body
+     console.log(req.body)
      if(!userName || !firstName || !lastName || !password || !email  ){
-       return res.status(403).json({message:" Please fill all mandatory fields "})
+       return res.status(400).json({message:" Please fill all mandatory fields "})
       }
 try {
     const userExists = await User.find({email:email})
     console.log(userExists)
     if(userExists.length>0){
-        return res.status(403).json({message:'User already exists'})
+        return res.status(400).json({message:'User already exists.Please use different Email'})
     }
      
     
@@ -33,13 +34,12 @@ try {
 }
 
 
-const login = async(req,res)=>{
+const login = async (req,res)=>{
   const {email,password} = req.body
-  console.log(email)
-   const user = await User.find({email:email})
+  const user = await User.find({email:email})
    
    if(user.length==0 || user==null){
-    return res.status(403).json({message:'User account not found'})
+    return res.status(400).json({message:'User account not found'})
    }
  
    const hashedPassword = user[0].password

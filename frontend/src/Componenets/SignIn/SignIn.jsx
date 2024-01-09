@@ -5,29 +5,27 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../AuthProvider/AuthProvider";
+import { toast } from "react-toastify";
 function SignIn() {
    const {auth,setAuth}  = useContext(AuthContext)
    const [form,SetForm]=useState({})
-   const {navigate} = useNavigate()
+   const navigate = useNavigate()
 
    const handleSubmit= async (e)=>{
     e.preventDefault()
-    const formData = new FormData()
-    Object.keys(form).forEach((key)=>{
-        formData.append(key,form[key])
-    })
-    
+
+   
    try {
-   console.log(formData)
-   const response = await axios.post('http://localhost:3000/auth/login',formData,{
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  })
+   
+   const response = await axios.post('http://localhost:3000/auth/login',form)
+   const accessToken = response?.data.accessToken
+   setAuth({accessToken})
+   toast.success('Logged In Successfully',{position:toast.POSITION.TOP_LEFT})
    navigate('/dashboard')
    
    } catch (error) {
-    console.log(error)
+    
+    toast.error(error.response.data.message,{position:toast.POSITION.TOP_LEFT})
    }
     
    }
