@@ -7,7 +7,7 @@ function SignInPage() {
         <>
           <Header/>
             <SignIn/>
-            <Footer/>
+       
         </>
            
       

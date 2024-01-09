@@ -4,9 +4,9 @@ import Button from "react-bootstrap/Button";
 
 const Header = () => {
   return (
-    <Navbar expand="lg" className="bg-body-black textwhite py-3">
-      <Container>
-        <a href="/" className="navbar-brand">
+    <Navbar expand="lg" className="bg-black text-white textwhite py-3">
+      <Container >
+        <a href="/" className="navbar-brand text-white">
           Jobeet
         </a>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

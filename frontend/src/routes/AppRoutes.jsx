@@ -4,13 +4,13 @@ import PostJob from "../Pages/PostJob";
 import JobDetailPage from "../Pages/JobDetailPage";
 import JobListByCategory from "../Pages/JobListByCategory";
 import EditJobPage from "../Pages/EditJobPage";
-import SignIn from "../Componenets/SignIn/SignIn";
+import SignInPage from "../Pages/SignInPage";
 import SignUpPage from "../Pages/SignUpPage";
 const AppRoutes = () => {
     return (
        
             <Routes>
-                <Route exact path='/' element={<SignIn/>} >
+                <Route exact path='/' element={<SignInPage/>} >
                      
                 </Route>
                 <Route exact path='/signUp' element={<SignUpPage/>}>

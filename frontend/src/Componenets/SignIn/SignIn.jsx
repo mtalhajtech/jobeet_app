@@ -36,7 +36,7 @@ function SignIn() {
    }
   return (
     <>
-      <Row className="justify-content-center " >
+      <Row style={{justifyContent:"center", marginTop:'50px'}} >
         <Col xs={12} md={8} lg={4}>
             <h1>Jobeet App Login</h1>
           <Form onSubmit={handleSubmit}>
