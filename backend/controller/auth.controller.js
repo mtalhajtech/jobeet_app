@@ -49,7 +49,7 @@ const login = async (req,res)=>{
         return res.status(401).json({message:'Invalid Credentials'})
    }
 
-   let tokenData = {userId:user[0]._id,userEmail:user[0].email}
+   let tokenData = {userId:user[0]._id,username:user[0].userName,userEmail:user[0].email}
     
     const accessToken = Jwt.sign(tokenData,tokenSecret,{expiresIn:expiryTime})
     return res.status(200).json({message:'User Logged in Successfully ',data :{accessToken,user}})

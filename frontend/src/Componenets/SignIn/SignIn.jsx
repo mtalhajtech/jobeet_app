@@ -6,26 +6,29 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../AuthProvider/AuthProvider";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 function SignIn() {
    const {auth,setAuth}  = useContext(AuthContext)
    const [form,SetForm]=useState({})
    const navigate = useNavigate()
-
    const handleSubmit= async (e)=>{
     e.preventDefault()
-
+    
    
    try {
    
    const response = await axios.post('http://localhost:3000/auth/login',form)
-   const accessToken = response?.data.accessToken
-   setAuth({accessToken})
+   const accessToken = response?.data.data?.accessToken
+   const decodedToken = jwtDecode(accessToken)
+
+   setAuth({user:decodedToken,isAuthenticated:true})
+   localStorage.setItem('token', accessToken);
    toast.success('Logged In Successfully',{position:toast.POSITION.TOP_LEFT})
    navigate('/dashboard')
    
    } catch (error) {
-    
-    toast.error(error.response.data.message,{position:toast.POSITION.TOP_LEFT})
+    console.log(error)
+    toast.error(error.response?.data?.message,{position:toast.POSITION.TOP_LEFT})
    }
     
    }
@@ -67,8 +70,8 @@ function SignIn() {
             </Form.Group>
             <div>
               No Account Already, Create One by Clicking Here
-              <span style={{marginleft:'5px'}}>
-                <Link to={"/signUp"}>Register</Link>
+              <span style={{marginleft:'20px'}}>
+                <Link to={"/signUp"}> Register </Link>
               </span>
             </div>
              
