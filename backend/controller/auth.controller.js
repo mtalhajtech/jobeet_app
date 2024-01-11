@@ -3,8 +3,12 @@ import Jwt from "jsonwebtoken";
 import hashPassword from "../helpers/hashpassword.js";
 import bcrypt from 'bcrypt'
 
-const tokenSecret = process.env.SECERET_TOKEN
-const expiryTime =process.env.TOKEN_LIFE
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
+const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET
+const accessTokenExpiry = process.env.ACCESS_TOKEN_LIFE
+const refreshTokenExpiry = process.env.REFRESH_TOKEN_LIFE
+
+
 const register = async (req,res)=>{
       
      const {userName,firstName,lastName,password,email} = req.body
@@ -50,11 +54,21 @@ const login = async (req,res)=>{
    }
 
    let tokenData = {userId:user[0]._id,username:user[0].userName,userEmail:user[0].email}
-    
-    const accessToken = Jwt.sign(tokenData,tokenSecret,{expiresIn:expiryTime})
+ 
+    const accessToken = Jwt.sign(tokenData,accessTokenSecret,{expiresIn:accessTokenExpiry})
+    const refreshToken = Jwt.sign({ userId: user._id }, refreshTokenSecret, { expiresIn: refreshTokenExpiry });
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true, 
+        secure: true, 
+        sameSite: 'strict', 
+        maxAge: 1 * 24 * 60 * 60 * 1000
+      });
+    console.log(accessTokenExpiry,refreshTokenExpiry,accessTokenSecret,accessTokenSecret)
     return res.status(200).json({message:'User Logged in Successfully ',data :{accessToken,user}})
 }
 
- 
+const refreshAccessToken = ()=>{
+      
+}
 
-export {register, login}
+export {register, login,refreshAccessToken}

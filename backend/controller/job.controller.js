@@ -89,4 +89,7 @@ const authorizeToken = async (req,res)=>{
   }
   else return res.status(result.statusCode).json({message:result.message})
 }
+
+
+
 export { getJob, createJob, getPaginatedJobsByCategory,getLatestJobs,editJob,authorizeToken,deleteJob};

@@ -24,7 +24,7 @@ function SignIn() {
    setAuth({user:decodedToken,isAuthenticated:true})
    localStorage.setItem('token', accessToken);
    toast.success('Logged In Successfully',{position:toast.POSITION.TOP_LEFT})
-   navigate('/dashboard')
+   navigate('/')
    
    } catch (error) {
     console.log(error)

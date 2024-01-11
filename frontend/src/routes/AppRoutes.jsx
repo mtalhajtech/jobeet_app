@@ -10,13 +10,13 @@ const AppRoutes = () => {
     return (
        
             <Routes>
-                <Route exact path='/' element={<SignInPage/>} >
+                <Route exact path='/' element={<DashboradPage/>} >
                      
                 </Route>
                 <Route exact path='/signUp' element={<SignUpPage/>}>
 
                 </Route>
-                <Route exact path='/dashboard' element={<DashboradPage/>} >
+                <Route exact path='/login' element={<SignInPage/>} >
                      
                 </Route>
                 <Route exact path='/postjob' element={<PostJob/>} >

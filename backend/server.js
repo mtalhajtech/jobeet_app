@@ -7,7 +7,10 @@ import authRoutes  from "./routes/auth.route.js"
 import morgan from "morgan";
 import cors from "cors";
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Your front-end origin
+  credentials: true,
+}));
 const port = process.env.PORT || 5000;
 connectDb();
 app.use(cors());
