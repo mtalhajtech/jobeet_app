@@ -57,17 +57,23 @@ const login = async (req,res)=>{
  
     const accessToken = Jwt.sign(tokenData,accessTokenSecret,{expiresIn:accessTokenExpiry})
     const refreshToken = Jwt.sign({ userId: user._id }, refreshTokenSecret, { expiresIn: refreshTokenExpiry });
+
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true, 
-        secure: true, 
+        secure: false, 
         sameSite: 'strict', 
         maxAge: 1 * 24 * 60 * 60 * 1000
       });
-    console.log(accessTokenExpiry,refreshTokenExpiry,accessTokenSecret,accessTokenSecret)
+    
     return res.status(200).json({message:'User Logged in Successfully ',data :{accessToken,user}})
 }
 
-const refreshAccessToken = ()=>{
+const refreshAccessToken = (req,res)=>{
+
+    const refreshToken = req.cookies?.refreshToken
+    console.log(refreshToken)
+    res.status(200).json({refreshToken})
+
       
 }
 

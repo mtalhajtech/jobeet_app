@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../../AuthProvider/AuthProvider";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
+
 function SignIn() {
    const {auth,setAuth}  = useContext(AuthContext)
    const [form,SetForm]=useState({})
@@ -17,11 +18,12 @@ function SignIn() {
    
    try {
    
-   const response = await axios.post('http://localhost:3000/auth/login',form)
+   const response = await axios.post('http://localhost:3000/auth/login',form,{withCredentials: true})
    const accessToken = response?.data.data?.accessToken
+   console.log(accessToken)
    const decodedToken = jwtDecode(accessToken)
-
    setAuth({user:decodedToken,isAuthenticated:true})
+   
    localStorage.setItem('token', accessToken);
    toast.success('Logged In Successfully',{position:toast.POSITION.TOP_LEFT})
    navigate('/')

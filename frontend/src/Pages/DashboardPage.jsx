@@ -3,7 +3,7 @@ import Header from "../Componenets/Header/Header";
 import SearchBar from "../Componenets/SearchBar/SearchBar";
 import JobsList from "../Componenets/JobList/JobList";
 import Footer from "../Componenets/Footer/Footer";
-const DashboradPage = () => {
+const DashboardPage = () => {
   return (
     <div>
       
@@ -15,4 +15,4 @@ const DashboradPage = () => {
   );
 };
 
-export default DashboradPage;
+export default DashboardPage;

@@ -1,5 +1,5 @@
 import {Routes,Route} from "react-router-dom"
-import DashboradPage from "../Pages/DashboradPage"
+import DashBoardPage from "../Pages/DashboardPage"
 import PostJob from "../Pages/PostJob";
 import JobDetailPage from "../Pages/JobDetailPage";
 import JobListByCategory from "../Pages/JobListByCategory";
@@ -10,7 +10,7 @@ const AppRoutes = () => {
     return (
        
             <Routes>
-                <Route exact path='/' element={<DashboradPage/>} >
+                <Route exact path='/' element={<DashBoardPage/>} >
                      
                 </Route>
                 <Route exact path='/signUp' element={<SignUpPage/>}>
