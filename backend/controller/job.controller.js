@@ -1,6 +1,6 @@
 import Job from "../models/job.js";
-import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService,editJobService,deleteJobService,authorizeTokenService } from "../services/jobService.js";
-const currentDate = new Date();
+import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService,editJobService,deleteJobService } from "../services/jobService.js";
+
 import getBaseUrl from "../helpers/baseUrl.js";
 
 
@@ -79,17 +79,8 @@ const deleteJob = async (req,res )=>{
    }
    else return res.status(result.statusCode).json({message:result.message})
 }
-const authorizeToken = async (req,res)=>{
-  const {token, jobId} = req.body
-  const result = await authorizeTokenService(token,jobId)
-  
-  if(result.error){
-   
-   return res.status(result.statusCode).json({message:result.message})
-  }
-  else return res.status(result.statusCode).json({message:result.message})
-}
 
 
 
-export { getJob, createJob, getPaginatedJobsByCategory,getLatestJobs,editJob,authorizeToken,deleteJob};
+
+export { getJob, createJob, getPaginatedJobsByCategory,getLatestJobs,editJob,deleteJob};

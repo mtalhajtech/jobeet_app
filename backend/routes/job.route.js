@@ -2,7 +2,7 @@ import express from "express";
 import {
   getJob,
   createJob,
-  getPaginatedJobsByCategory,getLatestJobs,authorizeToken
+  getPaginatedJobsByCategory,getLatestJobs
 ,editJob, deleteJob} from "../controller/job.controller.js";
 import upload from "../middlewares/imageuploader.js";
 import validateToken from "../middlewares/validateToken.js";
@@ -14,6 +14,6 @@ router.put("/:jobId", upload.single("logo"), editJob )
 router.get("/:jobId", getJob);
 router.post("/post", upload.single("logo"), createJob);
 router.delete("/:jobId",validateToken, deleteJob )
-router.post("/authorizeToken", authorizeToken)
+
 
 export default router;

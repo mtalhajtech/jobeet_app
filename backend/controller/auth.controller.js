@@ -19,6 +19,7 @@ const register = async (req,res)=>{
 try {
     const userExists = await User.find({email:email})
     console.log(userExists)
+
     if(userExists.length>0){
         return res.status(400).json({message:'User already exists.Please use different Email'})
     }
@@ -46,14 +47,14 @@ const login = async (req,res)=>{
     return res.status(400).json({message:'User account not found'})
    }
  
-   const hashedPassword = user[0].password
-   
+  
+   const {password:hashedPassword,userName,userRole,email:userEmail} = user[0]
    const isPasswordValid = await bcrypt.compare(password,hashedPassword)
    if(!isPasswordValid){
         return res.status(401).json({message:'Invalid Credentials'})
    }
-
-   let tokenData = {userId:user[0]._id,username:user[0].userName,userEmail:user[0].email}
+   console.log(userRole,userName)
+   let tokenData = {userId:user[0]._id,userName:userName,userEmail:userEmail}
  
     const accessToken = Jwt.sign(tokenData,accessTokenSecret,{expiresIn:accessTokenExpiry})
     const refreshToken = Jwt.sign({ userId: user._id }, refreshTokenSecret, { expiresIn: refreshTokenExpiry });
@@ -65,16 +66,24 @@ const login = async (req,res)=>{
         maxAge: 1 * 24 * 60 * 60 * 1000
       });
     
-    return res.status(200).json({message:'User Logged in Successfully ',data :{accessToken,user}})
+    return res.status(200).json({message:'User Logged in Successfully ',data :{accessToken,userName,userRole}})
 }
 
 const refreshAccessToken = (req,res)=>{
-
+   
     const refreshToken = req.cookies?.refreshToken
     console.log(refreshToken)
     res.status(200).json({refreshToken})
 
       
 }
+const logout =  (req, res) => {
+    res.cookie('refreshToken', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+    path:'/'
+    });
 
-export {register, login,refreshAccessToken}
+    res.status(200).send('Logged out');
+  };
+export {register, login,refreshAccessToken,logout}

@@ -56,7 +56,7 @@ const JobDetailPage = () => {
   //  }
     useEffect(()=>{
     
-    if(auth.user?.userId == job._id){
+    if(auth.user?.userId == job.userId){
       setIsEditAble(true)
     }
       
