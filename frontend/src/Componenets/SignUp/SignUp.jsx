@@ -1,4 +1,4 @@
-import {Row,Col,Form,Button} from 'react-bootstrap'
+import {Row,Col,Form,Button,Dropdown,DropdownButton} from 'react-bootstrap'
 import * as yup from 'yup'
 import * as formik from 'formik';
 import React from 'react';
@@ -17,7 +17,8 @@ function SignUp() {
     password:yup.string()
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
-    confirmPassword: yup.string().oneOf([yup.ref('password'),null], 'Password must match').required('Confirm Password is required')
+    confirmPassword: yup.string().oneOf([yup.ref('password'),null], 'Password must match').required('Confirm Password is required'),
+    role: yup.string().notOneOf([''],'Please Select the role').required('A role is required')
  })
 
 
@@ -34,11 +35,11 @@ function SignUp() {
     <Formik
        validationSchema={schema}
        onSubmit={async(value)=>{
-         
+         console.log(value)
         try {
           const response = await axios.post('http://localhost:3000/auth/register',value)
           toast.success('User Registered Successfully',{position:toast.POSITION.TOP_LEFT})
-          navigate('/')
+          navigate('/login')
           console.log('success')
         } catch (error) {
           console.log(error.response.message)
@@ -52,7 +53,8 @@ function SignUp() {
         userName:'',
         email:'',
         password:'',
-        confirmPassword:''
+        confirmPassword:'',
+        role:''
        }}>
         {({handleSubmit,handleChange,values,touched,errors,handleBlur})=>(
         <Form noValidate onSubmit={handleSubmit}>
@@ -105,7 +107,18 @@ function SignUp() {
                   {errors.confirmPassword}
         </Form.Control.Feedback>  
       </Form.Group>
-
+      <Form.Group>
+      <Form.Label>
+       Role
+      </Form.Label>
+      <Form.Select aria-label="Default select example" value={values.role} name='role' required onChange={handleChange} onBlur={handleBlur}>
+      <option >Select Role</option>
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+      
+    </Form.Select>
+       
+      </Form.Group>
       <Form.Group>
         <Button type= "submit" className="my-2" variant="dark"> 
           Register

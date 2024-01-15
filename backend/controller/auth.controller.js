@@ -11,7 +11,7 @@ const refreshTokenExpiry = process.env.REFRESH_TOKEN_LIFE
 
 const register = async (req,res)=>{
       
-     const {userName,firstName,lastName,password,email} = req.body
+     const {userName,firstName,lastName,password,email,role} = req.body
      console.log(req.body)
      if(!userName || !firstName || !lastName || !password || !email  ){
        return res.status(400).json({message:" Please fill all mandatory fields "})
@@ -28,7 +28,7 @@ try {
     const hashedPassword = await hashPassword(password)
     
     const createdUser = await User.create({
-        userName,firstName,lastName,password:hashedPassword,email
+        userName,firstName,lastName,password:hashedPassword,email,userRole:role
     })
     // const {password,...rest} = createdUser
     return res.status(200).json({message:'User Created Successfully',data:createdUser})
@@ -60,7 +60,7 @@ const login = async (req,res)=>{
     const refreshToken = Jwt.sign({ userId: user._id }, refreshTokenSecret, { expiresIn: refreshTokenExpiry });
 
     res.cookie('refreshToken', refreshToken, {
-        httpOnly: true, 
+        httpOnly: false, 
         secure: false, 
         sameSite: 'strict', 
         maxAge: 1 * 24 * 60 * 60 * 1000
@@ -71,9 +71,23 @@ const login = async (req,res)=>{
 
 const refreshAccessToken = (req,res)=>{
    
-    const refreshToken = req.cookies?.refreshToken
-    console.log(refreshToken)
-    res.status(200).json({refreshToken})
+    const refreshToken = req.cookies.refreshToken;
+     console.log('refreshtoken is ',refreshToken)
+    if(!refreshToken)
+    {
+        return res.status(401).json({message:"invalid Token"})
+    }
+    try {
+        const decodeUser = Jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET)
+        const user =decodeUser.userId
+        const refreshAccessToken = Jwt.sign({user},process.env.ACCESS_TOKEN_SECRET,{expiresIn:'5m'})
+        console.log(refreshAccessToken)
+        return res.status(200).json({accessToken:refreshAccessToken})
+    } catch (error) {
+        return res.status(401).json({message:"invalid Token"})
+    }
+    
+    
 
       
 }
@@ -83,7 +97,7 @@ const logout =  (req, res) => {
     httpOnly: true,
     path:'/'
     });
-
+    
     res.status(200).send('Logged out');
   };
 export {register, login,refreshAccessToken,logout}

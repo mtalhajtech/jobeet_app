@@ -4,7 +4,7 @@ import Header from '../Componenets/Header/Header';
 function SignInPage() {
     return (
         <>
-          <Header/>
+          <Header headerName={'Jobeet'}/>
             <SignIn/>
        
         </>

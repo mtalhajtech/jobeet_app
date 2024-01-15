@@ -8,56 +8,112 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../AuthProvider/AuthProvider";
+import useAxiosPrivate from "../axios/useAxiosPrivate";
+import { jwtDecode } from "jwt-decode";
 const JobDetailPage = () => {
   const location = useLocation();
   const job = location.state.job;
   const navigate = useNavigate()
   const [isEditAble,setIsEditAble] = useState(false)
-  // const [tokenValue, setTokenValue] = useState('')
-  // const [action,setAction] = useState('')
-  const {auth} = useContext(AuthContext)  
-    const handleDelete = async ()=>{
-      
-      try {
+  const {auth,setAuth} = useContext(AuthContext)
+  // const {axiosJWT} = useAxiosPrivate()
+  const config = {
+    headers: { Authorization: `Bearer ${auth.token}` }
+};
 
-        const response = await axios.delete(`http://localhost:3000/job/${job._id}`,)
-        toast.success('Job is deleted Successfully',{position:toast.POSITION.TOP_CENTER})
-        navigate('/')
+
+const axiosJWT = axios.create()
+const refreshToken = async()=>{
+   
+   
+
+   try {
+
+    const response = await axios.get('http://localhost:3000/auth/refreshAccessToken', { withCredentials: true });
+    console.log('token is refrehsef')
+    
+    setAuth({...auth,token:response.accesstoken})
+   } catch (error) {
+    console.log(error)
+   }
+  
+        
+}
+
+
+
+const decodeToken = jwtDecode(auth.token)
+axiosJWT.interceptors.request.use(async(config)=>{
+     const currentDate = new Date()
+     console.log(currentDate.getTime())
+     if(currentDate.getTime()>decodeToken.exp*1000){
+         const response = await refreshToken()
+         config.headers["authorization"] = "Bearer  " + response?.accesstoken
+     }
+
+     return config
+  },error=>{
+     return Promise.reject(error)
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const handleDelete = async ()=>{
+      debugger;
+
+      try {
+       
+        const response = await axiosJWT.delete(`http://localhost:3000/job/${job._id}`,config);
+        toast.success('Job is deleted Successfully',{position:toast.POSITION.TOP_CENTER});
+        navigate('/');
       } catch (error) {
-        toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER})
+        console.log(error.message)
+        navigate('/login');
+        // toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER});
       }
 
     }
    const handleEdit = ()=>{
    
-    navigate(`/job/edit/${job._id}`)
+    navigate(`/job/edit/${job._id}`);
 
    }
     
-  // const handleValidate = async ()=>{
-    
-  
-  //     try {
-  //       console.log(tokenValue)
-  //       const response = await axios.post('http://localhost:3000/job/authorizeToken',{jobId:job._id,token:tokenValue})
-  //       if(action==='delete'){
-  //         handleDelete()
-  //       }
-  //       else{
-  //         navigate(`/job/edit/${job._id}`)
-  //       }
-        
-  //     } catch (error) {
-  
-  //      toast.error(" You are not Authorized to EDIT/DELETE the Job !", {
-  //        position: toast.POSITION.TOP_CENTER
-  //      });
-  //     }
-  //  }
+ 
     useEffect(()=>{
     
     if(auth.user?.userId == job.userId){
-      setIsEditAble(true)
+      setIsEditAble(true);
     }
       
     },[])
@@ -102,28 +158,16 @@ const JobDetailPage = () => {
           </Row>
           <Row>
             
-            {isEditAble && (
+           
               <Row>
               <Button  style={{width:"fit-content",marginRight:"10px"}} onClick={handleEdit}>
                Edit Job
               </Button>
-              <Button  style={{width:"fit-content"}} onClick={()=>{handleDelete}}>
+              <Button  style={{width:"fit-content"}} onClick={handleDelete}>
                Delete
               </Button>
               </Row>
-              )
-             
-            }
-            {/* {  showTokenField && (<Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
-                  <Button onClick={handleValidate} style={{width:'fit-content'}}>
-                    Validate 
-                  </Button>
-                  <Col sm="10" lg='7'>
-                  <Form.Control size="sm" type="text" placeholder="Enter Token Value Here" onChange={(e)=> setTokenValue(e.target.value)}/>
-                 </Col>
-                 
-                 </Form.Group>)
-           } */}
+            
          
           </Row>
         </Row>

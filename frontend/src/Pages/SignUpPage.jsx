@@ -6,7 +6,7 @@ import Header from '../Componenets/Header/Header';
 function SignUpPage() {
     return (
         <>
-    <Header/>
+    <Header headerName={'Jobeet'}/>
      <SignUp/>
     <Footer/>
         </>

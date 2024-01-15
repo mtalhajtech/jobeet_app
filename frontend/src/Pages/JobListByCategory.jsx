@@ -44,7 +44,7 @@ function JobListByCategory() {
     return ( 
      <>
    <Container>
-    <Header/>
+    <Header headerName={'Jobeet'}/>
      <h1>{category.name} Jobs</h1>   
      <JobTable jobs={jobs}></JobTable>
 

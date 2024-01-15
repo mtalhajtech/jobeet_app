@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import axios from "axios";
-const Header = () => {
+const Header = ({headerName}) => {
   
   const navigate = useNavigate()
 
@@ -30,14 +30,14 @@ const Header = () => {
     <Navbar expand="lg" className="py-3" bg="dark" variant="dark">
       <Container >
         <a href="/" className="navbar-brand ">
-          Jobeet
+          {headerName}
         </a>
         <Navbar.Toggle aria-controls="basic-navbar-nav "  />
         <Navbar.Collapse className='justify-content-end' id="basic-navbar-nav">
           
           <Nav  >
             {auth.isAuthenticated && 
-            <NavDropdown  title={`Welcome ${auth.username}`} id="basic-nav-dropdown">
+            <NavDropdown  title={`Welcome ${auth.user}`} id="basic-nav-dropdown">
              <NavDropdown.Item href="#action/3.1"  onClick={handleLogout}>
               Logout
              </NavDropdown.Item>

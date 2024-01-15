@@ -7,7 +7,7 @@ function EditJobPage() {
    
     return (
         <div>
-          <Header/>
+          <Header headerName={'Jobeet'}/>
           <EditJobForm jobId={jobId}/>
           <Footer/>
         </div>

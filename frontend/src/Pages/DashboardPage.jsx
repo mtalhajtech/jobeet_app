@@ -7,7 +7,7 @@ const DashboardPage = () => {
   return (
     <div>
       
-      <Header />
+      <Header headerName={'Jobeet'} />
       <SearchBar />
       <JobsList />
       <Footer/>
