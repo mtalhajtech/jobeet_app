@@ -11,8 +11,8 @@ import { jwtDecode } from "jwt-decode";
 function SignIn() {
   const { setExpiryTime, setAuth, setUserRole } = useContext(AuthContext);
   const [form, SetForm] = useState({
-    email: "islamtalha01@gmail.com",
-    password: "talha123",
+    email: "islam12@gmail.com",
+    password: "islamtalha",
   });
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -35,7 +35,7 @@ function SignIn() {
       });
       if (role === "admin") 
       {
-        navigate("admin/dashboard");
+        navigate("/admin");
       }
      else{
       navigate("/");

@@ -162,7 +162,45 @@ const getPaginatedJobByCategoryService = async (page, categoryId, limit) => {
   }
 };
 
+const getPaginatedJobService = async (page, limit) => {
+  let data = {}
+  const currentDate = new Date();
+  try {
+    const skip = (page - 1) * limit;
+    const jobsList = await Job.find({
+      expiresAt: { $gt: currentDate },
+      isActive: true,
+    }).skip(skip)
+      .limit(limit)
+      .exec();
+      
+    const totaljobs = await Job.countDocuments({
+      
+      expiresAt: { $gt: currentDate },
+      isActive: true,
+    });
 
+    if (jobsList.length === 0) {
+      return {
+        error: false,
+        statusCode: 200,
+        message: "No Jobs Found",
+        data: null,
+      };
+    }
+     
+     data.jobs = jobsList
+     data.totaljobs = totaljobs
+    
+    return { error: false, statusCode: 200, data: data };
+  } catch (error) {
+    return {
+      error: true,
+      statusCode: 500,
+      message: " Error : " + error.message,
+    };
+  }
+};
 
 const getLatestJobsService = async (res) => {
   try {
@@ -194,4 +232,5 @@ export {
   getLatestJobsService,
   editJobService,
   deleteJobService,
+  getPaginatedJobService
 };

@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import axios from "axios";
-const Header = ({headerName}) => {
+const Header = ({headerName,role='user'}) => {
   
   const navigate = useNavigate()
 
@@ -50,9 +50,9 @@ const Header = ({headerName}) => {
               
             }   
         </Nav>
-        <Button className="ms-3" variant="primary" href="/postjob">
+        {role =='user'?(<Button className="ms-3" variant="primary" href="/postjob">
               Post a Job
-        </Button>
+        </Button>):null}
         </Navbar.Collapse>
         
             

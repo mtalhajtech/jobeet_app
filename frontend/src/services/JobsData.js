@@ -22,5 +22,12 @@ const getPaginatedJobsByCategory = async (page,limit,categoryId) =>{
   const result = request.data
   return result
 }
-export  { getPaginatedJobsByCategory,getLatestJobs,getAllCategories };
+const getPaginatedJobs = async (page,limit) =>{
+  const apiUrl = `${constants.FRONTEND_BASE_URL}job/all/?page=${page}&limit=${limit}`
+  const request = await axios.get(apiUrl)
+  const result = request.data
+  return result
+}
+
+export  { getPaginatedJobsByCategory,getLatestJobs,getAllCategories,getPaginatedJobs };
 

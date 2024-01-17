@@ -11,7 +11,7 @@ function EditJobForm({jobId}) {
   const [form, setForm] = useState({isPublic:false});
   const [errors, setErrors] = useState({});
   // const [apiResponse,setResponse ]
-
+  const navigate = useNavigate()
  
 
 
@@ -79,7 +79,7 @@ function EditJobForm({jobId}) {
         
         toast.success('Form Submitted Successfully',{position:toast.POSITION.TOP_LEFT})
         event.target.reset()
-
+        // navigate(`/job/show//${job._id}`)
         setForm({description:'',howToApply:''})
         //handel success
       } catch (error) {

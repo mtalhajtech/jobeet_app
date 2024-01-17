@@ -1,5 +1,5 @@
 import Job from "../models/job.js";
-import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService,editJobService,deleteJobService } from "../services/jobService.js";
+import { createJobService,getJobService,getPaginatedJobByCategoryService,getLatestJobsService,editJobService,deleteJobService ,getPaginatedJobService} from "../services/jobService.js";
 
 import getBaseUrl from "../helpers/baseUrl.js";
 
@@ -27,7 +27,17 @@ const getPaginatedJobsByCategory = async(req,res)=>{
        else {res.status(result.statusCode).json(result.data)} 
 }
 
-
+const getPaginatedJobs = async(req,res)=>{
+ 
+  const page = parseInt(req.query.page)|| 1
+  const limit = parseInt(req.query.limit)|| 10 
+  const result = await getPaginatedJobService(page,limit)
+  console.log(result)
+  if(result.error){
+   return res.status(result.statusCode).json({message:result.error})
+  }
+  else {res.status(result.statusCode).json(result.data)} 
+}
 
 const getLatestJobs = async(req,res)=>{
   const result = await getLatestJobsService()
@@ -83,4 +93,4 @@ const deleteJob = async (req,res )=>{
 
 
 
-export { getJob, createJob, getPaginatedJobsByCategory,getLatestJobs,editJob,deleteJob};
+export { getJob, createJob,getPaginatedJobs, getPaginatedJobsByCategory,getLatestJobs,editJob,deleteJob};
