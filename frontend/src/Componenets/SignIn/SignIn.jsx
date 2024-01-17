@@ -29,6 +29,7 @@ function SignIn() {
       const userName = response?.data.data?.userName;
 
       setAuth({ user: userName, isAuthenticated: true, userRole: role,token:accessToken });
+      localStorage.setItem('token',accessToken)
       toast.success("Logged In Successfully", {
         position: toast.POSITION.TOP_LEFT,
       });

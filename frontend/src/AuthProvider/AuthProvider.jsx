@@ -7,6 +7,16 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ user:'', isAuthenticated: false,userRole:'' });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    
+    if (token) {
+     const decodedToken = jwtDecode(token);
+       setAuth({user:decodedToken.userName, isAuthenticated: true, userRole:decodedToken.userRole });
+    }  
+    
+  }, []);
   return (
     <AuthContext.Provider value={{ auth, setAuth}}>
       {children}

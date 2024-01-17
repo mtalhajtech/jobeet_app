@@ -31,7 +31,7 @@ const getPaginatedJobsByCategory = async(req,res)=>{
 
 const getLatestJobs = async(req,res)=>{
   const result = await getLatestJobsService()
-  console.log(result)
+  
   if(result.error){
    return res.status(result.statusCode).json({message:result.error})
   }

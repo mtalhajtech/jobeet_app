@@ -24,7 +24,7 @@ const AppRoutes = () => {
                 </Route>
                 <Route exact path='/job/show/:jobId' element={<JobDetailPage/>} >
                      
-                     </Route>
+                </Route>
                 <Route exact path='/job/category/:categoryId' element={<JobListByCategory/>} >
                      
                  </Route> 

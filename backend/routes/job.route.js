@@ -13,7 +13,7 @@ router.get('/latest-active-jobs',getLatestJobs)
 router.put("/:jobId", upload.single("logo"), editJob )
 router.get("/:jobId", getJob);
 router.post("/post", upload.single("logo"), createJob);
-router.delete("/:jobId",validateToken, deleteJob )
+router.delete("/:jobId", deleteJob )
 
 
 export default router;

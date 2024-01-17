@@ -57,7 +57,7 @@ const login = async (req,res)=>{
    let tokenData = {userId:user[0]._id,userName:userName,userEmail:userEmail}
  
     const accessToken = Jwt.sign(tokenData,accessTokenSecret,{expiresIn:accessTokenExpiry})
-    const refreshToken = Jwt.sign({ userId: user._id }, refreshTokenSecret, { expiresIn: refreshTokenExpiry });
+    const refreshToken = Jwt.sign(tokenData, refreshTokenSecret, { expiresIn: refreshTokenExpiry });
 
     res.cookie('refreshToken', refreshToken, {
         httpOnly: false, 
@@ -75,14 +75,14 @@ const refreshAccessToken = (req,res)=>{
      console.log('refreshtoken is ',refreshToken)
     if(!refreshToken)
     {
-        return res.status(401).json({message:"invalid Token"})
+        return res.status(401).json({message:"Token Not Present"})
     }
     try {
         const decodeUser = Jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET)
-        const user =decodeUser.userId
-        const refreshAccessToken = Jwt.sign({user},process.env.ACCESS_TOKEN_SECRET,{expiresIn:'5m'})
-        console.log(refreshAccessToken)
-        return res.status(200).json({accessToken:refreshAccessToken})
+        const user = decodeUser.userId
+        const newAccessToken = Jwt.sign({user},accessTokenSecret,{expiresIn:accessTokenExpiry})
+        console.log(newAccessToken)
+        return res.status(200).json({accessToken:newAccessToken})
     } catch (error) {
         return res.status(401).json({message:"invalid Token"})
     }

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../AuthProvider/AuthProvider";
-import useAxiosPrivate from "../axios/useAxiosPrivate";
+// import useAxiosPrivate from "../axios/useAxiosPrivate";
 import { jwtDecode } from "jwt-decode";
 const JobDetailPage = () => {
   const location = useLocation();
@@ -17,89 +17,59 @@ const JobDetailPage = () => {
   const [isEditAble,setIsEditAble] = useState(false)
   const {auth,setAuth} = useContext(AuthContext)
   // const {axiosJWT} = useAxiosPrivate()
-  const config = {
-    headers: { Authorization: `Bearer ${auth.token}` }
-};
+//   const config = {
+//     headers: { Authorization: `Bearer ${auth.token}` }
+// };
 
 
-const axiosJWT = axios.create()
-const refreshToken = async()=>{
+// const axiosJWT = axios.create()
+// const refreshToken = async()=>{
    
-   
+//    debugger;
 
-   try {
+//    try {
 
-    const response = await axios.get('http://localhost:3000/auth/refreshAccessToken', { withCredentials: true });
-    console.log('token is refrehsef')
-    
-    setAuth({...auth,token:response.accesstoken})
-   } catch (error) {
-    console.log(error)
-   }
+//     const response = await axios.get('http://localhost:3000/auth/refreshAccessToken', { withCredentials: true });
+//     console.log('refresh Token interceptor',response.data.accessToken)
+//     localStorage.setItem('token',response.data.accessToken)
+//     setAuth({...auth,token:response.accessToken});
+//    } catch (error) {
+//     console.log(error)
+//    }
   
         
-}
+// }
 
 
+// const token = localStorage.getItem('token')
+// const decodeToken = jwtDecode(token);
+// axiosJWT.interceptors.request.use(async(config)=>{
+//      const currentDate = new Date();
+//      console.log(currentDate.getTime());
+//      if(currentDate.getTime()>decodeToken.exp*1000){
+//          const response = await refreshToken();
+//          config.headers["authorization"] = "Bearer  " + response.data?.accessToken;
+//      }
 
-const decodeToken = jwtDecode(auth.token)
-axiosJWT.interceptors.request.use(async(config)=>{
-     const currentDate = new Date()
-     console.log(currentDate.getTime())
-     if(currentDate.getTime()>decodeToken.exp*1000){
-         const response = await refreshToken()
-         config.headers["authorization"] = "Bearer  " + response?.accesstoken
-     }
-
-     return config
-  },error=>{
-     return Promise.reject(error)
-  })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//      return config;
+//   },error=>{
+//      return Promise.reject(error);
+//   })
 
 
 
     const handleDelete = async ()=>{
-      debugger;
+  
 
       try {
        
-        const response = await axiosJWT.delete(`http://localhost:3000/job/${job._id}`,config);
+        const response = await axios.delete(`http://localhost:3000/job/${job._id}`,config);
         toast.success('Job is deleted Successfully',{position:toast.POSITION.TOP_CENTER});
         navigate('/');
       } catch (error) {
-        console.log(error.message)
-        navigate('/login');
-        // toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER});
+        console.log(error.message);
+        // navigate('/login');
+        toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER});
       }
 
     }
@@ -110,13 +80,13 @@ axiosJWT.interceptors.request.use(async(config)=>{
    }
     
  
-    useEffect(()=>{
+    // useEffect(()=>{
     
-    if(auth.user?.userId == job.userId){
-      setIsEditAble(true);
-    }
+    // if(auth.user?.userId == job.userId){
+    //   setIsEditAble(true);
+    // }
       
-    },[])
+    // },[])
   
  
   return (
