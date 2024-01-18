@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Table,Row,Col } from 'react-bootstrap';
 import {Link} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 function JobTable({jobs,handleDelete}) {
-
+    const navigate = useNavigate()
     return (
         <Table striped bordered hover>
         <thead>
@@ -24,11 +25,15 @@ function JobTable({jobs,handleDelete}) {
               <td>{job.company}</td>
               <td>{job.isActive?  <span > Active</span> : <span  >Not Active</span>}    </td>
               <td >
-                <div >
-                
-                <Button className="btn btn-default " onClick={()=>handleDelete(job._id)}>Delete</Button>
-                <Button className="btn btn-danger ">Edit</Button>
-                </div>
+               <Row>
+                <Col>
+                <Button variant='danger' onClick={()=>handleDelete(job._id)}>Delete</Button>
+                </Col>
+               <Col>
+               <Button variant='secondary' onClick={()=>navigate(`/admin/job/editjob/${job._id}`)}>Edit</Button>
+               </Col>
+               
+               </Row>
                 </td>
             </tr>
           ))}

@@ -1,46 +1,31 @@
 import React from "react";
-import { Row, Form, Col, Container, Button, Image } from "react-bootstrap";
+import { Row, Form, Col, Container, Button } from "react-bootstrap";
 import FormContainer from "../FormContainer/FormContainer";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
 import { categories } from "../../../dummyData";
-import axios from "axios";
 import {toast} from 'react-toastify'
-
-function EditJobForm({jobId}) {
-  const [form, setForm] = useState({isPublic:false});
+import axios from "axios";
+function PostJobAdmin() {
+  const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
- 
-  // const [apiResponse,setResponse ]
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [apiError, setApiError] = useState({ error: false, message: "" });
   const navigate = useNavigate()
- 
-
-
-    const   fetchData = async()=>{
-      try {
-        const response = await axios.get(`http://localhost:3000/job/${jobId}`)
-         console.log(response.data)
-         setForm(response.data[0])
-        
-      } catch (error) {
-        console.log(error)
-      }
-
-    }
-
-    useEffect(()=>{
-   
-        fetchData()
-    
-     },[])
-    
-    
+  // const [apiResponse,setResponse ]
   const setField = (field, value) => {
     setForm({ ...form, [field]: value });
+
+    console.log(form);
+
     if (!!errors[field]) {
       setErrors({ ...errors, [field]: null });
     }
+  };
+  const handleShowSuccess = (event) => {
+    event.preventDefault();
+    console.log("success hit");
   };
 
   const validateForm = () => {
@@ -51,12 +36,11 @@ function EditJobForm({jobId}) {
     if (!type || type === "") newError.type = "Select any type";
 
     return newError;
-
   };
 
-  const handleUpdate = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    
+    console.log("handleSubmitTriggered");
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
@@ -69,8 +53,8 @@ function EditJobForm({jobId}) {
         formData.append(key, form[key]);
       });
       try {
-        const response = await axios.put(
-          `http://localhost:3000/job/${jobId}`,
+        const response = await axios.post(
+          "http://localhost:3000/job/post",
           formData,
           {
             headers: {
@@ -79,35 +63,46 @@ function EditJobForm({jobId}) {
           }
         );
         
-        toast.success('Job Edited Successfully',{position:toast.POSITION.TOP_LEFT})
-        event.target.reset()
-        navigate('/')
-        setForm({description:'',howToApply:''})
-        //handel success
+        setShowSuccess(true);
+        setForm({})
+        event.target.reset()  
+        console.log(response.data);
+        toast.success('Job Posted Successfully',{position:toast.POSITION.TOP_LEFT})
+        navigate('/admin')
       } catch (error) {
-        toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
-     
-        //if there is an error
+        setApiError({ error: true, message: error.response?.message });
+        toast.error('Error in Job Posting',{position:toast.POSITION.TOP_LEFT})
       }
     }
   };
 
   return (
     <>
-      <FormContainer>
-      <Row className="mt-3 mb-3 ">
-        <h3>Edit Job</h3>
+     
+      <Row className="mt-3 mb-3">
+        <h3>Create Job</h3>
       </Row>
-        <Form onSubmit={handleUpdate}>
+      {/* {(showSuccess && (
+        <Alert variant="success" onClick={handleShowSuccess} dismissible>
+          Job posted successfully.Keep this Token for editing the Job.
+        </Alert>
+      )) ||
+        (apiError.error && (
+          <Alert variant="danger" dismissible>
+            Error in posting the job
+          </Alert>
+        ))} */}
+      <FormContainer>
+        <Form onSubmit={handleSubmit}>
           <Form.Group>
-            <Form.Label>Category </Form.Label>
+            <Form.Label>Category</Form.Label>
             <Form.Select
-              value={form.categoryId}
+              value={form.category}
               required
               onChange={(e) => {
                 setField("categoryId", e.target.value);
               }}
-            
+              isInvalid={!!errors.category}
             >
               <option>Select Category</option>
               {categories.map((element, index) => (
@@ -125,7 +120,6 @@ function EditJobForm({jobId}) {
             <Form.Control
               type="text"
               required
-              value={form.company}
               placeholder="Name of the Company"
               onChange={(e) => setField("company", e.target.value)}
             />
@@ -141,7 +135,6 @@ function EditJobForm({jobId}) {
                 name="group1"
                 type={"radio"}
                 required
-                checked={form.type=='Full Time'}
                 id={`inline-radio-1`}
                 onChange={(e) => {
                   setField("type", e.target.value);
@@ -154,7 +147,6 @@ function EditJobForm({jobId}) {
                 name="group1"
                 type={"radio"}
                 id={`inline-radio-2`}
-                checked={form.type=='Part Time'}
                 onChange={(e) => {
                   setField("type", e.target.value);
                 }}
@@ -166,7 +158,6 @@ function EditJobForm({jobId}) {
                 name="group1"
                 type={"radio"}
                 id={`inline-radio-3`}
-                checked={form.type=='Freelance'}
                 onChange={(e) => {
                   setField("type", e.target.value);
                 }}
@@ -177,7 +168,7 @@ function EditJobForm({jobId}) {
             )}
           </Form.Group>
           <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Logo {form.logo}</Form.Label>
+            <Form.Label>Logo</Form.Label>
             <Form.Control
               type="file"
               name="logo"
@@ -186,7 +177,6 @@ function EditJobForm({jobId}) {
                 setField("logo", e.target.files);
               }}
             />
-            <Image src={form.logo} style={{width:'300px', height:'200px'}}></Image>
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>URL</Form.Label>
@@ -202,7 +192,6 @@ function EditJobForm({jobId}) {
             <Form.Control
               required
               type="text"
-              value={form.position}
               placeholder="Position for which you are applying"
               onChange={(e) => setField("position", e.target.value)}
             />
@@ -211,7 +200,6 @@ function EditJobForm({jobId}) {
             <Form.Label>Location</Form.Label>
             <Form.Control
               type="text"
-              value={form.location}
               required
               placeholder="Location"
               onChange={(e) => setField("location", e.target.value)}
@@ -225,7 +213,7 @@ function EditJobForm({jobId}) {
               name="group1"
               value="true"
               type={"checkbox"}
-              checked={form.isPublic===true}
+              id={"inline-radio-1"}
               onChange={(e) => {
                 setField("isPublic", e.target.value);
               }}
@@ -236,7 +224,6 @@ function EditJobForm({jobId}) {
             <Form.Control
               type="text"
               required
-              value={form.description}
               as="textarea"
               placeholder="Add Description to Your Post"
               onChange={(e) => setField("description", e.target.value)}
@@ -269,7 +256,7 @@ function EditJobForm({jobId}) {
           </Form.Group>
           <Form.Group>
             <Button type="submit" className="my-2" variant="dark">
-              Save
+              Post
             </Button>
           </Form.Group>
         </Form>
@@ -278,4 +265,4 @@ function EditJobForm({jobId}) {
   );
 }
 
-export default EditJobForm;
+export default PostJobAdmin;

@@ -11,6 +11,9 @@ import AdminPanel from "../Pages/AdminPanel";
 import ManageJobs from "../Componenets/AdminPanel/ManageJobs";
 import ManageCategories from "../Componenets/AdminPanel/ManageCategories";
 import ManageAffiliates from "../Componenets/AdminPanel/ManageAffiliates";
+import EditJobAdmin from "../Componenets/AdminPanel/EditJobAdmin";
+import PostJobAdmin from "../Componenets/AdminPanel/PostJobAdmin";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -31,7 +34,8 @@ const AppRoutes = () => {
         <Route index element={<ManageJobs />} />
         <Route path="categories" element={<ManageCategories />} />
         <Route path="affiliates" element={<ManageAffiliates/>} />
-
+        <Route path="job/editjob/:jobId" element={<EditJobAdmin/>}/>
+        <Route path="job/postjob" element={<PostJobAdmin/>}/>
         </Route>
 
       <Route exact path="/job/show/:jobId" element={<JobDetailPage />}></Route>

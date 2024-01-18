@@ -23,29 +23,29 @@ const createCategory = async (req, res) => {
 };
 
 const deleteCategory = async (req,res)=>{
-  const categoryId = req.params.categoryId
+  const categoryId = req.params.categoryId;
   try {
        const deletedCategory = await Category.deleteOne({_id:categoryId})
        if(deletedCategory.deletedCount===0){
-        res.status(404).json({message:"Category Not Found"})
+        res.status(404).json({message:"Category Not Found"});
        }
        res.status(200).json({message:"Category deleted Successfully"})
       
   } catch (error) {
-    console.log(error)
-    res.status(500).json({message:"Error Occurred"})
+    console.log(error);
+    res.status(500).json({message:"Error Occurred"});
   }
 }
 
 const editCategory = async (req,res)=>{
-  const categoryId = req.params.categoryId
-  const {name}  = req.body
+  const categoryId = req.params.categoryId;
+  const {name}  = req.body;
       try {
-        const updatedCategory = await Category.updateOne({_id:categoryId},{name:name})
-        res.status(200).json({message:"Category Updated Successfully"})
+        const updatedCategory = await Category.updateOne({_id:categoryId},{name:name});
+        res.status(200).json({message:"Category Updated Successfully"});
 
       } catch (error) {
-         res.status(500).json({message:"Error occured"})
+         res.status(500).json({message:"Error occured"});
       }
  }
  
