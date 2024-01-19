@@ -1,5 +1,5 @@
 import Category from "../models/category.js";
-
+import mongoose from "mongoose";
 const getCategories = async (req, res) => {
   const categories = await Category.find();
   if (categories.length === 0) {
@@ -49,10 +49,11 @@ const createCategory = async (req, res) => {
 };
 
 const deleteCategory = async (req,res)=>{
-  const categoryId = req.params.categoryId;
+  const categoryId = new mongoose.Types.ObjectId(req.params.categoryId)
+
   console.log(categoryId)
   try {
-       const deletedCategory = await Category.deleteOne({id:categoryId})
+       const deletedCategory = await Category.deleteOne({_id:categoryId})
        if(deletedCategory.deletedCount===0){
         res.status(404).json({message:"Category Not Found"});
        }
@@ -65,10 +66,10 @@ const deleteCategory = async (req,res)=>{
 }
 
 const editCategory = async (req,res)=>{
-  const categoryId = req.params.categoryId;
+  const categoryId = new mongoose.Types.ObjectId(req.params.categoryId)
   const {name}  = req.body;
       try {
-        const updatedCategory = await Category.updateOne({id:categoryId},{name:name});
+        const updatedCategory = await Category.updateOne({_id:categoryId},{name:name});
         res.status(200).json({message:"Category Updated Successfully"});
 
       } catch (error) {
@@ -78,18 +79,20 @@ const editCategory = async (req,res)=>{
 
 
  const getCategory = async (req,res)=>{
-  const categoryId = req.param.categoryId;
+   console.log(req.params.categoryId)
+  const categoryId = new mongoose.Types.ObjectId(req.params.categoryId)
   console.log(categoryId)
   try {
-       const category = await Category.findOne({id:categoryId})
-       if(category.length==0){
-        res.status(404).json({message:"Category Not Found"});
+       const category = await Category.find({_id:categoryId})
+       console.log(category)
+       if( category==null){
+       return res.status(404).json({message:"Category Not Found"});
        }
-       res.status(200).json({message:"Category Retrieved Successfully",data:category})
+      return res.status(200).json({message:"Category Retrieved Successfully",data:category})
       
   } catch (error) {
     console.log(error);
-    res.status(500).json({message:"Error Occurred"});
+   return res.status(500).json({message:"Error Occurred"});
   
  }
 }

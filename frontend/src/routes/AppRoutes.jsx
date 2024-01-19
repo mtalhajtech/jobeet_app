@@ -14,16 +14,17 @@ import ManageAffiliates from "../Componenets/AdminPanel/ManageAffiliates";
 import EditJobAdmin from "../Componenets/AdminPanel/EditJobAdmin";
 import PostJobAdmin from "../Componenets/AdminPanel/PostJobAdmin";
 import CreateCategory from "../Componenets/AdminPanel/CreateCategory";
-
+import EditCategory from "../Componenets/AdminPanel/EditCategory";
+import AffiliateForm from "../Componenets/affiliateForm/affiliateForm";
 const AppRoutes = () => {
   return (
     <Routes>
       <Route exact path="/" element={<DashBoardPage />}></Route>
       <Route exact path="/signUp" element={<SignUpPage />}></Route>
       <Route exact path="/login" element={<SignInPage />}></Route>
-      <Route exact path="/postjob" element={<PostJob />}>
-       
-      </Route>
+      <Route exact path="/postjob" element={<PostJob />}> </Route>
+      <Route exact path="/affiliateForm" element={<AffiliateForm/>}></Route> 
+      
       <Route
           path="/admin"
           element={
@@ -35,8 +36,10 @@ const AppRoutes = () => {
         <Route index element={<ManageJobs />} />
         <Route path="categories" element={<ManageCategories />} />
         <Route path="categories/create" element={<CreateCategory />} />
+        <Route path="categories/edit/:catId" element ={<EditCategory/>}/>
         <Route path="affiliates" element={<ManageAffiliates/>} />
         <Route path="job/editjob/:jobId" element={<EditJobAdmin/>}/>
+        
         <Route path="job/postjob" element={<PostJobAdmin/>}/>
         </Route>
 

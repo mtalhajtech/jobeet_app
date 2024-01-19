@@ -6,9 +6,10 @@ import {
 const router = express.Router();
 
 router.get("/all", getCategories);
-router.get("/:categoryId", getCategory)
+router.get("/categoryByJobCount",getCategoriesByJobCount)
 router.post("/create", createCategory);
+router.get("/:categoryId", getCategory)
 router.delete("/:categoryId", deleteCategory)
 router.put ("/:categoryId", editCategory)
-router.get("/categoryByJobCount",getCategoriesByJobCount)
+
 export default router;

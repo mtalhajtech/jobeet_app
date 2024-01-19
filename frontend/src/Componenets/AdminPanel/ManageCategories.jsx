@@ -3,12 +3,14 @@ import { Table,Row, Col , Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import constants from '../../../utilis/constants';
+import CategoryTable from './CategoryTable';
 import {toast} from 'react-toastify'
 function ManageCategories() {
 
     const [categoryByJobCountData,setCategoryByJobCountData] = useState([])
     const navigate = useNavigate()
     const [onDelete,setOnDelete] = useState(false)
+
 const getCategoriesByJobCount = async()=>{
 try {
     const response = await axios.get( `${constants.BACKEND_BASE_URL}category/categoryByJobCount`)
@@ -28,7 +30,7 @@ useEffect(()=>{
 
 const handleDelete = async (catId) => {
   
-
+    console.log(catId)
   try {
      console.log("clicked")
     const response = await axios.delete(`http://localhost:3000/category/${catId}`);
@@ -53,40 +55,9 @@ const handleDelete = async (catId) => {
            Create New Category
          </Button>
         </Row>
+        <CategoryTable handleDelete={handleDelete} categoryByJob={categoryByJobCountData}/>
+         
       
-      <Table striped bordered hover>
-      <thead>
-       <tr>
-         <th>Name</th>
-         <th>Jobs</th>
-         <th>Affiliates</th>
-         <th>Actions</th>
-       </tr>
-     </thead>
-     <tbody>
-       {categoryByJobCountData.map((data) => (
-         <tr key={data._id}>
-           <td>{data.name}</td>
-          
-           <td>{data.totalJobs}</td>
-            
-           <td>N/A</td>
-           <td>
-           <td >
-               <Row>
-                <Col>
-                <Button variant='danger' onClick={()=>handleDelete(data._id)}>Delete</Button>
-                </Col>
-               <Col>
-               <Button variant='secondary' onClick={null}>Edit</Button>
-               </Col>               
-               </Row>
-                </td>
-           </td>
-         </tr>
-       ))}
-     </tbody>
-   </Table>
    </Row>
    </Container> 
     );

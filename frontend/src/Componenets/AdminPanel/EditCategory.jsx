@@ -1,126 +1,92 @@
-import React from 'react';
-
-import React from "react";
-import { Row, Form, Col, Container, Button, Image } from "react-bootstrap";
-import FormContainer from "../FormContainer/FormContainer";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Alert } from "react-bootstrap";
-import { categories } from "../../../dummyData";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Button, Form,Row } from 'react-bootstrap';
+import FormContainer from '../FormContainer/FormContainer';
 import {toast} from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
+import axios from 'axios';
 
-      function EditJobAdmin() {
-        const [form, setForm] = useState({});
-        const [errors, setErrors] = useState({});
-        // const [apiResponse,setResponse ]
-        const navigate = useNavigate()
-        const {CatId} = useParams()
-      
-      
-          const   fetchData = async()=>{
-            try {
-              const response = await axios.get(`http://localhost:3000/category/${CatID}`)
-               console.log(response.data)
-               setForm(response.data[0])
-              
-            } catch (error) {
-              console.log(error)
-            }
-      
-          }
-      
-          useEffect(()=>{
-         
-              fetchData()
+
+function EditCategory() {
+
+    const [form,setForm] = useState({})
+    const navigate = useNavigate()
+
+    const {catId} = useParams()
+
+    const   fetchData = async()=>{
+        try {
+          const response = await axios.get(`http://localhost:3000/category/${catId}`)
+           console.log(response.data.data[0].name)
+           setForm({name:response.data.data[0].name})
           
-           },[])
-          
-          
-        const setField = (field, value) => {
-          setForm({ ...form, [field]: value });
-          if (!!errors[field]) {
-            setErrors({ ...errors, [field]: null });
-          }
-        };
+        } catch (error) {
+          console.log(error)
+        }
+  
+      }
+  
+
+    useEffect(()=>{
+
+
+        fetchData()
+
+
+
+    },[])
+
+
+
+
+    const handleSubmit = async(event)=>{
+        event.preventDefault()
       
-        const validateForm = () => {
-          const { type } = form;
       
-          let newError = {};
-      
-          if (!type || type === "") newError.type = "Select any type";
-      
-          return newError;
-      
-        };
-      
-        const handleUpdate = async (event) => {
-          event.preventDefault();
-          
-          const errors = validateForm();
-          if (Object.keys(errors).length > 0) {
-            setErrors(errors);
-          } else {
-            const formData = new FormData();
-            Object.keys(form).forEach((key) => {
-              if (key == "logo") {
-                formData.append(key, form[key][0]);
-              }
-              formData.append(key, form[key]);
-            });
-            try {
-              const re
-              );
-              
-              toast.success('Job Edited Successfully',{position:toast.POSITION.TOP_LEFT})
-              eventsponse = await axios.put(
-                `http://localhost:3000/job/${jobId}`,
-                formData,
-                {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                  },
-                }.target.reset()
-              navigate('/admin')
-              setForm({description:'',howToApply:''})
-              //handel success
-            } catch (error) {
-              toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
-           
-              //if there is an error
-            }
-          }
-        };
-      
-        return (
-          <>
-            <FormContainer>
-            <Row className="mt-3 mb-3 ">
-              <h3>Edit Job</h3>
-            </Row>
-              <Form onSubmit={handleUpdate}>
-        
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    required
-                    value={form.company}
-                    placeholder="Name of the Company"
-                    onChange={(e) => setField("company", e.target.value)}
-                  />
-                </Form.Group>
-      
-                <Form.Group>
+        try {
+            const response = await axios.put(
+                `http://localhost:3000/category/${catId}`,
+                form,
+                )
+            navigate('/admin/categories')    
+            toast.success('Category Updated Successfully',{position:toast.POSITION.TOP_LEFT})
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const setField = (field, value)=>{
+
+          setForm({...form,[field]:value})
+        //   console.log(form.name)
+
+    }
+    
+    return (
+
+       <FormContainer>
+        <Row>
+            <h1>Edit Category</h1>
+        </Row>
+        <Form onSubmit={handleSubmit}>
+        <Form.Group>
+        <Form.Label>
+        Name 
+       </Form.Label>
+       <Form.Control type='text' required value={form.name} onChange={(event)=>setField("name",event.target.value)}/>
+        </Form.Group>
+        <Form.Group>
                   <Button type="submit" className="my-2" variant="dark">
-                    Save
+                    Create
                   </Button>
-                </Form.Group>
-              </Form>
-            </FormContainer>
-          </>)
-}
+     </Form.Group>
+        </Form>
+      
+       
 
-export default EditCategory;
+       </FormContainer>
+       
+    );
+}
+export default EditCategory

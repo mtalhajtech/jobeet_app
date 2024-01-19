@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import { NavDropdown,Nav } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
+import { NavDropdown,Nav, Row } from "react-bootstrap";
+import {Button,Col} from "react-bootstrap";
 import { useContext,useState } from "react";
 import AuthContext from "../../AuthProvider/AuthProvider";
 import {useNavigate} from "react-router-dom";
@@ -13,7 +13,6 @@ const Header = ({headerName,role='user'}) => {
   const navigate = useNavigate()
 
   const {auth,setAuth} = useContext(AuthContext)
-  console.log(auth.isAuthenticated)
   
   const handleLogout = async (event)=>{
    event.preventDefault()
@@ -50,9 +49,24 @@ const Header = ({headerName,role='user'}) => {
               
             }   
         </Nav>
-        {role =='user'?(<Button className="ms-3" variant="primary" href="/postjob">
+        {role =='user' && auth.isAuthenticated?(
+        <Row>
+          <Col>
+          <Button className="ms-3" variant="primary" href="/postjob">
               Post a Job
-        </Button>):null}
+
+        </Button>
+           
+          </Col>
+          <Col>
+          <Button style={{display:"block",whiteSpace:"nowrap"}}className="ms-3" variant="primary" href="/affiliateForm">
+             Become An Affiliate
+              
+        </Button>    
+          </Col>
+        </Row>
+        ):null}
+
         </Navbar.Collapse>
         
             

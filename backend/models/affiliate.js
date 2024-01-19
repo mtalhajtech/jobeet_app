@@ -9,7 +9,7 @@ const affiliateSchema = new mongoose.Schema({
 });
 export default mongoose.model("affiliate", affiliateSchema, "affiliates");
 
-affliateCatogory.pre("save", function (next) {
+affiliateSchema.pre("save", function (next) {
   let currentTime = Date.now();
   this.createdAt = currentTime;
   next();
