@@ -10,7 +10,7 @@ function JobTable({jobs}) {
              <th>Location</th>
             <th>Position</th>
             <th>Company</th>
-            
+          
           </tr>
         </thead>
         <tbody>

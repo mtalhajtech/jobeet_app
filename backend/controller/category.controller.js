@@ -7,13 +7,39 @@ const getCategories = async (req, res) => {
   }
   res.status(200).json(categories);
 };
-
+const getCategoriesByJobCount= async(req,res)=>{
+  
+  const categoriesByJob = await Category.aggregate([{
+  $lookup:{from: 'jobs',
+   localField: "_id",
+   foreignField: "categoryId",
+   as: "jobs"}},
+    {
+   $addFields: {
+      totalJobs: { $size: "$jobs" }
+    }}
+  ,{
+    $project: {
+      jobs: 0
+    }}
+  
+])
+  
+  if(categoriesByJob.lenght==0 || categoriesByJob==null )
+  {
+    res.status(200).send({message:'No Category Found'})
+  }
+  
+  res.status(200).send({data:categoriesByJob})
+}
 const createCategory = async (req, res) => {
-  console.log("log");
-  const { categoryName } = req.body;
+  
+  const {name:categoryName} = req.body;
+
   try {
     const categoryCreated = await Category.create({
       name: categoryName,
+
     });
     res.status(200).json(categoryCreated);
   } catch (error) {
@@ -24,8 +50,9 @@ const createCategory = async (req, res) => {
 
 const deleteCategory = async (req,res)=>{
   const categoryId = req.params.categoryId;
+  console.log(categoryId)
   try {
-       const deletedCategory = await Category.deleteOne({_id:categoryId})
+       const deletedCategory = await Category.deleteOne({id:categoryId})
        if(deletedCategory.deletedCount===0){
         res.status(404).json({message:"Category Not Found"});
        }
@@ -41,12 +68,30 @@ const editCategory = async (req,res)=>{
   const categoryId = req.params.categoryId;
   const {name}  = req.body;
       try {
-        const updatedCategory = await Category.updateOne({_id:categoryId},{name:name});
+        const updatedCategory = await Category.updateOne({id:categoryId},{name:name});
         res.status(200).json({message:"Category Updated Successfully"});
 
       } catch (error) {
          res.status(500).json({message:"Error occured"});
       }
  }
+
+
+ const getCategory = async (req,res)=>{
+  const categoryId = req.param.categoryId;
+  console.log(categoryId)
+  try {
+       const category = await Category.findOne({id:categoryId})
+       if(category.length==0){
+        res.status(404).json({message:"Category Not Found"});
+       }
+       res.status(200).json({message:"Category Retrieved Successfully",data:category})
+      
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({message:"Error Occurred"});
+  
+ }
+}
  
-export { getCategories, createCategory, deleteCategory,editCategory };
+export { getCategories, createCategory, deleteCategory,editCategory,getCategoriesByJobCount,getCategory }

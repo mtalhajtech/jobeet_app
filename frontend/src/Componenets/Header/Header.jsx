@@ -29,7 +29,7 @@ const Header = ({headerName,role='user'}) => {
   return (
     <Navbar expand="lg" className="py-3" bg="dark" variant="dark">
       <Container >
-        <a href="/" className="navbar-brand ">
+        <a href={role=='user'?'/':'/admin'} className="navbar-brand ">
           {headerName}
         </a>
         <Navbar.Toggle aria-controls="basic-navbar-nav "  />

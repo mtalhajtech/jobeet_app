@@ -49,7 +49,7 @@ function ManageJobs() {
        function calculateTotalPages (limit,totaljobs)
        {
          let pages = [];
-         for (let i =1 ; i<=totaljobs/limit; i++);
+         for (let i = 1 ; i<=totaljobs/limit; i++)
          {
             pages.push(i);
          }
@@ -67,7 +67,7 @@ function ManageJobs() {
        <Container>
        <Row style={{margin:"20px",justifyContent:"right"}}>
          <Button  style={{width:"fit-content"}} variant='primary' onClick={()=>navigate('/admin/job/postjob')}>
-           Create Job
+           Create New Job
          </Button>
         </Row>
          <JobTable jobs={jobs} handleDelete={handleDelete}></JobTable>
