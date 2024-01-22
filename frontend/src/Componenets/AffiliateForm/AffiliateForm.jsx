@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import FormContainer from '../FormContainer/FormContainer';
+import {toast} from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 function AffiliateForm() {
     const [formData, setFormData] = useState({
         email: '',
         url: '',
         categories: {
-            tech: false,
-            business: false,
-            medicine: false,
+         
         }
     });
-
+    const navigate = useNavigate()
+    const [categories,setCategories] = useState([])
     const handleInputChange = (event) => {
         const { name, value, checked, type } = event.target;
-
+        
         if (type === 'checkbox') {
             setFormData({
                 ...formData,
@@ -34,17 +35,44 @@ function AffiliateForm() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         try {
             const response = await axios.post('http://localhost:3000/affiliate/create', formData);
-            console.log(response.data); // Process the response data as needed
+            toast.success('Affiliate Form Submitted',{position:toast.POSITION.TOP_LEFT});
+            navigate('/affiliateRedirectPage')
         } catch (error) {
-            console.error('Error during API call', error);
+            toast.error('Error during Form Submission',{position:toast.POSITION.TOP_LEFT});
         }
     };
+    const getCategories = async()=>{
+        try {
+            const response = await axios.get('http://localhost:3000/category/all');
+            setCategories(response.data);
+
+
+        } catch (error) {
+            
+        }
+   
+    }
+
+
+   useEffect(()=>{
+      
+    
+   getCategories();
+
+
+
+
+
+
+   },[])
+
+
 
     return (
         <FormContainer>
+            <h1>Become An Affiliate</h1>
             <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
@@ -69,16 +97,17 @@ function AffiliateForm() {
                     required 
                 />
             </Form.Group>
-
+            
             <Form.Group controlId="formBasicCheckbox">
+            {categories.map((data)=>( 
                 <Form.Check 
                     type="checkbox" 
-                    label="Tech" 
-                    name="tech"
+                    label={data.name} 
+                    name={data._id}
                     checked={formData.categories.tech}
                     onChange={handleInputChange} 
-                />
-                <Form.Check 
+                />))}
+                {/* <Form.Check 
                     type="checkbox" 
                     label="Business" 
                     name="business"
@@ -91,7 +120,7 @@ function AffiliateForm() {
                     name="medicine"
                     checked={formData.categories.medicine}
                     onChange={handleInputChange} 
-                />
+                /> */}
             </Form.Group>
 
             <Button variant="primary" type="submit">

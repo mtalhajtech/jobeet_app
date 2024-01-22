@@ -5,7 +5,7 @@ const affiliateCategorySchema = new mongoose.Schema({
   affiliateId: { type: mongoose.Types.ObjectId, required: true },
 });
 
-export default model.mongoose(
+export default mongoose.model(
   "affiliateCategory",
   affiliateCategorySchema,
   "affiliateCategories",

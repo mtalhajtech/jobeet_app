@@ -5,6 +5,7 @@ import jobRoutes from "./routes/job.route.js";
 import categoryRoutes from "./routes/category.route.js";
 import authRoutes  from "./routes/auth.route.js"
 import affiliateRoutes from "./routes/affiliates.route.js"
+import apiRoutes from "../backend/routes/api.route.js"
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -24,6 +25,7 @@ app.use('/auth',authRoutes)
 app.use("/job", jobRoutes);
 app.use("/category", categoryRoutes);
 app.use("/affiliate",affiliateRoutes)
+app.use("/api/V1",apiRoutes)
 app.listen(port, (error) => {
   if (!error)
     console.log(

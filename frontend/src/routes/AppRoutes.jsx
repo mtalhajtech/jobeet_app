@@ -16,6 +16,8 @@ import PostJobAdmin from "../Componenets/AdminPanel/PostJobAdmin";
 import CreateCategory from "../Componenets/AdminPanel/CreateCategory";
 import EditCategory from "../Componenets/AdminPanel/EditCategory";
 import AffiliateForm from "../Componenets/affiliateForm/affiliateForm";
+import AffiliatePage from "../Pages/AffiliatePage";
+import AffiliateRedirectPage from "../Pages/AffiliateRedirectPage";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -23,7 +25,8 @@ const AppRoutes = () => {
       <Route exact path="/signUp" element={<SignUpPage />}></Route>
       <Route exact path="/login" element={<SignInPage />}></Route>
       <Route exact path="/postjob" element={<PostJob />}> </Route>
-      <Route exact path="/affiliateForm" element={<AffiliateForm/>}></Route> 
+      <Route exact path="/affiliate" element={<AffiliatePage/>}></Route>
+      <Route exact path="/affiliateRedirectPage" element={<AffiliateRedirectPage/>}></Route> 
       
       <Route
           path="/admin"

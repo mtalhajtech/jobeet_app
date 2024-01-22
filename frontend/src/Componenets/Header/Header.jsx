@@ -59,7 +59,7 @@ const Header = ({headerName,role='user'}) => {
            
           </Col>
           <Col>
-          <Button style={{display:"block",whiteSpace:"nowrap"}}className="ms-3" variant="primary" href="/affiliateForm">
+          <Button style={{display:"block",whiteSpace:"nowrap"}} className="ms-3" variant="primary" href="/affiliate">
              Become An Affiliate
               
         </Button>    
