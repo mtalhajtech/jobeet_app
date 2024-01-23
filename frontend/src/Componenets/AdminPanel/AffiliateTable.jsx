@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table,Row,Col,Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-function AffiliateTable({affiliate}) {
+function AffiliateTable({affiliate,handleClick,isSaving,disabledButtons}) {
     const navigate = useNavigate()
     return (
         <Table striped bordered hover>
@@ -14,7 +14,7 @@ function AffiliateTable({affiliate}) {
          </tr>
        </thead>
        <tbody>
-         {affiliate?.map((data) => (
+         {affiliate?.map((data,index) => (
            <tr key={data._id}>
              <td>{data.email}</td>
             
@@ -25,7 +25,7 @@ function AffiliateTable({affiliate}) {
              <td >
                  <Row>
                   <Col>
-                  <Button variant='secondary' onClick={()=>handleClick(data._id)}>{data.active?<span>Deactivate</span>:<span>Activate</span>}</Button>
+                  <Button disabled={isSaving?true:false} variant='secondary' onClick={(e)=>handleClick(data._id,data.active,index)}>{data.active?<span>Deactivate</span>:<span>Activate</span>}</Button>
                   </Col>           
                  </Row>
                   </td>

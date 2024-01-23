@@ -4,7 +4,7 @@ import AffiliateForm from '../Componenets/affiliateForm/affiliateForm';
 function AffiliatePage(props) {
     return (
         <div>
-            <Header role='user'/>
+            <Header />
             <AffiliateForm/>
             
          

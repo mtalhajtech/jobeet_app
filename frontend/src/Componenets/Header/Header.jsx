@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import axios from "axios";
-const Header = ({headerName,role='user'}) => {
+const Header = ({headerName='Jobeet',role='user'}) => {
   
   const navigate = useNavigate()
 
