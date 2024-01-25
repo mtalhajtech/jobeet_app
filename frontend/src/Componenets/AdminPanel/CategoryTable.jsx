@@ -16,7 +16,7 @@ function CategoryTable({categoryByJob,handleDelete}) {
        <tbody>
          {categoryByJob.map((data) => (
            <tr key={data._id}>
-             <td>{data.name}</td>
+             <td>{data.name.charAt(0).toUpperCase()+data.name.slice(1)}</td>
             
              <td>{data.totalJobs}</td>
               

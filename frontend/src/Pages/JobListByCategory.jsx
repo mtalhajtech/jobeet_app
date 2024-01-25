@@ -45,7 +45,7 @@ function JobListByCategory() {
      <>
    <Container>
     <Header headerName={'Jobeet'}/>
-     <h1>{category.name} Jobs</h1>   
+     <h1>{category.name.charAt(0).toUpperCase()+category.name.slice(1)} Jobs</h1>   
      <JobTable jobs={jobs}></JobTable>
 
      <nav aria-label="Page navigation example">

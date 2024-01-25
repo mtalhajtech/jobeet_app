@@ -25,7 +25,7 @@ const JobsList = () => {
         <Row key={index} className="mt-3">
           <Col>
             <Link to={`/job/category/${category?._id}`} state={{category}}>
-              <h3>{category.name}</h3>
+              <h3>{category.name.charAt(0).toUpperCase()+category.name.slice(1)}</h3>
             </Link>
             <JobTable jobs={filterjobs(category._id)}></JobTable>           
           </Col>
