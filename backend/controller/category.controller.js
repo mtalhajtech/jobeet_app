@@ -43,7 +43,11 @@ const createCategory = async (req, res) => {
     });
     res.status(200).json(categoryCreated);
   } catch (error) {
-    
+    console.log(error.code)
+    if(error.code==11000){
+      return res.status(409).json({ error: "Category Name Already Exits Choose Different " });
+
+    }
     res.status(500).json({ error: "internal server error" });
   }
 };
@@ -69,11 +73,15 @@ const editCategory = async (req,res)=>{
   const categoryId = new mongoose.Types.ObjectId(req.params.categoryId)
   const {name}  = req.body;
       try {
-        const updatedCategory = await Category.updateOne({_id:categoryId},{name:name});
+        const updatedCategory = await Category.findOneAndUpdate({_id:categoryId},{name:name});
         res.status(200).json({message:"Category Updated Successfully"});
 
       } catch (error) {
-         res.status(500).json({message:"Error occured"});
+        if(error.code==11000){
+          return res.status(409).json({ error: "Category Name Already Exits Choose Different " });
+    
+        }
+         res.status(500).json({message:"Error occured during category Updated"});
       }
  }
 

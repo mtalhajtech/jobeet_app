@@ -36,9 +36,9 @@ const handleDelete = async (catId) => {
     const response = await axios.delete(`http://localhost:3000/category/${catId}`);
     toast.success('Category is deleted Successfully',{position:toast.POSITION.TOP_CENTER});
     
-    setTimeout(()=>{
+    
       setOnDelete((prev)=>!prev)
-    },5000);
+  
   
   } catch (error) {
     console.log(error.message);

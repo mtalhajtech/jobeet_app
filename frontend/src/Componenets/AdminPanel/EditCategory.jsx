@@ -52,6 +52,16 @@ function EditCategory() {
             toast.success('Category Updated Successfully',{position:toast.POSITION.TOP_LEFT})
             
         } catch (error) {
+          
+          if(error.request.status===409){
+
+            toast.error('Category Exist already Use Different Name',{position:toast.POSITION.TOP_LEFT})
+
+          }
+          else {
+            toast.error('Error in Editing Category',{position:toast.POSITION.TOP_LEFT})
+
+          }
             console.log(error)
         }
     }
@@ -78,7 +88,7 @@ function EditCategory() {
         </Form.Group>
         <Form.Group>
                   <Button type="submit" className="my-2" variant="dark">
-                    Create
+                    Save
                   </Button>
      </Form.Group>
         </Form>

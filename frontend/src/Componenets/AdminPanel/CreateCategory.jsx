@@ -23,7 +23,18 @@ function CreateCategory() {
             toast.success('Category Created Successfully',{position:toast.POSITION.TOP_LEFT})
             
         } catch (error) {
-            console.log(error)
+          
+
+              if(error.request.status===409){
+
+                toast.error('Category Exist already Use Different Name',{position:toast.POSITION.TOP_LEFT})
+
+              }
+              else {
+                toast.error('Error in creating Category',{position:toast.POSITION.TOP_LEFT})
+
+              }
+
         }
     }
 

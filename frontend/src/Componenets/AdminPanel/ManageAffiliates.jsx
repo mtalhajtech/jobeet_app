@@ -33,57 +33,57 @@ const getAffiliates = async()=>{
 }
  
 const handleActivateAffiliate = async (affiliateId,active,index)=>{
+
    if(!active){
            try {
-            // setDisableIndex(index)
-            // setIsSaving(true)
-            // setDisabledButtons((prev)=>({...prev,[index]:true}))  
+            setIsSaving(true)
+           
+            setAffiliateData(prev => 
+                prev.map((item, idx) => 
+                  idx === index ? { ...item, isButtonDisabled: true } : item
+                )
+              )
+
             const response = await axios.get(`http://localhost:3000/affiliate/activeAffiliate/${affiliateId}`)
-            // setDisabledButtons((prev)=>({...prev,[index]:false})) 
-            // setIsSaving(false)
-            // setDisableIndex(-1)
+
+            setAffiliateData(prev => 
+                prev.map((item, idx) => 
+                  idx === index ? { ...item, isButtonDisabled: false } : item
+                )
+              )
+            setIsSaving(false)
            } catch (error) {
              console.log(error)
            }
         
    }
    else{
-    console.log('not active')
+    try {
+        // setAffiliateData(prev => 
+        //     prev.map((item, idx) => 
+        //       idx === index ? { ...item, isButtonDisabled: true } : item
+        //     )
+        //   )
+          setIsSaving(true)
+        const response = await axios.get(`http://localhost:3000/affiliate/deActiveAffiliate/${affiliateId}`)
+        setAffiliateData(prev => 
+            prev.map((item, idx) => 
+              idx === index ? { ...item, isButtonDisabled: false } : item
+
+            )
+          )
+          setIsSaving(false)
+    } catch (error) {
+        console.log(error)
+    }
+    
+   
    }
 
-//    if(e.target.innerText='Activate'){
-     
-//     console.log('here in activate')
-//    try {
-//     setIsSaving(true)
-//     const response = await axios.get(`http://localhost:3000/affiliate/activeAffiliate/${affiliateId}`)
-//     setIsSaving(false)
-    
-//    } catch (error) {
-//      console.log(error)
-//    }
 
-//    }
-
-//    else {
-
-//     try {
-      
-//         const response = await axios.get(`http://localhost:3000/affiliate/deActiveAffiliate/${affiliateId}`)
-//         console.log('deActivate')
-        
-//        } catch (error) {
-//          console.log(error)
-//        }
-    
-//    }
 
 
 }
- 
-// const handleDeActivateAffiliate = async ()=>{
-
-// }
 
 
 useEffect(()=>{

@@ -18,6 +18,7 @@ try {
      let affiliateCategories =[]
     const createdAffiliate = await affiliate.create({url,email,token,active:false})
     const affiliateId = createdAffiliate._id
+
     for (const property in categories) {
         if(categories[property]==true){
             const categoryId = new mongoose.Types.ObjectId(property);
@@ -33,7 +34,10 @@ try {
      return res.status(200).send({data:createdAffiliate,message:"Affiliate Create successfully"})
 
 } catch (error) {
-    
+    if(error.code==11000){
+        return res.status(409).json({ error: "Email Already Exits, Choose Different " });
+  
+      }
     return res.status(500).send({message:"Error in Affiliate Creation"})
 }
 

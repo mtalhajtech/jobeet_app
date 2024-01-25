@@ -39,8 +39,19 @@ function AffiliateForm() {
             const response = await axios.post('http://localhost:3000/affiliate/create', formData);
             toast.success('Affiliate Form Submitted',{position:toast.POSITION.TOP_LEFT});
             navigate('/affiliateRedirectPage')
+
         } catch (error) {
-            toast.error('Error during Form Submission',{position:toast.POSITION.TOP_LEFT});
+               
+              if(error.request.status===409){
+
+                toast.error('Email Exist already, Use Different Email',{position:toast.POSITION.TOP_LEFT})
+
+              }
+              else {
+                toast.error('Error in creating Affiliate',{position:toast.POSITION.TOP_LEFT})
+
+              }
+           
         }
     };
     const getCategories = async()=>{

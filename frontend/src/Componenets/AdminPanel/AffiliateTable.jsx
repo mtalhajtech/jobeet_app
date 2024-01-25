@@ -25,7 +25,7 @@ function AffiliateTable({affiliate,handleClick,isSaving,disabledButtons}) {
              <td >
                  <Row>
                   <Col>
-                  <Button disabled={isSaving?true:false} variant='secondary' onClick={(e)=>handleClick(data._id,data.active,index)}>{data.active?<span>Deactivate</span>:<span>Activate</span>}</Button>
+                  <Button disabled={affiliate[index].isButtonDisabled} variant='secondary' onClick={(e)=>handleClick(data._id,data.active,index)}>{data.active?<span>Deactivate</span>:<span>Activate</span>}</Button>
                   </Col>           
                  </Row>
                   </td>

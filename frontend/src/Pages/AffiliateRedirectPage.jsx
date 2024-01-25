@@ -5,7 +5,7 @@ function AffiliateRedirectPage(props) {
     return (
 
         <div>
-            <Header/>
+            <Header />
             <Container>
            <Row className='justify-content-md-center'>
            <h3 className="text-center">
