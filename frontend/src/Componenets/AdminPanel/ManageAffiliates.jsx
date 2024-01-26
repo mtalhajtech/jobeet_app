@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AffiliateTable from './AffiliateTable';
 import axios from 'axios';
+import AuthContext from '../../AuthProvider/AuthProvider';
+import { toast } from 'react-toastify';
+import {useNavigate} from 'react-router-dom'
 function ManageAffiliates(props) {
 
 
     const [affiliateData, setAffiliateData]  = useState([])
     const [isSaving,setIsSaving] = useState(false)
-   
-     
+    const {refreshAuthToken} = useContext(AuthContext)
+    const  navigate = useNavigate()    
     
 const getAffiliates = async()=>{
     try {
@@ -28,12 +31,18 @@ const handleActivateAffiliate = async (affiliateId,active,index)=>{
            
             
 
-            const response = await axios.get(`http://localhost:3000/affiliate/activeAffiliate/${affiliateId}`)
-
+            const response = await axios.get(`http://localhost:3000/affiliate/activeAffiliate/${affiliateId}`,{headers:{"Authorization":`Bearer ${localStorage.getItem('token')}`}})
+            
            
             setIsSaving(false)
            } catch (error) {
-             console.log(error)
+             if(error.request.status == 401){
+                toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+                navigate('/login')
+             }
+             else{
+                toast.error('Error in Activating the Affiliate',{position:toast.POSITION.TOP_CENTER})
+             }
            }
         
    }
@@ -41,11 +50,17 @@ const handleActivateAffiliate = async (affiliateId,active,index)=>{
     try {
       
           setIsSaving(true)
-        const response = await axios.get(`http://localhost:3000/affiliate/deActiveAffiliate/${affiliateId}`)
+        const response = await axios.get(`http://localhost:3000/affiliate/deActiveAffiliate/${affiliateId}`, {headers:{"Authorization":`Bearer ${localStorage.getItem('token')}`}})
       
           setIsSaving(false)
     } catch (error) {
-        console.log(error)
+        if(error.request.status == 401){
+            toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+            navigate('/login')
+         }
+         else{
+            toast.error('Error in Activating the Affiliate',{position:toast.POSITION.TOP_CENTER})
+         }
     }
     
    
@@ -66,6 +81,13 @@ useEffect(()=>{
 },[isSaving])
 
 
+useEffect(()=>{
+
+
+    refreshAuthToken()
+
+
+},[])
 
 
 

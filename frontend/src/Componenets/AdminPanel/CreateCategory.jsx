@@ -17,7 +17,7 @@ function CreateCategory() {
         try {
             const response = await axios.post(
                 "http://localhost:3000/category/create",
-                form,
+                form,{headers:{"Authorization":`Bearer ${localStorage.getItem('token')}`}}
                 )
             navigate('/admin/categories')    
             toast.success('Category Created Successfully',{position:toast.POSITION.TOP_LEFT})
@@ -28,8 +28,12 @@ function CreateCategory() {
               if(error.request.status===409){
 
                 toast.error('Category Exist already Use Different Name',{position:toast.POSITION.TOP_LEFT})
-
+                
               }
+              else if(error.request.status == 401){
+                toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+                navigate('/login')
+             }
               else {
                 toast.error('Error in creating Category',{position:toast.POSITION.TOP_LEFT})
 

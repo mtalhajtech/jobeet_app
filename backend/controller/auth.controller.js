@@ -60,7 +60,7 @@ const login = async (req,res)=>{
  
     const accessToken = Jwt.sign(tokenData,accessTokenSecret,{expiresIn:accessTokenExpiry})
     const refreshToken = Jwt.sign(tokenData, refreshTokenSecret, { expiresIn: refreshTokenExpiry });
-
+    console.log(accessTokenExpiry,refreshTokenExpiry)
     res.cookie('refreshToken', refreshToken, {
         httpOnly: false, 
         secure: false, 
@@ -86,7 +86,7 @@ const refreshAccessToken = (req,res)=>{
         console.log(newAccessToken)
         return res.status(200).json({accessToken:newAccessToken})
     } catch (error) {
-        return res.status(401).json({message:"invalid Token"})
+        return res.status(401).json({message:"Refresh Token Expired"})
     }
     
     

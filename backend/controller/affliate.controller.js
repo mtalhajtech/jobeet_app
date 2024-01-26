@@ -48,7 +48,6 @@ try {
     return res.status(500).send({message:"Error in Affiliate Creation"})
 }
 
-res.status(200).send('ok')
 
 } 
 

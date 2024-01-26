@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Header from '../Componenets/Header/Header';
 import {Container,Row} from 'react-bootstrap'
+import AuthContext from '../AuthProvider/AuthProvider';
 function AffiliateRedirectPage(props) {
+    const {refreshAuthToken} = useContext(AuthContext)
+
+
+    useEffect(()=>{
+
+
+        refreshAuthToken()
+
+
+    },[])
+
     return (
 
         <div>

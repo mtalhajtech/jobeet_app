@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect,useContext } from "react";
 import Header from "../Componenets/Header/Header";
 import SearchBar from "../Componenets/SearchBar/SearchBar";
 import JobsList from "../Componenets/JobList/JobList";
 import Footer from "../Componenets/Footer/Footer";
+import AuthContext from "../AuthProvider/AuthProvider";
+
 const DashboardPage = () => {
+
+
+ 
+
+
   return (
     <div>
       

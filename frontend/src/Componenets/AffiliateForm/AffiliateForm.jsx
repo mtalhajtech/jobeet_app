@@ -45,7 +45,7 @@ function AffiliateForm() {
               if(error.request.status===409){
 
                 toast.error('Email Exist already, Use Different Email',{position:toast.POSITION.TOP_LEFT})
-
+                
               }
               else {
                 toast.error('Error in creating Affiliate',{position:toast.POSITION.TOP_LEFT})

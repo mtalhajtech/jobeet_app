@@ -5,12 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import constants from '../../../utilis/constants';
 import CategoryTable from './CategoryTable';
 import {toast} from 'react-toastify'
+import { useContext } from 'react';
+import AuthContext from '../../AuthProvider/AuthProvider';
 function ManageCategories() {
 
     const [categoryByJobCountData,setCategoryByJobCountData] = useState([])
     const navigate = useNavigate()
     const [onDelete,setOnDelete] = useState(false)
-
+    const {refreshAuthToken} =  useContext(AuthContext)
 const getCategoriesByJobCount = async()=>{
 try {
     const response = await axios.get( `${constants.BACKEND_BASE_URL}category/categoryByJobCount`)
@@ -22,11 +24,21 @@ try {
 
 }
 
+
 useEffect(()=>{
  
   getCategoriesByJobCount()
    console.log(categoryByJobCountData)
 },[onDelete])
+
+useEffect(()=>{
+
+
+  refreshAuthToken()
+
+
+},[])
+
 
 const handleDelete = async (catId) => {
   
@@ -41,8 +53,15 @@ const handleDelete = async (catId) => {
   
   
   } catch (error) {
-    console.log(error.message);
+
+    if(error.request.status == 401){
+      toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER});
+      navigate('/login');
+   }
+   else{
     toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER});
+  }
+    
   }
 
 }

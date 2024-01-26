@@ -8,13 +8,16 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../AuthProvider/AuthProvider";
+
 // import useAxiosPrivate from "../axios/useAxiosPrivate";
 const JobDetailPage = () => {
   const location = useLocation();
   const job = location.state.job;
   const navigate = useNavigate()
   const [isEditAble,setIsEditAble] = useState(false)
-  const {auth,setAuth} = useContext(AuthContext)
+  const {auth,setAuth,refreshAuthToken} = useContext(AuthContext)
+
+
   // const {axiosJWT} = useAxiosPrivate()
 //   const config = {
 //     headers: { Authorization: `Bearer ${auth.token}` }
@@ -54,7 +57,7 @@ const JobDetailPage = () => {
 //   },error=>{
 //      return Promise.reject(error);
 //   })
-
+  
 
 
     const handleDelete = async ()=>{
@@ -79,13 +82,14 @@ const JobDetailPage = () => {
    }
     
  
-    // useEffect(()=>{
-    
-    // if(auth.user?.userId == job.userId){
-    //   setIsEditAble(true);
-    // }
-      
-    // },[])
+  
+   useEffect(()=>{
+
+    refreshAuthToken()
+
+
+  },[])
+
   
  
   return (
@@ -97,7 +101,7 @@ const JobDetailPage = () => {
           <Col xs={10} md={6}>
             <Row>
               <h3>
-                <strong>{job.company + job._id}</strong>
+                <strong>{job.company }</strong>
               </h3>
               <h4>
                 <i>{job.location}</i>        
@@ -128,7 +132,7 @@ const JobDetailPage = () => {
           <Row>
             
            
-              <Row>
+             { auth.isAuthenticated && <Row>
               <Button  style={{width:"fit-content",marginRight:"10px"}} onClick={handleEdit}>
                Edit Job
               </Button>
@@ -136,7 +140,7 @@ const JobDetailPage = () => {
                Delete
               </Button>
               </Row>
-            
+              }
          
           </Row>
         </Row>

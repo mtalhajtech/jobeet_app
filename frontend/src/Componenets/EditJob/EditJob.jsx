@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Form, Col, Container, Button, Image } from "react-bootstrap";
 import FormContainer from "../FormContainer/FormContainer";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import { Alert } from "react-bootstrap";
 import { categories } from "../../../dummyData";
 import axios from "axios";
@@ -14,12 +14,12 @@ function EditJobForm({jobId}) {
  
   // const [apiResponse,setResponse ]
   const navigate = useNavigate()
- 
+  
 
 
     const   fetchData = async()=>{
       try {
-        const response = await axios.get(`http://localhost:3000/job/${jobId}`)
+        const response = await axios.get(`http://localhost:3000/job/${jobId}`,{headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
          console.log(response.data)
          setForm(response.data[0])
         
@@ -75,7 +75,8 @@ function EditJobForm({jobId}) {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-            },
+              "Authorization":`Bearer ${localStorage.getItem('token')}`
+            }
           }
         );
         
@@ -85,7 +86,14 @@ function EditJobForm({jobId}) {
         setForm({description:'',howToApply:''})
         //handel success
       } catch (error) {
-        toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
+        if(error.request.status===401){
+          toast.error('Session Expired',{position:toast.POSITION.TOP_LEFT})
+          navigate('/login')
+        }
+        else{
+          toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
+          
+        }
      
         //if there is an error
       }

@@ -11,8 +11,8 @@ const router = express.Router();
 router.get("/category/:categoryId",getPaginatedJobsByCategory)
 router.get('/latest-active-jobs',getLatestJobs)
 router.get('/all',getPaginatedJobs)
-router.post("/post", upload.single("logo"), createJob);
-router.delete("/:jobId", deleteJob )
-router.put("/:jobId", upload.single("logo"), editJob )
-router.get("/:jobId", getJob);
+router.post("/post",validateToken, upload.single("logo"), createJob);
+router.delete("/:jobId",validateToken, deleteJob )
+router.put("/:jobId",validateToken, upload.single("logo"), editJob )
+router.get("/:jobId",validateToken, getJob);
 export default router;

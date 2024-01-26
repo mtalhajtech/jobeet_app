@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useContext } from "react";
 import { Row, Form, Col, Container, Button, Image } from "react-bootstrap";
 import FormContainer from "../FormContainer/FormContainer";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { Alert } from "react-bootstrap";
 import { categories } from "../../../dummyData";
 import axios from "axios";
 import {toast} from 'react-toastify'
+import AuthContext from '../../AuthProvider/AuthProvider.jsx'
 import { useParams } from "react-router-dom";
 
       function EditJobAdmin() {
@@ -16,7 +17,7 @@ import { useParams } from "react-router-dom";
         // const [apiResponse,setResponse ]
         const navigate = useNavigate()
         const {jobId} = useParams()
-      
+        const {refreshAuthToken} = useContext(AuthContext)
       
           const   fetchData = async()=>{
             try {
@@ -76,6 +77,7 @@ import { useParams } from "react-router-dom";
                 {
                   headers: {
                     "Content-Type": "multipart/form-data",
+                    "Authorization":`Bearer ${localStorage.getItem('token')}`
                   },
                 }
               );
@@ -86,13 +88,27 @@ import { useParams } from "react-router-dom";
               setForm({description:'',howToApply:''})
               //handel success
             } catch (error) {
+              if(error.request.status===401){
+                toast.error('Session Expired',{position:toast.POSITION.TOP_LEFT})
+                navigate('/login')
+              }
+              else{
+                toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
+                
+              }
               toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
            
               //if there is an error
             }
           }
         };
+        useEffect(()=>{
+
+
+          refreshAuthToken()
       
+      
+      },[])
         return (
           <>
             <FormContainer>

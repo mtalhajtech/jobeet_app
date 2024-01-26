@@ -4,7 +4,10 @@ import { getPaginatedJobsByCategory } from '../services/JobsData';
 import JobTable from '../Componenets/JobTable/jobTable';
 import { Container } from 'react-bootstrap';
 import Header from '../Componenets/Header/Header';
+import { useContext } from 'react';
+import AuthContext from '../AuthProvider/AuthProvider';
 function JobListByCategory() {
+   const {refreshAuthToken} = useContext(AuthContext)
    const location = useLocation()
    const category = location.state.category
    const {_id:categoryId} =  category
@@ -38,7 +41,9 @@ function JobListByCategory() {
 
   useEffect(()=>{
   
+    refreshAuthToken()
     getPaginatedData()
+
   },[activePage])
   
     return ( 

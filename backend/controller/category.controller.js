@@ -46,7 +46,7 @@ const createCategory = async (req, res) => {
     console.log(error.code)
     if(error.code==11000){
       return res.status(409).json({ error: "Category Name Already Exits Choose Different " });
-
+      
     }
     res.status(500).json({ error: "internal server error" });
   }

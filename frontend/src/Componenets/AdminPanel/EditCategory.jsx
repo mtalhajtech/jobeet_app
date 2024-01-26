@@ -46,7 +46,7 @@ function EditCategory() {
         try {
             const response = await axios.put(
                 `http://localhost:3000/category/${catId}`,
-                form,
+                form,{headers:{"Authorization":`Bearer ${localStorage.getItem('token')}`}}
                 )
             navigate('/admin/categories')    
             toast.success('Category Updated Successfully',{position:toast.POSITION.TOP_LEFT})
@@ -58,7 +58,13 @@ function EditCategory() {
             toast.error('Category Exist already Use Different Name',{position:toast.POSITION.TOP_LEFT})
 
           }
-          else {
+          else if(error.request.status===401)
+          {
+            toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+            navigate('/login')
+         }
+         else
+           {
             toast.error('Error in Editing Category',{position:toast.POSITION.TOP_LEFT})
 
           }

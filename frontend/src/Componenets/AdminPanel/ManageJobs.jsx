@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect,useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getPaginatedJobs } from '../../services/JobsData';
@@ -7,6 +7,7 @@ import { Container ,Button, Row} from 'react-bootstrap';
 import axios from 'axios';
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../AuthProvider/AuthProvider';
 
 function ManageJobs() {
        const navigate = useNavigate();
@@ -15,8 +16,9 @@ function ManageJobs() {
        const [totaljobs,setTotalJobs] = useState(0);
        const [activePage, setActivePage] = useState(1);
        const [isdeleted,setIsDeleted] = useState(false)
+       const {refreshAuthToken} = useContext(AuthContext)
        let limit = 10;
-    
+      
        async function getPaginatedData (){
         try {
             const response =  await getPaginatedJobs(activePage,limit);
@@ -60,6 +62,18 @@ function ManageJobs() {
       
         getPaginatedData();
       },[activePage,isdeleted])
+      
+      
+       
+    useEffect(()=>{
+
+
+      refreshAuthToken()
+
+
+  },[])
+
+
       
         return ( 
          <>

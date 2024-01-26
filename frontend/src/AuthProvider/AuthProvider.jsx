@@ -9,18 +9,31 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ user:'', isAuthenticated: false,userRole:'' });
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-     const decodedToken = jwtDecode(token);
-     console.log(decodedToken)
-       setAuth({user:decodedToken.userName, isAuthenticated: true, userRole:decodedToken.userRole,hasAffiliate:decodedToken.hasAffiliate });
-    }  
-    
-  }, []);
+  
+
+  const refreshAuthToken = async () => {
+    try{
+    const response = await axios.get('http://localhost:3000/auth/refreshAccessToken', { withCredentials: true });
+   console.log('refresh Token ',response.data.accessToken);
+   localStorage.setItem('token',response.data.accessToken);
+   
+  } catch (error) {
+   const response =  await axios.get('http://localhost:3000/auth/logout')
+    setAuth({user:null,isAuthenticated:false,userRole:''});
+    Cookies.remove('refreshToken');
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
+
+
+
+}
+
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth}}>
+    <AuthContext.Provider value={{ auth, setAuth,refreshAuthToken}}>
       {children}
     </AuthContext.Provider>
   );
