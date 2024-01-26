@@ -9,7 +9,6 @@ import axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../AuthProvider/AuthProvider";
 // import useAxiosPrivate from "../axios/useAxiosPrivate";
-import { jwtDecode } from "jwt-decode";
 const JobDetailPage = () => {
   const location = useLocation();
   const job = location.state.job;

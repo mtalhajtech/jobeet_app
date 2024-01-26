@@ -3,6 +3,8 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useState, createContext, useEffect } from "react";
 import { redirect } from "react-router-dom";
+
+
 import { useNavigate } from "react-router-dom";
 const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
@@ -10,10 +12,10 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    
     if (token) {
      const decodedToken = jwtDecode(token);
-       setAuth({user:decodedToken.userName, isAuthenticated: true, userRole:decodedToken.userRole });
+     console.log(decodedToken)
+       setAuth({user:decodedToken.userName, isAuthenticated: true, userRole:decodedToken.userRole,hasAffiliate:decodedToken.hasAffiliate });
     }  
     
   }, []);

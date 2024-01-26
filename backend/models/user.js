@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
     lastName: {type:String, required: true},
     password:{type:String, required: true},
     email:{type:String, required: true, unique:true},
-    userRole:{type:String,default:'user'}
+    userRole:{type:String,default:'user'},
+    hasAffiliate:{type:Boolean,default :false}
 })
 export default mongoose.model("user",userSchema,"users")

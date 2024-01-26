@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import axios from "axios";
-const Header = ({headerName='Jobeet',role='user',showAfilliateButton='true'}) => {
+const Header = ({headerName='Jobeet',role='user'}) => {
   
   const navigate = useNavigate()
 
@@ -52,18 +52,18 @@ const Header = ({headerName='Jobeet',role='user',showAfilliateButton='true'}) =>
         {role =='user' && auth.isAuthenticated?(
         <Row>
           <Col>
-          <Button className="ms-3" variant="primary" href="/postjob">
+          <Button style={{width:"fit-content"}} className="ms-3" variant="primary" href="/postjob">
               Post a Job
 
         </Button>
            
           </Col>
-          <Col>
-         { showAfilliateButton && <Button style={{display:"block",whiteSpace:"nowrap"}} className="ms-3" variant="primary" href="/affiliate">
+         {!auth.hasAffiliate &&<Col>
+           <Button style={{display:"block",whiteSpace:"nowrap"}} className="ms-3" variant="primary" href="/affiliate">
              Become An Affiliate
               
-        </Button>}    
-          </Col>
+        </Button>   
+          </Col>}
         </Row>
         ):null}
 

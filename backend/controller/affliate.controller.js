@@ -3,18 +3,25 @@ import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose';
 
 import { sendEmail } from '../helpers/Mailer.js';
-
+import  Jwt  from 'jsonwebtoken';
 import affiliate from '../models/affiliate.js';
 import affiliateCategory from '../models/affiliateCategory.js';
-
+import User from '../models/user.js';
 
 const createAffiliate = async(req,res)=> {
 
-const {url,email,categories}= req.body
-const token = uuidv4()
+const {url,email,categories}= req.body;
 
+const token = uuidv4();
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
+const userToken = req.headers.authorization.split(' ')[1]
+const decodedToken =  Jwt.verify(userToken,accessTokenSecret)
+const {userId} = decodedToken
 
 try {
+    const decodedToken =  Jwt.verify(userToken,accessTokenSecret)
+    const {userId} = decodedToken
+     await User.findByIdAndUpdate(userId,{hasAffiliate:true})   
      let affiliateCategories =[]
     const createdAffiliate = await affiliate.create({url,email,token,active:false})
     const affiliateId = createdAffiliate._id
@@ -41,6 +48,7 @@ try {
     return res.status(500).send({message:"Error in Affiliate Creation"})
 }
 
+res.status(200).send('ok')
 
 } 
 

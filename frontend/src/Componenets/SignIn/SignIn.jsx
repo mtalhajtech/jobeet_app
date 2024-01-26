@@ -27,8 +27,9 @@ function SignIn() {
       const accessToken = response?.data.data?.accessToken;
       const role = response?.data.data?.userRole;
       const userName = response?.data.data?.userName;
-
-      setAuth({ user: userName, isAuthenticated: true, userRole: role,token:accessToken });
+      const hasAffiliate = response.data.data?.hasAffiliate
+      console.log(hasAffiliate)
+      setAuth({ user: userName, isAuthenticated: true, userRole: role,token:accessToken,hasAffiliate:hasAffiliate });
       localStorage.setItem('token',accessToken)
       toast.success("Logged In Successfully", {
         position: toast.POSITION.TOP_LEFT,

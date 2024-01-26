@@ -36,7 +36,7 @@ function AffiliateForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/affiliate/create', formData);
+            const response = await axios.post('http://localhost:3000/affiliate/create', formData,{ headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
             toast.success('Affiliate Form Submitted',{position:toast.POSITION.TOP_LEFT});
             navigate('/affiliateRedirectPage')
 
