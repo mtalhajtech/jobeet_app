@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema(
   {
+    userId:{ type: String, required: true },
     type: { type: String, required: true },
     company: { type: String, required: true },
     logo: { type: String },

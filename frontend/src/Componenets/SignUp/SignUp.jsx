@@ -5,6 +5,8 @@ import React from 'react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify'
+import Cookies from 'js-cookie';
+
 function SignUp() {
 
  const {Formik} = formik
@@ -39,6 +41,9 @@ function SignUp() {
         try {
           const response = await axios.post('http://localhost:3000/auth/register',value)
           toast.success('User Registered Successfully',{position:toast.POSITION.TOP_LEFT})
+          setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+          Cookies.remove('refreshToken');
+          localStorage.removeItem('token');
           navigate('/login')
           console.log('success')
         } catch (error) {

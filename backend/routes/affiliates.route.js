@@ -4,7 +4,7 @@ import validateToken from '../middlewares/validateToken.js'
 const router = express.Router()
 
 
-router.post('/create',createAffiliate)
+router.post('/create',validateToken,createAffiliate)
 router.get('/all',getAffiliates)
 router.get('/activeAffiliate/:affiliateId',validateToken,activateAffiliate)
 router.get('/deActiveAffiliate/:affiliateId',validateToken,deActivateAffiliate)

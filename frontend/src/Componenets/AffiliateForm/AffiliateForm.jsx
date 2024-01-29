@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import FormContainer from '../FormContainer/FormContainer';
 import {toast} from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import AuthContext from '../../AuthProvider/AuthProvider';
 function AffiliateForm() {
     const [formData, setFormData] = useState({
         email: '',
@@ -12,6 +14,7 @@ function AffiliateForm() {
          
         }
     });
+    const {setAuth} = useContext(AuthContext)
     const navigate = useNavigate()
     const [categories,setCategories] = useState([])
     const handleInputChange = (event) => {
@@ -47,6 +50,13 @@ function AffiliateForm() {
                 toast.error('Email Exist already, Use Different Email',{position:toast.POSITION.TOP_LEFT})
                 
               }
+              else if(error.request.status == 401){
+                toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+                setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+                Cookies.remove('refreshToken');
+                localStorage.removeItem('token');
+                navigate('/login')}
+              
               else {
                 toast.error('Error in creating Affiliate',{position:toast.POSITION.TOP_LEFT})
 

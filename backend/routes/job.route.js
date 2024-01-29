@@ -14,5 +14,5 @@ router.get('/all',getPaginatedJobs)
 router.post("/post",validateToken, upload.single("logo"), createJob);
 router.delete("/:jobId",validateToken, deleteJob )
 router.put("/:jobId",validateToken, upload.single("logo"), editJob )
-router.get("/:jobId",validateToken, getJob);
+router.get("/:jobId", getJob);
 export default router;

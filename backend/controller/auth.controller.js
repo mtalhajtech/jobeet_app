@@ -57,7 +57,7 @@ const login = async (req,res)=>{
    }
    console.log(userRole,userName)
    let tokenData = {userId:user[0]._id,userName:userName,userEmail:userEmail}
- 
+    
     const accessToken = Jwt.sign(tokenData,accessTokenSecret,{expiresIn:accessTokenExpiry})
     const refreshToken = Jwt.sign(tokenData, refreshTokenSecret, { expiresIn: refreshTokenExpiry });
     console.log(accessTokenExpiry,refreshTokenExpiry)
@@ -68,7 +68,7 @@ const login = async (req,res)=>{
         maxAge: 1 * 24 * 60 * 60 * 1000
       });
     
-    return res.status(200).json({message:'User Logged in Successfully ',data :{accessToken,userName,userRole,hasAffiliate}})
+    return res.status(200).json({message:'User Logged in Successfully ',data :{accessToken,userName,userRole,hasAffiliate,userId:tokenData.userId}})
 }
 
 const refreshAccessToken = (req,res)=>{
@@ -77,16 +77,16 @@ const refreshAccessToken = (req,res)=>{
      console.log('refreshtoken is ',refreshToken)
     if(!refreshToken)
     {
-        return res.status(401).json({message:"Token Not Present"})
+        return res.status(401).send({message:"Token Not Present"})
     }
     try {
         const decodeUser = Jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET)
         const user = decodeUser.userId
         const newAccessToken = Jwt.sign({user},accessTokenSecret,{expiresIn:accessTokenExpiry})
         console.log(newAccessToken)
-        return res.status(200).json({accessToken:newAccessToken})
+        return res.status(200).send({accessToken:newAccessToken})
     } catch (error) {
-        return res.status(401).json({message:"Refresh Token Expired"})
+        return res.status(401).send({message:"Refresh Token Expired"})
     }
     
     

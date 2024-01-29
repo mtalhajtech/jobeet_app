@@ -1,6 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import { NavDropdown,Nav, Row } from "react-bootstrap";
+import { NavDropdown,Nav, Row,} from "react-bootstrap";
+import { Link } from "react-router-dom";
 import {Button,Col} from "react-bootstrap";
 import { useContext,useState } from "react";
 import AuthContext from "../../AuthProvider/AuthProvider";
@@ -15,22 +16,25 @@ const Header = ({headerName='Jobeet',role='user'}) => {
   const {auth,setAuth} = useContext(AuthContext)
   
   const handleLogout = async (event)=>{
-   event.preventDefault()
-   await axios.get('http://localhost:3000/auth/logout')
-   setAuth({user:null,isAuthenticated:false})
-   localStorage.clear('token')
-   Cookies.remove('refreshToken')
-   navigate('/login')
-   toast.success('Logged Out Successfully',{position:toast.POSITION.TOP_LEFT})
+   event.preventDefault();
+   await axios.get('http://localhost:3000/auth/logout');
+   setAuth({user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null});
+   localStorage.clear('token');
+   Cookies.remove('refreshToken');
+   navigate('/login');
+   toast.success('Logged Out Successfully',{position:toast.POSITION.TOP_LEFT});
   }
 
 
   return (
     <Navbar expand="lg" className="py-3" bg="dark" variant="dark">
       <Container >
-        <a href={role=='user'?'/':'/admin'} className="navbar-brand ">
+       
+        {/* <a href={role=='user'?'/':'/admin'} className="navbar-brand ">
           {headerName}
-        </a>
+        </a> */}
+        <Link to={role=='user'?'/':'/admin'} className="navbar-brand">{headerName}</Link>
+       
         <Navbar.Toggle aria-controls="basic-navbar-nav "  />
         <Navbar.Collapse className='justify-content-end' id="basic-navbar-nav">
           
@@ -52,7 +56,7 @@ const Header = ({headerName='Jobeet',role='user'}) => {
         {role =='user' && auth.isAuthenticated?(
         <Row>
           <Col>
-          <Button style={{width:"fit-content"}} className="ms-3" variant="primary" href="/postjob">
+          <Button style={{width:"fit-content"}} className="ms-3" variant="primary"  onClick={()=>navigate('/postjob')}>
               Post a Job
 
         </Button>

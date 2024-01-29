@@ -5,13 +5,14 @@ import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-
-
+import Cookies from 'js-cookie';
+import AuthContext from '../../AuthProvider/AuthProvider';
+import { useContext } from 'react';
 function EditCategory() {
 
     const [form,setForm] = useState({})
     const navigate = useNavigate()
-
+    const {setAuth} = useContext(AuthContext)
     const {catId} = useParams()
 
     const   fetchData = async()=>{
@@ -60,6 +61,10 @@ function EditCategory() {
           }
           else if(error.request.status===401)
           {
+            
+              setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+              Cookies.remove('refreshToken');
+              localStorage.removeItem('token');
             toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
             navigate('/login')
          }

@@ -1,6 +1,4 @@
-import React, { useContext } from 'react';
 import { useEffect,useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { getPaginatedJobs } from '../../services/JobsData';
 import JobTable from './JobTable';
 import { Container ,Button, Row} from 'react-bootstrap';
@@ -8,7 +6,8 @@ import axios from 'axios';
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../AuthProvider/AuthProvider';
-
+import Cookies from 'js-cookie';
+import { useContext } from 'react';
 function ManageJobs() {
        const navigate = useNavigate();
        const [aprError,setApiError] = useState(false);
@@ -36,14 +35,21 @@ function ManageJobs() {
 
         try {
            console.log("clicked")
-          const response = await axios.delete(`http://localhost:3000/job/${jobid}`);
+          const response = await axios.delete(`http://localhost:3000/job/${jobid}`,{headers:{"Authorization":`Bearer ${localStorage.getItem('token')}`}});
           toast.success('Job is deleted Successfully',{position:toast.POSITION.TOP_CENTER});
           setIsDeleted((prev)=>!prev);
           navigate('/admin/');
         } catch (error) {
-          console.log(error.message);
-          // navigate('/login');
-          toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER});
+         
+          if(error.request.status == 401){
+            toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+            setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+            Cookies.remove('refreshToken');
+            localStorage.removeItem('token');
+            navigate('/login')
+         }
+
+         else{  toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER});}
         }
   
       }

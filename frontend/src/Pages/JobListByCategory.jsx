@@ -7,7 +7,7 @@ import Header from '../Componenets/Header/Header';
 import { useContext } from 'react';
 import AuthContext from '../AuthProvider/AuthProvider';
 function JobListByCategory() {
-   const {refreshAuthToken} = useContext(AuthContext)
+   const {refreshAuthToken , auth} = useContext(AuthContext)
    const location = useLocation()
    const category = location.state.category
    const {_id:categoryId} =  category
@@ -41,15 +41,16 @@ function JobListByCategory() {
 
   useEffect(()=>{
   
-    refreshAuthToken()
+    auth.isAuthenticated && refreshAuthToken()
     getPaginatedData()
 
   },[activePage])
   
     return ( 
      <>
+   <Header headerName={'Jobeet'}/>
    <Container>
-    <Header headerName={'Jobeet'}/>
+  
      <h1>{category.name.charAt(0).toUpperCase()+category.name.slice(1)} Jobs</h1>   
      <JobTable jobs={jobs}></JobTable>
 

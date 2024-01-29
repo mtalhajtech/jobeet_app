@@ -4,10 +4,10 @@ import { Row, Form, Col, Container, Button, Image } from "react-bootstrap";
 import FormContainer from "../FormContainer/FormContainer";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Alert } from "react-bootstrap";
 import { categories } from "../../../dummyData";
 import axios from "axios";
 import {toast} from 'react-toastify'
+import Cookies from "js-cookie";
 import AuthContext from '../../AuthProvider/AuthProvider.jsx'
 import { useParams } from "react-router-dom";
 
@@ -17,13 +17,13 @@ import { useParams } from "react-router-dom";
         // const [apiResponse,setResponse ]
         const navigate = useNavigate()
         const {jobId} = useParams()
-        const {refreshAuthToken} = useContext(AuthContext)
+        const {setAuth,refreshAuthToken} = useContext(AuthContext)
       
           const   fetchData = async()=>{
             try {
-              const response = await axios.get(`http://localhost:3000/job/${jobId}`)
+              const response = await axios.get(`http://localhost:3000/job/${jobId}`);
                console.log(response.data)
-               setForm(response.data[0])
+               setForm(response.data[0]);
               
             } catch (error) {
               console.log(error)
@@ -39,7 +39,16 @@ import { useParams } from "react-router-dom";
           
           
         const setField = (field, value) => {
-          setForm({ ...form, [field]: value });
+          // if(field === "logo" && value.length > 0)
+          // {
+          //   setForm({
+          //     ...form,
+          //     [field]: value[0],
+          //     logoPreview: URL.createObjectURL(value[0])
+          //   });
+          // }
+           setForm({ ...form, [field]: value });
+
           if (!!errors[field]) {
             setErrors({ ...errors, [field]: null });
           }
@@ -86,17 +95,22 @@ import { useParams } from "react-router-dom";
               event.target.reset()
               navigate('/admin')
               setForm({description:'',howToApply:''})
+            
               //handel success
             } catch (error) {
               if(error.request.status===401){
+                setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+                Cookies.remove('refreshToken');
+                localStorage.removeItem('token');
                 toast.error('Session Expired',{position:toast.POSITION.TOP_LEFT})
+
                 navigate('/login')
               }
               else{
                 toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
                 
               }
-              toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
+            
            
               //if there is an error
             }
@@ -240,9 +254,9 @@ import { useParams } from "react-router-dom";
                     inline
                     label="Public"
                     name="group1"
-                    value="true"
+                    value={form.isPublic}
                     type={"checkbox"}
-                    checked={form.isPublic===true}
+                    checked={form.isPublic===true?true:false}
                     onChange={(e) => {
                       setField("isPublic", e.target.value);
                     }}

@@ -10,7 +10,7 @@ const validateToken = (req,res,next)=>{
           
           Jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,async (error,decoded)=>{
           if(error){
-            res.status(401).json({message:"You are not Authorized"})
+           return res.status(401).json({message:"You are not Authorized"})
           }
            req.user=decoded
            next()
@@ -18,13 +18,13 @@ const validateToken = (req,res,next)=>{
          
        }
        else{
-        res.status(401).json({message:"You are not Authorized"})
+       return res.status(401).json({message:"You are not Authorized"})
        }   
      
 
     }
     else {
-        res.status(401).json({message:"You are not Authorized"})
+     return   res.status(401).json({message:"You are not Authorized"})
     }
 }
 

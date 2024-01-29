@@ -3,11 +3,13 @@ import { Button, Form,Row } from 'react-bootstrap';
 import FormContainer from '../FormContainer/FormContainer';
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import axios from 'axios';
-
+import AuthContext from '../../AuthProvider/AuthProvider';
+import { useContext } from 'react';
 
 function CreateCategory() {
-
+    const {setAuth} = useContext(AuthContext)
     const [form,setForm] = useState({})
     const navigate = useNavigate()
     const handleSubmit = async(event)=>{
@@ -25,13 +27,16 @@ function CreateCategory() {
         } catch (error) {
           
 
-              if(error.request.status===409){
+              if(error.request.status === 409){
 
                 toast.error('Category Exist already Use Different Name',{position:toast.POSITION.TOP_LEFT})
                 
               }
               else if(error.request.status == 401){
                 toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+                setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+                Cookies.remove('refreshToken');
+                localStorage.removeItem('token');
                 navigate('/login')
              }
               else {

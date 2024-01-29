@@ -15,6 +15,7 @@ const createJob = async (jobDetails) => {
     expiresAt,
     email,
     categoryId,
+    userId
   } = jobDetails;
   
 
@@ -32,6 +33,7 @@ const createJob = async (jobDetails) => {
     categoryId,
     logo,
     expiresAt,
+    userId
   });
 };
 

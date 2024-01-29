@@ -3,15 +3,15 @@ import { Row, Form, Col, Container, Button, Image } from "react-bootstrap";
 import FormContainer from "../FormContainer/FormContainer";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect,useContext } from "react";
-import { Alert } from "react-bootstrap";
 import { categories } from "../../../dummyData";
 import axios from "axios";
 import {toast} from 'react-toastify'
-
+import AuthContext from "../../AuthProvider/AuthProvider";
+import Cookies from "js-cookie";
 function EditJobForm({jobId}) {
   const [form, setForm] = useState({isPublic:false});
   const [errors, setErrors] = useState({});
- 
+  const { setAuth} = useContext(AuthContext)
   // const [apiResponse,setResponse ]
   const navigate = useNavigate()
   
@@ -24,7 +24,7 @@ function EditJobForm({jobId}) {
          setForm(response.data[0])
         
       } catch (error) {
-        console.log(error)
+      
       }
 
     }
@@ -80,18 +80,21 @@ function EditJobForm({jobId}) {
           }
         );
         
-        toast.success('Job Edited Successfully',{position:toast.POSITION.TOP_LEFT})
-        event.target.reset()
-        navigate('/')
+        toast.success('Job Edited Successfully',{position:toast.POSITION.TOP_LEFT});
+        event.target.reset();
+        navigate('/');
         setForm({description:'',howToApply:''})
         //handel success
       } catch (error) {
         if(error.request.status===401){
-          toast.error('Session Expired',{position:toast.POSITION.TOP_LEFT})
-          navigate('/login')
+          setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+           Cookies.remove('refreshToken');
+            localStorage.removeItem('token');
+          toast.error('Session Expired',{position:toast.POSITION.TOP_LEFT});
+          navigate('/login');
         }
         else{
-          toast.error('Error in Form Submission.',{position:toast.POSITION.TOP_LEFT})
+          toast.error('Error in Editing Job.',{position:toast.POSITION.TOP_LEFT});
           
         }
      

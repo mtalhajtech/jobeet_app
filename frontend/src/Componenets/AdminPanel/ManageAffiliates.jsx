@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AffiliateTable from './AffiliateTable';
 import axios from 'axios';
-import AuthContext from '../../AuthProvider/AuthProvider';
 import { toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom'
+import AuthContext from '../../AuthProvider/AuthProvider';
+import Cookies from 'js-cookie';
 function ManageAffiliates(props) {
 
 
     const [affiliateData, setAffiliateData]  = useState([])
     const [isSaving,setIsSaving] = useState(false)
-    const {refreshAuthToken} = useContext(AuthContext)
+    const {refreshAuthToken,setAuth} = useContext(AuthContext)
     const  navigate = useNavigate()    
     
 const getAffiliates = async()=>{
@@ -38,6 +39,9 @@ const handleActivateAffiliate = async (affiliateId,active,index)=>{
            } catch (error) {
              if(error.request.status == 401){
                 toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+                setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+                Cookies.remove('refreshToken');
+                localStorage.removeItem('token');
                 navigate('/login')
              }
              else{
@@ -56,6 +60,9 @@ const handleActivateAffiliate = async (affiliateId,active,index)=>{
     } catch (error) {
         if(error.request.status == 401){
             toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+            setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+            Cookies.remove('refreshToken');
+            localStorage.removeItem('token');
             navigate('/login')
          }
          else{

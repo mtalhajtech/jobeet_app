@@ -7,12 +7,14 @@ import CategoryTable from './CategoryTable';
 import {toast} from 'react-toastify'
 import { useContext } from 'react';
 import AuthContext from '../../AuthProvider/AuthProvider';
+import Cookies from 'js-cookie';
 function ManageCategories() {
+
 
     const [categoryByJobCountData,setCategoryByJobCountData] = useState([])
     const navigate = useNavigate()
     const [onDelete,setOnDelete] = useState(false)
-    const {refreshAuthToken} =  useContext(AuthContext)
+    const {refreshAuthToken,setAuth} =  useContext(AuthContext)
 const getCategoriesByJobCount = async()=>{
 try {
     const response = await axios.get( `${constants.BACKEND_BASE_URL}category/categoryByJobCount`)
@@ -44,8 +46,8 @@ const handleDelete = async (catId) => {
   
     console.log(catId)
   try {
-     console.log("clicked")
-    const response = await axios.delete(`http://localhost:3000/category/${catId}`);
+     
+    const response = await axios.delete(`http://localhost:3000/category/${catId}`,{headers:{"Authorization":`Bearer ${localStorage.getItem('token')}`}});
     toast.success('Category is deleted Successfully',{position:toast.POSITION.TOP_CENTER});
     
     
@@ -56,10 +58,13 @@ const handleDelete = async (catId) => {
 
     if(error.request.status == 401){
       toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER});
+      setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+      Cookies.remove('refreshToken');
+      localStorage.removeItem('token');
       navigate('/login');
    }
    else{
-    toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER});
+    toast.error('Error in Category Deletion',{position:toast.POSITION.TOP_CENTER});
   }
     
   }

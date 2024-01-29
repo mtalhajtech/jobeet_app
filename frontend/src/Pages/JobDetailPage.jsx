@@ -17,46 +17,6 @@ const JobDetailPage = () => {
   const [isEditAble,setIsEditAble] = useState(false)
   const {auth,setAuth,refreshAuthToken} = useContext(AuthContext)
 
-
-  // const {axiosJWT} = useAxiosPrivate()
-//   const config = {
-//     headers: { Authorization: `Bearer ${auth.token}` }
-// };
-
-
-// const axiosJWT = axios.create()
-// const refreshToken = async()=>{
-   
-//    debugger;
-
-//    try {
-
-//     const response = await axios.get('http://localhost:3000/auth/refreshAccessToken', { withCredentials: true });
-//     console.log('refresh Token interceptor',response.data.accessToken)
-//     localStorage.setItem('token',response.data.accessToken)
-//     setAuth({...auth,token:response.accessToken});
-//    } catch (error) {
-//     console.log(error)
-//    }
-  
-        
-// }
-
-
-// const token = localStorage.getItem('token')
-// const decodeToken = jwtDecode(token);
-// axiosJWT.interceptors.request.use(async(config)=>{
-//      const currentDate = new Date();
-//      console.log(currentDate.getTime());
-//      if(currentDate.getTime()>decodeToken.exp*1000){
-//          const response = await refreshToken();
-//          config.headers["authorization"] = "Bearer  " + response.data?.accessToken;
-//      }
-
-//      return config;
-//   },error=>{
-//      return Promise.reject(error);
-//   })
   
 
 
@@ -65,7 +25,9 @@ const JobDetailPage = () => {
 
       try {
        
-        const response = await axios.delete(`http://localhost:3000/job/${job._id}`,config);
+        const response = await axios.delete(`http://localhost:3000/job/${job._id}`,{
+          headers: { Authorization: `Bearer ${auth.token}` }
+      });
         toast.success('Job is deleted Successfully',{position:toast.POSITION.TOP_CENTER});
         navigate('/');
       } catch (error) {
@@ -85,7 +47,7 @@ const JobDetailPage = () => {
   
    useEffect(()=>{
 
-    refreshAuthToken()
+    auth.isAuthenticated && refreshAuthToken()
 
 
   },[])
@@ -132,7 +94,7 @@ const JobDetailPage = () => {
           <Row>
             
            
-             { auth.isAuthenticated && <Row>
+             { auth.isAuthenticated &&  <Row>
               <Button  style={{width:"fit-content",marginRight:"10px"}} onClick={handleEdit}>
                Edit Job
               </Button>

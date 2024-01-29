@@ -6,7 +6,13 @@ import { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
 import { categories } from "../../../dummyData";
 import axios from "axios";
+import AuthContext from "../../AuthProvider/AuthProvider";
+import { useContext } from "react";
+import {toast} from 'react-toastify'
+import Cookies from "js-cookie";
 function PostJobForm() {
+  const {auth,setAuth,refreshAuthToken}  = useContext(AuthContext)
+  const navigate = useNavigate()
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
@@ -50,6 +56,7 @@ function PostJobForm() {
         }
         formData.append(key, form[key]);
       });
+      formData.append("userId",auth.userId)
       try {
         const response = await axios.post(
           "http://localhost:3000/job/post",
@@ -57,37 +64,43 @@ function PostJobForm() {
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              "Authorization":`Bearer ${localStorage.getItem('token')}`
             },
           }
         );
         setShowSuccess(true);
         setForm({})
         event.target.reset()  
-        console.log(response.data);
+        toast.success('Job Posted Successfully',{position:toast.POSITION.TOP_LEFT})
+        navigate('/')
         //handel success
       } catch (error) {
-        setApiError({ error: true, message: error.response?.message });
+        if(error.request.status == 401){
+          toast.error('Session Expired',{position:toast.POSITION.TOP_CENTER})
+          setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+          Cookies.remove('refreshToken');
+          localStorage.removeItem('token');
+          navigate('/login')
+       }
+
+       else{ toast.error('Error in Job Posting',{position:toast.POSITION.TOP_LEFT})}
         //if there is an error
       }
     }
   };
+  useEffect(()=>{
 
+    refreshAuthToken()
+
+
+  },[])
   return (
     <>
      
       <Row className="mt-3 mb-3">
         <h3>Post a Job</h3>
       </Row>
-      {(showSuccess && (
-        <Alert variant="success" onClick={handleShowSuccess} dismissible>
-          Job posted successfully.Keep this Token for editing the Job.
-        </Alert>
-      )) ||
-        (apiError.error && (
-          <Alert variant="danger" dismissible>
-            Error in posting the job
-          </Alert>
-        ))}
+     
       <FormContainer>
         <Form onSubmit={handleSubmit}>
           <Form.Group>

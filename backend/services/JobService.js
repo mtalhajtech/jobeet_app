@@ -19,9 +19,8 @@ const createJobService = async (jobData) => {
     howToApply,
     isPublic,
     categoryId,
-    email,
+    email,userId
   } = jobData;
-
   if (
     !type ||
     !company ||
@@ -31,7 +30,7 @@ const createJobService = async (jobData) => {
     !howToApply ||
     !isPublic ||
     !categoryId ||
-    !email
+    !email || !userId
   ) {
     return {
       error: true,
@@ -48,9 +47,9 @@ const createJobService = async (jobData) => {
   console.log(jobDetails);
   try {
     const createdJob = await createJob(jobDetails);
-    response.token = createdJob.token;
-    response.url =
-      `${process.env.FRONTEND_BASE_URL}/edit-job/${createdJob._id}`;
+    // response.token = createdJob.token;
+    // response.url =
+    //   `${process.env.FRONTEND_BASE_URL}/edit-job/${createdJob._id}`;
     return { error: false, statusCode: 200, data: response };
   } catch (error) {
     return {
