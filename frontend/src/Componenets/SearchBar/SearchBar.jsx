@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-
+import { useContext } from 'react';
+import AuthContext from '../../AuthProvider/AuthProvider';
 const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+ 
+  const {setSearchTerm,searchTerm} = useContext(AuthContext)
 
  
 
-  const handleSearch = () => {
-    // Add your search logic here
-    alert(`Search button clicked! Searching for: ${searchTerm}`);
+  const handleSearch = (value) => {
+   setSearchTerm(value)
+   console.log(searchTerm)
   };
 
   return (
@@ -20,7 +22,7 @@ const SearchBar = () => {
             type="text"
             placeholder="Type your search"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) =>handleSearch(e.target.value)}
           />
         </Col>
         <Col md={3}>

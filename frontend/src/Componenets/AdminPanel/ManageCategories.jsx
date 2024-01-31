@@ -12,6 +12,7 @@ function ManageCategories() {
 
 
     const [categoryByJobCountData,setCategoryByJobCountData] = useState([])
+    const [affiliateCountByCategory,setAffiliateCountByCategory] = useState([])
     const navigate = useNavigate()
     const [onDelete,setOnDelete] = useState(false)
     const {refreshAuthToken,setAuth} =  useContext(AuthContext)
@@ -26,11 +27,46 @@ try {
 
 }
 
+const getAaffiliateCountByCategory = async()=>{
+  try {
+      const response = await axios.get( `${constants.BACKEND_BASE_URL}affiliate/getAffiliateCountByCategory`)
+      setAffiliateCountByCategory(response.data.data)
+      
+  } catch (error) {
+      console.log(error)
+  }
+  
+  }
+  
+const AffiliateCountWithCategory = ()=>{
+ const affiliateData = []
+ const categoryData = []
+
+ for (let i in categoryByJobCountData ) {
+  categoryData.push(categoryByJobCountData[i])
+ }
+ for (let i in affiliateCountByCategory ) {
+  affiliateData.push(affiliateCountByCategory[i])
+ }
+
+  categoryData.map((e1)=>{
+    affiliateData.map((e2)=>{
+      if(e1._id==e2._id){
+        e1.affiliateCount=e2.affiliateCount
+      }
+    })
+  })
+ return categoryData
+ 
+ 
+}
+
 
 useEffect(()=>{
  
   getCategoriesByJobCount()
-   console.log(categoryByJobCountData)
+  getAaffiliateCountByCategory() 
+  AffiliateCountWithCategory()
 },[onDelete])
 
 useEffect(()=>{
@@ -79,9 +115,9 @@ const handleDelete = async (catId) => {
            Create New Category
          </Button>
         </Row>
-        <CategoryTable handleDelete={handleDelete} categoryByJob={categoryByJobCountData}/>
+        <CategoryTable handleDelete={handleDelete} categoryByJob={ AffiliateCountWithCategory()} affiateCount = {affiliateCountByCategory}/>
          
-      
+    
    </Row>
    </Container> 
     );

@@ -95,7 +95,7 @@ function EditCategory() {
         <Form.Label>
         Name 
        </Form.Label>
-       <Form.Control type='text' required value={form.name} onChange={(event)=>setField("name",event.target.value)}/>
+       <Form.Control type='text' required value={form.name.charAt(0).toUpperCase()+form.name.slice(1)} onChange={(event)=>setField("name",event.target.value)}/>
         </Form.Group>
         <Form.Group>
                   <Button type="submit" className="my-2" variant="dark">

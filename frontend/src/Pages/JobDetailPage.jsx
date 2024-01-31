@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "../Componenets/SearchBar/SearchBar";
 import { useLocation } from "react-router-dom";
-import { Row, Col,Button,Container, Form} from "react-bootstrap";
+import { Row, Col,Button,Container, Form,Image} from "react-bootstrap";
 import Header from "../Componenets/Header/Header";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../AuthProvider/AuthProvider";
+import No_content from "../assets/no_content.png"
+import Cookies from "js-cookie";
 
-// import useAxiosPrivate from "../axios/useAxiosPrivate";
 const JobDetailPage = () => {
   const location = useLocation();
   const job = location.state.job;
   const navigate = useNavigate()
-  const [isEditAble,setIsEditAble] = useState(false)
   const {auth,setAuth,refreshAuthToken} = useContext(AuthContext)
 
   
@@ -31,9 +31,13 @@ const JobDetailPage = () => {
         toast.success('Job is deleted Successfully',{position:toast.POSITION.TOP_CENTER});
         navigate('/');
       } catch (error) {
-        console.log(error.message);
-        // navigate('/login');
-        toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER});
+        if(error.request.status===401){
+          setAuth({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+           Cookies.remove('refreshToken');
+            localStorage.removeItem('token');
+          toast.error('Session Expired',{position:toast.POSITION.TOP_LEFT});
+        navigate('/login');}
+       else{ toast.error('Error in Job Deletion',{position:toast.POSITION.TOP_CENTER})}
       }
 
     }
@@ -78,9 +82,13 @@ const JobDetailPage = () => {
             </Row>
             <hr />
           </Col>
-
+          {job.logo && <Col xs={8} md={4} >
+          
+           <Image src={job.logo} ></Image>
+          
+          </Col>}
           <Row>
-            <section>
+            <section> 
               <h4>Job Description</h4>
               <p>{job.description}</p>
             </section>
@@ -92,9 +100,10 @@ const JobDetailPage = () => {
             </section>
           </Row>
           <Row>
-            
+          
            
-             { auth.isAuthenticated &&  <Row>
+             { 
+             auth.isAuthenticated && job.userId == auth.userId && <Row>
               <Button  style={{width:"fit-content",marginRight:"10px"}} onClick={handleEdit}>
                Edit Job
               </Button>

@@ -201,10 +201,10 @@ const getPaginatedJobService = async (page, limit) => {
   }
 };
 
-const getLatestJobsService = async (res) => {
+const getLatestJobsService = async (searchQuery) => {
   try {
-    const latestJobs = await getLatestJobs();
-
+    const latestJobs = await getLatestJobs(searchQuery);
+    console.log(latestJobs)
     if (latestJobs.length === 0) {
       return {
         error: true,
@@ -216,6 +216,7 @@ const getLatestJobsService = async (res) => {
     // res.status(200).json({error:false,statusCode: 200,data:jobsByCategory})
     return { error: false, statusCode: 200, data: latestJobs };
   } catch (error) {
+    console.log(error)
     return {
       error: true,
       statusCode: 500,

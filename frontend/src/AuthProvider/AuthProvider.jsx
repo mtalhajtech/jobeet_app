@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ user:'', isAuthenticated: false,userRole:'',hasAffiliate:false,token:'',userId:null });
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth,refreshAuthToken}}>
+    <AuthContext.Provider value={{ auth, setAuth,refreshAuthToken,setSearchTerm,searchTerm}}>
       {children}
     </AuthContext.Provider>
   );

@@ -51,7 +51,7 @@ const getJobs = async (req, res) => {
         );
       }
     }
-    const jobs = await Job.find({ categoryId: { $in: CatIds } })
+    const jobs = await Job.find({ categoryId: { $in: CatIds },isPublic:true })
       .select({
         _id: 1,
         company: 1,

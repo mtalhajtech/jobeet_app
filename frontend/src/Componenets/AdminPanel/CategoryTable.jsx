@@ -1,8 +1,9 @@
 import React from 'react';
 import { Table,Row,Col,Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-function CategoryTable({categoryByJob,handleDelete}) {
+function CategoryTable({categoryByJob,handleDelete,}) {
     const navigate = useNavigate()
+   
     return (
         <Table striped bordered hover>
         <thead>
@@ -20,7 +21,7 @@ function CategoryTable({categoryByJob,handleDelete}) {
             
              <td>{data.totalJobs}</td>
               
-             <td>N/A</td>
+             <td>{data.affiliateCount}</td>
              <td>
              <td >
                  <Row>

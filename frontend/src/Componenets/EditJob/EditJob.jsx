@@ -12,6 +12,7 @@ function EditJobForm({jobId}) {
   const [form, setForm] = useState({isPublic:false});
   const [errors, setErrors] = useState({});
   const { setAuth} = useContext(AuthContext)
+  const [seletedImage, setSelectedImage] = useState([])
   // const [apiResponse,setResponse ]
   const navigate = useNavigate()
   
@@ -37,7 +38,7 @@ function EditJobForm({jobId}) {
     
     
   const setField = (field, value) => {
-    setForm({ ...form, [field]: value });
+     { setForm({ ...form, [field]: value })};
     if (!!errors[field]) {
       setErrors({ ...errors, [field]: null });
     }
@@ -64,7 +65,7 @@ function EditJobForm({jobId}) {
       const formData = new FormData();
       Object.keys(form).forEach((key) => {
         if (key == "logo") {
-          formData.append(key, form[key][0]);
+          formData.append(key, seletedImage);
         }
         formData.append(key, form[key]);
       });
@@ -102,7 +103,13 @@ function EditJobForm({jobId}) {
       }
     }
   };
-
+  // useEffect(() => {
+  //   return () => {
+  //     if (form.logoPreview) {
+  //       URL.revokeObjectURL(form.logoPreview);
+  //     }
+  //   };
+  // }, [form.logoPreview]);
   return (
     <>
       <FormContainer>
@@ -194,10 +201,18 @@ function EditJobForm({jobId}) {
               name="logo"
               accept="image/*"
               onChange={(e) => {
-                setField("logo", e.target.files);
+                setSelectedImage(e.target.files[0]);
               }}
             />
-            <Image src={form.logo} style={{width:'300px', height:'200px'}}></Image>
+        
+        {form.logo && (
+                  <img
+                    src={form.logo}
+                    alt="Preview"
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
+                    )}
+           
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>URL</Form.Label>

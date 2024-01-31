@@ -14,11 +14,11 @@ import { useParams } from "react-router-dom";
       function EditJobAdmin() {
         const [form, setForm] = useState({});
         const [errors, setErrors] = useState({});
-        // const [apiResponse,setResponse ]
+        const [selectedImage,setSelectedImage ] = useState([])
         const navigate = useNavigate()
         const {jobId} = useParams()
         const {setAuth,refreshAuthToken} = useContext(AuthContext)
-      
+        
           const   fetchData = async()=>{
             try {
               const response = await axios.get(`http://localhost:3000/job/${jobId}`);
@@ -39,15 +39,12 @@ import { useParams } from "react-router-dom";
           
           
         const setField = (field, value) => {
-          // if(field === "logo" && value.length > 0)
-          // {
-          //   setForm({
-          //     ...form,
-          //     [field]: value[0],
-          //     logoPreview: URL.createObjectURL(value[0])
-          //   });
-          // }
-           setForm({ ...form, [field]: value });
+          if(field === "logo" && value.length > 0)
+          {
+           
+            setForm({ ...form, [field]: value });
+          }
+          setForm({ ...form, [field]: value });
 
           if (!!errors[field]) {
             setErrors({ ...errors, [field]: null });
@@ -75,7 +72,7 @@ import { useParams } from "react-router-dom";
             const formData = new FormData();
             Object.keys(form).forEach((key) => {
               if (key == "logo") {
-                formData.append(key, form[key][0]);
+                formData.append(key, selectedImage);
               }
               formData.append(key, form[key]);
             });
@@ -122,6 +119,11 @@ import { useParams } from "react-router-dom";
           refreshAuthToken()
       
       
+      },[])
+      useEffect(()=>{
+       
+
+
       },[])
         return (
           <>
@@ -208,16 +210,26 @@ import { useParams } from "react-router-dom";
                   )}
                 </Form.Group>
                 <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Label>Logo {form.logo}</Form.Label>
+                  <Form.Label>Logo </Form.Label>
                   <Form.Control
                     type="file"
                     name="logo"
                     accept="image/*"
                     onChange={(e) => {
-                      setField("logo", e.target.files);
+                      setSelectedImage(e.target.files[0])
+                      // setField("logo", e.target.files);
                     }}
                   />
-                  <Image src={form.logo} style={{width:'300px', height:'200px'}}></Image>
+              
+              
+                 {form.logo && (
+                  <img
+                    src={form.logo}
+                    alt="Preview"
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
+                    )}
+                 
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                   <Form.Label>URL</Form.Label>
