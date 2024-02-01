@@ -1,16 +1,18 @@
 import {Row,Col,Form,Button,Dropdown,DropdownButton} from 'react-bootstrap'
 import * as yup from 'yup'
 import * as formik from 'formik';
-import React from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify'
 import Cookies from 'js-cookie';
+import AuthContext from '../../AuthProvider/AuthProvider';
 
 function SignUp() {
 
  const {Formik} = formik
  const navigate= useNavigate()
+ const {setAuth} = useContext(AuthContext)
   const schema = yup.object().shape({
     firstName: yup.string().required('First Name is Required Field'),
     lastName: yup.string().required('Last Name is Required Field'),

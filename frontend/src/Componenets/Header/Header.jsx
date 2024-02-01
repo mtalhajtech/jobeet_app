@@ -63,7 +63,7 @@ const Header = ({headerName='Jobeet',role='user'}) => {
            
           </Col>
          {!auth.hasAffiliate &&<Col>
-           <Button style={{display:"block",whiteSpace:"nowrap"}} className="ms-3" variant="primary" href="/affiliate">
+           <Button style={{display:"block",whiteSpace:"nowrap"}} className="ms-3" variant="primary" onClick={()=>navigate('/affiliate')} >
              Become An Affiliate
               
         </Button>   

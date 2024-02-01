@@ -19,7 +19,8 @@ const getPaginatedJobsByCategory = async(req,res)=>{
        const categoryId = req.params.categoryId
        const page = parseInt(req.query.page)|| 1
        const limit = parseInt(req.query.limit)|| 10 
-       const result = await getPaginatedJobByCategoryService(page,categoryId,limit)
+       const searchQuery = req.query.search
+       const result = await getPaginatedJobByCategoryService(page,categoryId,limit,searchQuery)
        console.log(result)
        if(result.error){
         return res.status(result.statusCode).json({message:result.error})

@@ -7,7 +7,7 @@ function AffiliatePage(props) {
     
 
     useEffect(()=>{
-
+     
 
         refreshAuthToken()
 

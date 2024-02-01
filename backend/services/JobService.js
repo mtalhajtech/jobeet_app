@@ -120,24 +120,34 @@ const getJobService = async (req) => {
 
 
 
-const getPaginatedJobByCategoryService = async (page, categoryId, limit) => {
-  let data = {}
+const getPaginatedJobByCategoryService = async (page, categoryId, limit, searchQuery) => {
+  let data = {};
   const currentDate = new Date();
   try {
     const skip = (page - 1) * limit;
-    const jobsByCategory = await Job.find({
-      categoryId: categoryId,
-      expiresAt: { $gt: currentDate },
-      isActive: true,
-    }).skip(skip)
+    const regexPattern = new RegExp(searchQuery, "i");
+
+    // Use an array to dynamically build the $and conditions
+    const conditions = [
+      {
+        $or: [
+          { 'location': { $regex: regexPattern } },
+          { 'position': { $regex: regexPattern } },
+          { 'company': { $regex: regexPattern } }
+        ]
+      },
+      { 'expiresOn': { $gt: currentDate } },
+      { 'categoryId': categoryId },
+      { 'isActive': true },
+    ];
+
+    const jobsByCategory = await Job.find({ $and: conditions })
+      .skip(skip)
       .limit(limit)
       .exec();
-      
-    const totaljobs = await Job.countDocuments({
-      categoryId: categoryId,
-      expiresAt: { $gt: currentDate },
-      isActive: true,
-    });
+
+    // Dynamic countDocuments query based on conditions
+    const totaljobs = await Job.countDocuments({ $and: conditions });
 
     if (jobsByCategory.length === 0) {
       return {
@@ -148,18 +158,20 @@ const getPaginatedJobByCategoryService = async (page, categoryId, limit) => {
       };
     }
 
-     data.jobs = jobsByCategory
-     data.totaljobs = totaljobs
-    
+    data.jobs = jobsByCategory;
+    data.totaljobs = totaljobs;
+
     return { error: false, statusCode: 200, data: data };
   } catch (error) {
     return {
       error: true,
       statusCode: 500,
-      message: " Error : " + error.message,
+      message: "Error: " + error.message,
     };
   }
 };
+
+
 
 const getPaginatedJobService = async (page, limit) => {
   let data = {}

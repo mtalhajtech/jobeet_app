@@ -6,8 +6,9 @@ import { Container } from 'react-bootstrap';
 import Header from '../Componenets/Header/Header';
 import { useContext } from 'react';
 import AuthContext from '../AuthProvider/AuthProvider';
+import SearchBar from '../Componenets/SearchBar/SearchBar';
 function JobListByCategory() {
-   const {refreshAuthToken , auth} = useContext(AuthContext)
+   const {refreshAuthToken , auth,searchTerm} = useContext(AuthContext)
    const location = useLocation()
    const category = location.state.category
    const {_id:categoryId} =  category
@@ -15,13 +16,13 @@ function JobListByCategory() {
    const [jobs,setJobs] = useState([])
    const [totaljobs,setTotalJobs] = useState(0)
    const [activePage, setActivePage] = useState(1)
-   let limit = 10
+   const limit = 10
 
    async function getPaginatedData (){
     try {
-        const response =  await getPaginatedJobsByCategory(activePage,limit,categoryId)
+        const response =  await getPaginatedJobsByCategory(activePage,limit,categoryId,searchTerm)
         const {jobs,totaljobs} = response
-        console.log(response)
+        console.log(totaljobs)
         setTotalJobs(totaljobs)
         setJobs(jobs)
     } catch (error) {
@@ -44,11 +45,12 @@ function JobListByCategory() {
     auth.isAuthenticated && refreshAuthToken()
     getPaginatedData()
 
-  },[activePage])
+  },[activePage,searchTerm])
   
     return ( 
      <>
    <Header headerName={'Jobeet'}/>
+   <SearchBar />
    <Container>
   
      <h1>{category.name.charAt(0).toUpperCase()+category.name.slice(1)} Jobs</h1>   

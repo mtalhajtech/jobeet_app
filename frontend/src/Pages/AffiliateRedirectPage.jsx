@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import Header from '../Componenets/Header/Header';
 import {Container,Row} from 'react-bootstrap'
 import AuthContext from '../AuthProvider/AuthProvider';
+import { useEffect } from 'react';
 function AffiliateRedirectPage(props) {
     const {refreshAuthToken} = useContext(AuthContext)
 

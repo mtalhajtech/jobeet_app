@@ -14,12 +14,13 @@ const createAffiliate = async (req, res) => {
   const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
   const userToken = req.headers.authorization.split(" ")[1];
   const decodedToken = Jwt.verify(userToken, accessTokenSecret);
-  const { userId } = decodedToken;
+  console.log("authToken",decodedToken)
+  const { user } = decodedToken;
 
   try {
     const decodedToken = Jwt.verify(userToken, accessTokenSecret);
-    const { userId } = decodedToken;
-    await User.findByIdAndUpdate(userId, { hasAffiliate: true });
+    const { user } = decodedToken;
+    await User.findByIdAndUpdate(user, { hasAffiliate: true });
     let affiliateCategories = [];
     const createdAffiliate = await affiliate.create({
       url,
