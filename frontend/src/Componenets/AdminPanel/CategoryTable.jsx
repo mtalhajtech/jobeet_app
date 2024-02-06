@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table,Row,Col,Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { capitalizeFirstLetter } from '../../utils/utils';
 function CategoryTable({categoryByJob,handleDelete,}) {
     const navigate = useNavigate()
    
@@ -17,7 +18,7 @@ function CategoryTable({categoryByJob,handleDelete,}) {
        <tbody>
          {categoryByJob.map((data) => (
            <tr key={data._id}>
-             <td>{data.name.charAt(0).toUpperCase()+data.name.slice(1)}</td>
+             <td>{capitalizeFirstLetter(data.name)}</td>
             
              <td>{data.totalJobs}</td>
               

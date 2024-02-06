@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom'
 import AuthContext from '../../AuthProvider/AuthProvider';
 import Cookies from 'js-cookie';
+import './style.css'
 function ManageAffiliates(props) {
 
 
@@ -52,7 +53,7 @@ const handleActivateAffiliate = async (affiliateId,active,index)=>{
    }
    else{
     try {
-      
+           
           setIsSaving(true)
         const response = await axios.get(`http://localhost:3000/affiliate/deActiveAffiliate/${affiliateId}`, {headers:{"Authorization":`Bearer ${localStorage.getItem('token')}`}})
       
@@ -99,7 +100,7 @@ useEffect(()=>{
 
 
     return (
-        <div>
+        <div class='affiliateTableContainer'>
           <AffiliateTable affiliate={affiliateData} handleClick={handleActivateAffiliate} isSaving={isSaving}/>
         </div>
     );

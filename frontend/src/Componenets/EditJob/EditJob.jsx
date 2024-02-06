@@ -249,11 +249,13 @@ function EditJobForm({jobId}) {
               inline
               label="Public"
               name="group1"
-              value="true"
+              // value="true"
               type={"checkbox"}
-              checked={form.isPublic===true}
+              checked={form.isPublic}
               onChange={(e) => {
-                setField("isPublic", e.target.value);
+                let isChecked = !e.target.value
+                console.log(isChecked)
+                setField("isPublic",  isChecked);
               }}
             />
           </Form.Group>

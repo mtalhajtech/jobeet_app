@@ -1,5 +1,5 @@
 import { useEffect,useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useParams,useSearchParams } from 'react-router-dom';
 import { getPaginatedJobsByCategory } from '../services/JobsData';
 import JobTable from '../Componenets/JobTable/jobTable';
 import { Container } from 'react-bootstrap';
@@ -7,11 +7,15 @@ import Header from '../Componenets/Header/Header';
 import { useContext } from 'react';
 import AuthContext from '../AuthProvider/AuthProvider';
 import SearchBar from '../Componenets/SearchBar/SearchBar';
+import { capitalizeFirstLetter } from '../utils/utils';
 function JobListByCategory() {
    const {refreshAuthToken , auth,searchTerm} = useContext(AuthContext)
    const location = useLocation()
-   const category = location.state.category
-   const {_id:categoryId} =  category
+   const params =  useParams()
+  
+   const [searchParams] = useSearchParams()
+   const categoryId = params.categoryId
+   const categoryName = searchParams.get('name')
    const [aprError,setApiError] = useState(false)
    const [jobs,setJobs] = useState([])
    const [totaljobs,setTotalJobs] = useState(0)
@@ -53,7 +57,7 @@ function JobListByCategory() {
    <SearchBar />
    <Container>
   
-     <h1>{category.name.charAt(0).toUpperCase()+category.name.slice(1)} Jobs</h1>   
+     <h1>{capitalizeFirstLetter(categoryName)} Jobs</h1>   
      <JobTable jobs={jobs}></JobTable>
 
      <nav aria-label="Page navigation example">

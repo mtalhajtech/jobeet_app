@@ -20,12 +20,12 @@ function AffiliateRedirectPage(props) {
         <div>
             <Header />
             <Container>
-           <Row className='justify-content-md-center'>
+           <Row className='justify-content-md-center mt-5'>
            <h3 className="text-center">
             <b>Your affiliate account has been created</b>
         </h3>
 
-        <p>Thank you! You will receive an email with your affiliate token as soon as your account will be activated.</p>
+        <p class='text-center'>Thank you! You will receive an email with your affiliate token as soon as your account will be activated.</p>
            </Row>
        
         

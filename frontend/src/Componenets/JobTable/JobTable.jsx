@@ -1,10 +1,10 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import {Link} from 'react-router-dom'
+import {Link,NavLink} from 'react-router-dom'
 function JobTable({jobs}) {
 
     return (
-        <Table striped bordered hover>
+        <Table  bordered hover style={{tableLayout:"fixed"}}>
         <thead>
           <tr>
              <th>Location</th>
@@ -16,11 +16,10 @@ function JobTable({jobs}) {
         <tbody>
           {jobs.map((job) => (
             <tr key={job._id}>
-              <td>{job.location}</td>
-              <Link to={`/job/show/${job?._id}`} state={{job}}>
-              <td>{job.position}</td>
-              </Link>
-              <td>{job.company}</td>
+              <td  >{job.location}</td>
+              
+              <td ><Link to={`/job/show/${job?._id}`} style={{width:"fit-content"}} >{job.position}  </Link></td>
+              <td >{job.company}</td>
               
             </tr>
           ))}

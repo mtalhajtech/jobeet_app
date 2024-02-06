@@ -81,37 +81,17 @@ const getJob = async (jobId, currentDate) => {
     expiresAt: { $gt: currentDate },
   }).exec();
 }
-  // const getActiveJobByCategory = async (page,categoryId,limit,currentDate) => {
-   
-    
-  // };
+ 
   
 
-  const getLatestJobs = (searchQuery)=>{
+  const getLatestJobs = ()=>{
     const currentDate = new Date();
      let query = {
       $expr:{$lt:[currentDate,'$expiresAt']}
      }
-    if(searchQuery && searchQuery.trim()!=='')
-    query.$text ={ $search:searchQuery}
-
       return Job.find(query).sort({createdAt:-1}).limit(10).exec()
      
-    // var regexPattern = new RegExp(searchQuery, "i");
-
-
-      // return Job.find({
-      //   $and: [
-      //     {
-      //       $or: [
-      //         { 'location': { $regex: regexPattern} },
-      //         { 'position': { $regex:regexPattern } },
-      //         { 'company': { $regex: regexPattern } }
-      //       ]
-      //     },
-      //     { 'expiresOn': { $gt: currentDate } }
-      //   ]
-      // }).sort({createdAt:-1}).limit(10).exec()
+    
 
   }
 

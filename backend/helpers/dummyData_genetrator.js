@@ -57,7 +57,7 @@ async function generateAndSaveTechJobs() {
       email: generateTechEmail(company),
       
     };
-     console.log(jobData)
+    
     await createJobRecord(jobData);
 //   }
 

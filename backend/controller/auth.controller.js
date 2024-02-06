@@ -12,13 +12,13 @@ const refreshTokenExpiry = process.env.REFRESH_TOKEN_LIFE
 const register = async (req,res)=>{
       
      const {userName,firstName,lastName,password,email,role} = req.body
-     console.log(req.body)
+     
      if(!userName || !firstName || !lastName || !password || !email  ){
        return res.status(400).json({message:" Please fill all mandatory fields "})
       }
 try {
     const userExists = await User.find({email:email})
-    console.log(userExists)
+   
 
     if(userExists.length>0){
         return res.status(400).json({message:'User already exists.Please use different Email'})
@@ -49,14 +49,14 @@ const login = async (req,res)=>{
  
   
    const {password:hashedPassword,userName,userRole,email:userEmail,hasAffiliate} = user[0]
-   console.log(user[0])
-   console.log('hasAffiliateValue', hasAffiliate)
+   
+  
    const isPasswordValid = await bcrypt.compare(password,hashedPassword)
    if(!isPasswordValid){
         return res.status(401).json({message:'Invalid Credentials'})
    }
-   console.log(userRole,userName)
-   let tokenData = {userId:user[0]._id,userName:userName,userEmail:userEmail}
+   
+   let tokenData = {userId:user[0]._id,userName:userName,userEmail:userEmail,userRole,hasAffiliate}
     
     const accessToken = Jwt.sign(tokenData,accessTokenSecret,{expiresIn:accessTokenExpiry})
     const refreshToken = Jwt.sign(tokenData, refreshTokenSecret, { expiresIn: refreshTokenExpiry });
@@ -70,7 +70,34 @@ const login = async (req,res)=>{
     
     return res.status(200).json({message:'User Logged in Successfully ',data :{accessToken,userName,userRole,hasAffiliate,userId:tokenData.userId}})
 }
+// const validateAccessToken = async (req,res)=>{
+//     const authHeader = req.headers.authorization;
+//     if(authHeader){
+//        const token =  authHeader.split(' ')[1]
+//        console.log('token is ', token)
+//        if(token)
+//        {
+          
+//           Jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,async (error,decoded)=>{
+//           if(error){
+//            return res.status(401).json({message:"You are not Authorized"})
+//           }
+           
+//            console.log(decoded)
+          
+//           })
+         
+//        }
+//        else{
+//        return res.status(401).json({message:"You are not Authorized"})
+//        }   
+     
 
+//     }
+//     else {
+//      return   res.status(401).json({message:"You are not Authorized"})
+//     }
+// }
 const refreshAccessToken = (req,res)=>{
    
     const refreshToken = req.cookies.refreshToken;
@@ -80,12 +107,13 @@ const refreshAccessToken = (req,res)=>{
         return res.status(401).send({message:"Token Not Present"})
     }
     try {
-        const decodeUser = Jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET)
-        const user = decodeUser.userId
-        const newAccessToken = Jwt.sign({user},accessTokenSecret,{expiresIn:accessTokenExpiry})
+        const decodedUser = Jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET)
+        const {iat,exp,...rest} = decodedUser
+        const newAccessToken = Jwt.sign(rest,accessTokenSecret,{expiresIn:accessTokenExpiry})
         console.log(newAccessToken)
         return res.status(200).send({accessToken:newAccessToken})
     } catch (error) {
+        console.log(error)
         return res.status(401).send({message:"Refresh Token Expired"})
     }
     

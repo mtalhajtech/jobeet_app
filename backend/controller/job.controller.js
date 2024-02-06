@@ -21,7 +21,7 @@ const getPaginatedJobsByCategory = async(req,res)=>{
        const limit = parseInt(req.query.limit)|| 10 
        const searchQuery = req.query.search
        const result = await getPaginatedJobByCategoryService(page,categoryId,limit,searchQuery)
-       console.log(result)
+       
        if(result.error){
         return res.status(result.statusCode).json({message:result.error})
        }
@@ -41,9 +41,9 @@ const getPaginatedJobs = async(req,res)=>{
 }
 
 const getLatestJobs = async(req,res)=>{
-  const searchQuery = req.query.searchText
-  console.log(searchQuery)
-  const result = await getLatestJobsService(searchQuery)
+  // const searchQuery = req.query.searchText
+
+  const result = await getLatestJobsService()
   
   if(result.error){
    return res.status(result.statusCode).json({message:result.error})
@@ -68,7 +68,7 @@ const createJob = async (req, res) => {
  const result = await createJobService(jobData)
  
  if(result.error){
-   console.log(result.message) 
+  
   return res.status(result.statusCode).json({message:result.message})
  }
  else return res.status(result.statusCode).json(result.data)
@@ -83,7 +83,7 @@ const editJob = async (req,res)=>{
     const filePath =getBaseUrl(req)+req.file?.path 
     jobData.logo = filePath.replace(/\\/g, '/');
     const result = await editJobService(jobData,jobId)
-    console.log('in edit job')
+
     if(result.error){
       return res.status(result.statusCode).json({message:result.message})
     }

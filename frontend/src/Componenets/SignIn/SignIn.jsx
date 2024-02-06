@@ -11,8 +11,8 @@ import { jwtDecode } from "jwt-decode";
 function SignIn() {
   const { setExpiryTime, setAuth, setUserRole } = useContext(AuthContext);
   const [form, SetForm] = useState({
-    email: "islam12@gmail.com",
-    password: "islamtalha",
+    email: "islamtalha01@gmail.com",
+    password: "talha123",
   });
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -46,6 +46,10 @@ function SignIn() {
   
     } catch (error) {
       console.log(error);
+      if(error.code=="ERR_NETWORK")
+      toast.error("Server Not Responding", {
+        position: toast.POSITION.TOP_LEFT,
+      });
       toast.error(error.response?.data?.message, {
         position: toast.POSITION.TOP_LEFT,
       });

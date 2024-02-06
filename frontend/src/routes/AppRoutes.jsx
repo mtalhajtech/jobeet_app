@@ -22,12 +22,19 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route exact path="/" element={<DashBoardPage />}></Route>
+
       <Route exact path="/signUp" element={<SignUpPage />}></Route>
       <Route exact path="/login" element={<SignInPage />}></Route>
       <Route exact path="/postjob" element={<PostJob />}> </Route>
       <Route exact path="/affiliate" element={<AffiliatePage/>}></Route>
       <Route exact path="/affiliateRedirectPage" element={<AffiliateRedirectPage/>}></Route> 
-      
+      <Route exact path="/job/show/:jobId" element={<JobDetailPage />}></Route>
+      <Route
+        exact
+        path="/job/category/:categoryId"
+        element={<JobListByCategory />}
+      ></Route>
+      <Route exact path="/job/edit/:jobId" element={<EditJobPage />}></Route>
       <Route
           path="/admin"
           element={
@@ -46,13 +53,7 @@ const AppRoutes = () => {
         <Route path="job/postjob" element={<PostJobAdmin/>}/>
         </Route>
 
-      <Route exact path="/job/show/:jobId" element={<JobDetailPage />}></Route>
-      <Route
-        exact
-        path="/job/category/:categoryId"
-        element={<JobListByCategory />}
-      ></Route>
-      <Route exact path="/job/edit/:jobId" element={<EditJobPage />}></Route>
+     
     </Routes>
   );
 };

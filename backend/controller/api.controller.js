@@ -6,7 +6,7 @@ const getJobs = async (req, res) => {
   const limit = req.query.limit || undefined;
   const category = req.query.category || undefined;
 
-  console.log(limit);
+
   const apiToken = req.params.token;
   if (!apiToken) {
     return res

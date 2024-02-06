@@ -213,10 +213,10 @@ const getPaginatedJobService = async (page, limit) => {
   }
 };
 
-const getLatestJobsService = async (searchQuery) => {
+const getLatestJobsService = async () => {
   try {
-    const latestJobs = await getLatestJobs(searchQuery);
-    console.log(latestJobs)
+    const latestJobs = await getLatestJobs();
+    // console.log(latestJobs)
     if (latestJobs.length === 0) {
       return {
         error: true,

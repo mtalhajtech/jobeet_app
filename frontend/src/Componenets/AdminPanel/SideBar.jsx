@@ -4,7 +4,7 @@ import { Nav } from 'react-bootstrap';
 
 function SideBar() {
   return (
-    <Nav className="col-md-2 d-none d-md-block bg-light sidebar  ">
+    <Nav className="col-md-2 d-none d-md-block bg-light sidebar p-10 ">
       <div className="sidebar-sticky">
         <Nav.Item>
           <Nav.Link as={Link} to="/admin/">Jobs</Nav.Link>

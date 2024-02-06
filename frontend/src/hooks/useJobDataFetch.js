@@ -7,7 +7,7 @@ function useJobDataFetch() {
   const [latestJobs, setLatestJobs] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isError, setIsError] = useState(false)
- 
+  
   
   const getJobList = async () => {
     try {

@@ -6,6 +6,7 @@ import {toast} from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import AuthContext from '../../AuthProvider/AuthProvider';
+import { capitalizeFirstLetter } from '../../utils/utils';
 function AffiliateForm() {
     const [formData, setFormData] = useState({
         email: '',
@@ -14,7 +15,7 @@ function AffiliateForm() {
          
         }
     });
-    const {setAuth} = useContext(AuthContext)
+    const {setAuth,auth} = useContext(AuthContext)
     const navigate = useNavigate()
     const [categories,setCategories] = useState([])
     const handleInputChange = (event) => {
@@ -41,6 +42,7 @@ function AffiliateForm() {
         try {
             const response = await axios.post('http://localhost:3000/affiliate/create', formData,{ headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`} });
             toast.success('Affiliate Form Submitted',{position:toast.POSITION.TOP_LEFT});
+            setAuth({...auth,hasAffiliate:true})
             navigate('/affiliateRedirectPage')
 
         } catch (error) {
@@ -123,10 +125,11 @@ function AffiliateForm() {
             {categories.map((data)=>( 
                 <Form.Check 
                     type="checkbox" 
-                    label={data.name} 
+                    label={capitalizeFirstLetter(data.name)} 
                     name={data._id}
                     checked={formData.categories.tech}
                     onChange={handleInputChange} 
+                    id={data._id}
                 />))}
                 {/* <Form.Check 
                     type="checkbox" 
